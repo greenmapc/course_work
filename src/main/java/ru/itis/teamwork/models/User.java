@@ -4,16 +4,14 @@ public class User {
     private Integer id;
     private String firstName;
     private String lastName;
-    private Integer age;
 
     public User() {
 
     }
 
-    public User(String firstName, String lastName, Integer age) {
+    public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
     }
 
     public User(Integer id, String firstName, String lastName) {
@@ -44,13 +42,5 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 }
