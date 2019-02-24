@@ -1,2 +1,5 @@
+ru/itis/teamwork/config/RootConfiguration.class
 ru/itis/teamwork/models/User.class
 ru/itis/teamwork/controllers/HomeController.class
+ru/itis/teamwork/config/WebConfig.class
+ru/itis/teamwork/config/WebInitializer.class

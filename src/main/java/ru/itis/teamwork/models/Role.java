@@ -18,6 +18,6 @@ public class Role {
     private String title;
 
     @OneToOne(mappedBy = "role")
-    private SiteUser user;
+    private User user;
 
 }

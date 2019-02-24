@@ -10,7 +10,6 @@ import java.util.Set;
 @Table(name = "task")
 @Data
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -30,7 +29,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "creator")
-    private SiteUser creator;
+    private User creator;
 
     @ManyToMany
     @JoinTable(
@@ -38,7 +37,7 @@ public class Task {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<SiteUser> performers;
+    private Set<User> performers;
 
     @ManyToOne
     @JoinColumn(name = "project")

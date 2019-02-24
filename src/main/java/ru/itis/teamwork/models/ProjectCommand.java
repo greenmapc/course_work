@@ -19,7 +19,7 @@ public class ProjectCommand {
     @ManyToOne
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
-    private SiteUser user;
+    private User user;
 
     @Column(name = "team_lead")
     private Boolean teamLead;

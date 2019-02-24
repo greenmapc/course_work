@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Table(name = "login")
 @Data
 public class Login implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -23,5 +22,5 @@ public class Login implements Serializable {
     private String hashPassword;
 
     @OneToOne(mappedBy = "login")
-    private SiteUser user;
+    private User user;
 }

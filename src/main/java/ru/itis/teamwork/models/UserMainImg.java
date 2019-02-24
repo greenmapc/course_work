@@ -24,5 +24,5 @@ public class UserMainImg {
     private String type;
 
     @OneToOne(mappedBy = "img")
-    private SiteUser user;
+    private User user;
 }
