@@ -18,7 +18,7 @@
 
 <p>The time on the server is ${serverTime}.</p>
 
-<form action="user" method="post">
+<form action="testUser" method="post">
     <input type="text" name="firstName" value=""/>
     <br>
     <input type="text" name="lastName" value=""/>
