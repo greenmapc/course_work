@@ -1,17 +1,14 @@
 package ru.itis.teamwork.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.models.TestUser;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -29,10 +26,10 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String user(@Validated User user, Model model) {
-        System.out.println("User Page Requested");
-        model.addAttribute("firstName", user.getFirstName());
-        model.addAttribute("lastName", user.getLastName());
+    public String user(@Validated TestUser testUser, Model model) {
+        System.out.println("TestUser Page Requested");
+        model.addAttribute("firstName", testUser.getFirstName());
+        model.addAttribute("lastName", testUser.getLastName());
         return "user";
     }
 
