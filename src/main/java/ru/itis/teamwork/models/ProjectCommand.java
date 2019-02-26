@@ -1,11 +1,13 @@
 package ru.itis.teamwork.models;
 
+import lombok.Builder;
 import ru.itis.teamwork.models.CompositeKey.ProjectCommandKey;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "project_command")
+@Builder
 public class ProjectCommand {
 
     @EmbeddedId

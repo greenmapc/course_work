@@ -1,5 +1,6 @@
 package ru.itis.teamwork.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "project_file")
 @Data
+@Builder
 public class ProjectFile {
 
     @Id

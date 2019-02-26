@@ -1,5 +1,6 @@
 package ru.itis.teamwork.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "project")
 @Data
+@Builder
 public class Project {
 
     @Id
