@@ -3,11 +3,11 @@ package ru.itis.teamwork.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.itis.teamwork.models.Login;
-import ru.itis.teamwork.repositories.LoginRepository;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.services.UserService;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -15,23 +15,45 @@ import java.util.Locale;
 
 @Controller
 public class HomeController {
-    //пример использования CRUD'а
-    private LoginRepository loginRepository;
+    private UserService userService;
 
     @Autowired
-    public HomeController(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
-    // далее в контроллере вызвываем loginRepository.save(<сюда передаем модель login>)
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Locale locale, Model model) {
-        System.out.println("Home Page Requested, locale = " + locale);
-        Date date = new Date();
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-        String formattedDate = dateFormat.format(date);
-        model.addAttribute("serverTime", formattedDate);
-        return "home";
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String registrationPage() {
+        return "registration";
+    }
+
+    @RequestMapping
+    public String loginPage() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String registerUser(@RequestParam String firstName,
+                               @RequestParam String lastName,
+                               @RequestParam String username,
+                               @RequestParam String password,
+                               Model model) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setPassword(password);
+        if (!userService.addUser(user)) {
+            model.addAttribute("message", "Registration error. See log for details");
+            return "registration";
+        }
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String getUsers(Model model) {
+        //model.addAttribute("users", userService.getAllUsers());
+        return "users";
     }
 
 }

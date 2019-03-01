@@ -1,6 +1,7 @@
 package ru.itis.teamwork.models;
 
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import ru.itis.teamwork.models.CompositeKey.ProjectCommandKey;
 
 import javax.persistence.*;
