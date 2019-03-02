@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 @Controller
 public class HomeController {
     private UserService userService;
@@ -25,11 +21,6 @@ public class HomeController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registrationPage() {
         return "registration";
-    }
-
-    @RequestMapping
-    public String loginPage() {
-        return "login";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -52,7 +43,7 @@ public class HomeController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(Model model) {
-        //model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 

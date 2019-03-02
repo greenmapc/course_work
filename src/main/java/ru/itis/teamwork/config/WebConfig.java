@@ -42,11 +42,4 @@ public class WebConfig implements WebMvcConfigurer {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
-
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/assets/css/");
-//        registry.addResourceHandler("/fonts/**").addResourceLocations("/WEB-INF/assets/fonts/");
-//    }
-
 }

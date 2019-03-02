@@ -27,19 +27,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/login")
+                .antMatchers("/", "/registration")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/users", true)
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login")
-                .permitAll()
-                .and()
-                .httpBasic();
+                .permitAll();
     }
 
     @Bean

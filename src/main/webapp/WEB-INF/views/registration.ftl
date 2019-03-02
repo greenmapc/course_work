@@ -1,10 +1,12 @@
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Registration</title>
 </head>
 <body>
 <h3>Регистрация</h3>
 <div class="container">
+    <#if message??><p>${message}</p></#if>
     <form action="/registration" method="post">
         <input id="firstName" name="firstName" type="text" placeholder="First name">
         <br>
