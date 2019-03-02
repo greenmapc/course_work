@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "project_file")
 @Data
-@Builder
 public class ProjectFile {
 
     @Id

@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "project_command")
-@Builder
 public class ProjectCommand {
 
     @EmbeddedId

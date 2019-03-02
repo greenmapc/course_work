@@ -23,5 +23,6 @@
     </form>
 </div>
 <#if email??><p>${email}</p></#if>
+<#if username??><p>${username}</p></#if>
 </body>
 </html>

@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_main_img")
 @Data
-@Builder
 public class UserMainImg {
 
     @Id

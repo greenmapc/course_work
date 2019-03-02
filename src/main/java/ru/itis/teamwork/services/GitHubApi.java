@@ -1,5 +1,7 @@
-package ru.itis.teamwork.utils;
+package ru.itis.teamwork.services;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -8,36 +10,22 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
-@PropertySource("classpath:/git.properties")
+@Component
+@Getter
+@Setter
 public class GitHubApi {
-    @Resource
-    private Environment env;
 
-    private final String CLIENT_ID;
-    private final String CLIENT_SECRET;
-    private final String GITHUB_API_AUTH;
-    private final String REDIRECT;
-    private final String GITHUB;
-
+    private String CLIENT_ID;
+    private String CLIENT_SECRET;
+    private String GITHUB_API_AUTH;
+    private String REDIRECT;
+    private String GITHUB;
     private HttpClient httpClient;
-
-    public GitHubApi() {
-        this.httpClient = HttpClients.createDefault();
-        this.CLIENT_ID = env.getRequiredProperty("CLIENT_ID");
-        this.CLIENT_SECRET = env.getRequiredProperty("CLIENT_SECRET");
-        this.GITHUB_API_AUTH = env.getRequiredProperty("GITHUB_API_AUTH");
-        this.REDIRECT = env.getRequiredProperty("REDIRECT");
-        this.GITHUB = env.getRequiredProperty("GITHUB");
-    }
 
     @SneakyThrows
     public String getAuthLink() {
@@ -77,7 +65,7 @@ public class GitHubApi {
 
     @SneakyThrows
     public String getUserEmail(String token) {
-        URIBuilder uriBuilder = new URIBuilder(GITHUB.concat("emails"));
+        URIBuilder uriBuilder = new URIBuilder(GITHUB.concat("/").concat("emails"));
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         httpGet.addHeader(HttpHeaders.AUTHORIZATION, "token ".concat(token));
         JSONObject obj = this.getJsonResp(httpClient.execute(httpGet)).getJSONObject(0);
@@ -90,6 +78,7 @@ public class GitHubApi {
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         httpGet.addHeader(HttpHeaders.AUTHORIZATION, "token ".concat(token));
         JSONObject obj = this.getJsonResp(httpClient.execute(httpGet)).getJSONObject(0);
+        System.out.println(obj.toString());
         return obj.getString("login");
     }
 
@@ -102,7 +91,6 @@ public class GitHubApi {
         Operation(String operation) {
             this.operation = operation;
         }
-
     }
 
     private enum Param {

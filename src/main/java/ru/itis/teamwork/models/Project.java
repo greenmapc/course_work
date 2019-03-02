@@ -10,7 +10,6 @@ import java.util.Set;
 @Entity
 @Table(name = "project")
 @Data
-@Builder
 public class Project {
 
     @Id
