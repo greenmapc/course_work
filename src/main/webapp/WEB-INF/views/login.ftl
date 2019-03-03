@@ -1,17 +1,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Log In</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/style/style.css">
 </head>
-<body>
-<h3>Вход на сайт</h3>
-<div class="container">
-    <form action="/login" method="post">
-        <div><label> User Name: <input type="text"  name="username"/> </label></div>
-        <div><label> Password: <input type="password"  name="password"/> </label></div>
-        <div><input type="submit" value="Sign In"/></div>
+
+<body class="align">
+<div class="grid">
+    <form method="post" class="form login" action="/login">
+        <header class="login__header">
+        </header>
+        <div class="login__body">
+            <div class="form__field">
+                <input id="username" name="username" type="text" placeholder="Username" required>
+            </div>
+            <div class="form__field">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+        </div>
+        <footer class="login__footer">
+            <input type="submit" value="Sign In">
+        </footer>
     </form>
-    <a href="/registration">Sign up</a>
 </div>
 </body>
 </html>
