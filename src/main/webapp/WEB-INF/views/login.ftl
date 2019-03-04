@@ -10,6 +10,8 @@
 <div class="grid">
     <form method="post" class="form login" action="/login">
         <header class="login__header">
+            <span>Sign In</span>
+            <div class="git_img"><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png"/></div>
         </header>
         <div class="login__body">
             <div class="form__field">
@@ -21,6 +23,7 @@
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign In">
+            <div class="ref_oth_pg"><a href="/registration">Sign Up</a></div>
         </footer>
     </form>
 </div>

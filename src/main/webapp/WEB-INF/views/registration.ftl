@@ -10,6 +10,7 @@
 <div class="grid">
     <form method="post" class="form login" action="/registration">
         <header class="login__header">
+            <span>Registration</span>
         </header>
         <div class="login__body">
             <div class="form__field">
@@ -27,6 +28,7 @@
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign Up">
+            <div class="ref_oth_pg"><a href="/login">Sign In</a></div>
         </footer>
     </form>
 </div>

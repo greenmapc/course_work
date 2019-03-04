@@ -6,7 +6,9 @@ body {
 
 }
 
-
+a {
+    text-decoration: none;
+}
 a:hover {
     text-decoration: none;
 }
@@ -139,6 +141,7 @@ input[type='submit'] {
     padding: 1.5em;
     text-align: center;
     text-transform: uppercase;
+    position: relative;
 }
 
 .login__title {
@@ -191,12 +194,13 @@ input[type='submit'] {
     padding: 0.75em 1.25em;
     transition: background-color 0.3s;
     margin-left: 35%;
+    text-transform: uppercase;
 }
 
 .login input[type='submit']:focus,
 .login input[type='submit']:hover {
 
-    background-color: #0770c3;;
+    background-color: #0770c3;
 }
 .error-message {
     height: 50px;
@@ -210,7 +214,7 @@ input[type='submit'] {
     background-color: #fff;
     border-bottom-left-radius: var(--loginBorderRadius);
     border-bottom-right-radius: var(--loginBorderRadius);
-    display: flex;
+    /*display: flex;*/
     justify-content: space-between;
     padding-bottom: 1.5em;
     padding-left: 1.5em;
@@ -222,4 +226,23 @@ input[type='submit'] {
 }
 .login-span {
     color: white;
+}
+.git_img {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+}
+.git_img img {
+    width: 50px;
+}
+.ref_oth_pg {
+    margin-right: 20px;
+    margin-top: 15px;
+    float: right;
+}
+.ref_oth_pg a {
+     color: #888888!important;
+}
+.ref_oth_pg a:hover {
+    color: #0770c3!important;
 }
