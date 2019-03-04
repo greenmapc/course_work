@@ -8,7 +8,7 @@
 <h3>Login with:</h3>
 <#list urls as url>
 <p>
-    <a title="${url.key}" href="${url.value}">Client</a>
+    <a  href="${url.value}">${url.key} Client</a>
 </p>
 </#list>
 </body>
