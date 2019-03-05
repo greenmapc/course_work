@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <title>Log In</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/style/style.css">
+    <link rel="stylesheet" href="${context.getContextPath()}/assets/style/style.css">
 </head>
 
 <body class="align">
