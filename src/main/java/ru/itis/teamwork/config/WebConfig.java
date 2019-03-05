@@ -25,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setCache(true);
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
+        resolver.setRequestContextAttribute("context");
         return resolver;
     }
 
