@@ -8,3 +8,7 @@
 *.tar.gz
 .idea/
 target
+
+
+# Properties #
+src/main/resources/db.properties
