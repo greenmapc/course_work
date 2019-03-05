@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 
+import javax.validation.Valid;
+
 @Controller
 public class HomeController {
     private UserService userService;
@@ -20,18 +22,24 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registrationPage() {
+    public String registrationPage(@AuthenticationPrincipal User authUser) {
+        if (authUser != null) {
+            return "redirect:/users";
+        }
         return "registration";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage(@AuthenticationPrincipal User authUser) {
+        if (authUser != null) {
+            return "redirect:/users";
+        }
+        return "login";
+    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registerUser(@RequestParam User user,
+    public String registerUser(@Valid User user,
                                Model model) {
-        /*User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUsername(username);
-        user.setPassword(password);*/
         if (!userService.addUser(user)) {
             model.addAttribute("message", "Registration error. See log for details");
             return "registration";
