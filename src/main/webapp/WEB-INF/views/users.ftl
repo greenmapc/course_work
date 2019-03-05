@@ -5,7 +5,7 @@
 </head>
 <body>
 <h3>Users list:</h3>
-<form action="/logout" method="post">
+<form action="${context.getContextPath()}/logout" method="post">
     <button type="submit">Log out</button>
 </form>
 <div class="container">

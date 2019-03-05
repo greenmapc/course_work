@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 
@@ -24,7 +24,7 @@ public class HomeController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registrationPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
-            return "redirect:/users";
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
         }
         return "registration";
     }
@@ -32,7 +32,7 @@ public class HomeController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
-            return "redirect:/users";
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
         }
         return "login";
     }
@@ -44,7 +44,7 @@ public class HomeController {
             model.addAttribute("message", "Registration error. See log for details");
             return "registration";
         }
-        return "redirect:/login";
+        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#loginPage").build();
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
