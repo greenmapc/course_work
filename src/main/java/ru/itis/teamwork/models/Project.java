@@ -30,6 +30,12 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private Set<Task> projectTasks;
 
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectCommand> commands;
+    @ManyToMany(mappedBy = "projects")
+    private Set<User> users;
+
+    @ManyToOne
+    @JoinColumn(name = "team_leader_id")
+    private User teamLeader;
+
+
 }

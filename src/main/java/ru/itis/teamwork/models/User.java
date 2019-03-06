@@ -61,8 +61,16 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "performers")
     private Set<Task> tasks;
 
-    @OneToMany(mappedBy = "user")
-    private Set<ProjectCommand> commands;
+    @ManyToMany
+    @JoinTable(
+            name = "user_project",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<Project> projects;
+
+    @OneToMany(mappedBy = "teamLeader")
+    private Set<Project> leaderProjects;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
