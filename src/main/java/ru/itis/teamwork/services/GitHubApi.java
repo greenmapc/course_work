@@ -221,7 +221,7 @@ public class GitHubApi {
     public static void main(String[] args) {
         GitHubApi gitHubApi = new GitHubApi();
         User user = new User();
-        user.setGithubToken("e38147db56efa0d52cb3f6b3c3579ccfbc661eb0");
+        user.setGithubToken(" ");
         user.setGitName("daniszam");
 //        List<Commit> commitList = gitHubApi.getCommitsByRepoName(user, "bankservice");
         List<RepositoryGithub> repositoryGithubs = gitHubApi.getRepos(user);
