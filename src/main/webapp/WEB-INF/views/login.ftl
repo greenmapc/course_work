@@ -8,7 +8,7 @@
 
 <body class="align">
 <div class="grid">
-    <form method="post" class="form login" action="/login">
+    <form method="post" class="form login" action="${context.getContextPath()}/login">
         <header class="login__header">
             <span>Sign In</span>
             <div class="git_img"><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png"/></div>
@@ -23,7 +23,7 @@
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign In">
-            <div class="ref_oth_pg"><a href="/registration">Sign Up</a></div>
+            <div class="ref_oth_pg"><a href="${context.getContextPath()}/registration">Sign Up</a></div>
         </footer>
     </form>
 </div>

@@ -2,6 +2,7 @@ package ru.itis.teamwork.models;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -20,19 +22,15 @@ public class User implements UserDetails {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @NotBlank(message = "First name cannot be empty")
     @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be empty")
     @Column(name = "last_name")
     private String lastName;
 
-    @NotBlank(message = "Username cannot be empty")
     @Column(name = "username")
     private String username;
 
-    @NotBlank(message = "Password cannot be empty")
     @Column(name = "password")
     private String password;
 
@@ -61,12 +59,7 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "performers")
     private Set<Task> tasks;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_project",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
+    @ManyToMany(mappedBy = "users")
     private Set<Project> projects;
 
     @OneToMany(mappedBy = "teamLeader")
@@ -105,5 +98,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

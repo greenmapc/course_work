@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.controllers.util.ControllerUtils;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
@@ -28,7 +29,7 @@ public class HomeController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registrationPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
-            return "redirect:/users";
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
         }
         return "registration";
     }
@@ -36,7 +37,7 @@ public class HomeController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
-            return "redirect:/users";
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
         }
         return "login";
     }
@@ -46,23 +47,24 @@ public class HomeController {
                                @RequestParam(value = "password2", required = false) String password2,
                                BindingResult bindingResult,
                                Model model) {
-        boolean isConfirmEmpty = StringUtils.isEmpty(password2);
-        if (isConfirmEmpty) {
-            model.addAttribute("password2Error", "Password confirmation cannot be empty");
-        }
-        if (user.getPassword() != null && !user.getPassword().equals(password2)) {
-            model.addAttribute("passwordError", "Passwords are different");
-        }
-        if (isConfirmEmpty || bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            return "registration";
-        }
+//        boolean isConfirmEmpty = StringUtils.isEmpty(password2);
+//        if (isConfirmEmpty) {
+//            model.addAttribute("password2Error", "Password confirmation cannot be empty");
+//        }
+//        if (user.getPassword() != null && !user.getPassword().equals(password2)) {
+//            model.addAttribute("passwordError", "Passwords are different");
+//        }
+//        if (isConfirmEmpty || bindingResult.hasErrors()) {
+//            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+//            model.mergeAttributes(errorsMap);
+//            return "registration";
+//        }
         if (!userService.addUser(user)) {
+            System.out.println("3");
             model.addAttribute("usernameError", "User exists!");
             return "registration";
         }
-        return "redirect:/login";
+        return "redirect:" +  MvcUriComponentsBuilder.fromMappingName("HC#loginPage").build();
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
