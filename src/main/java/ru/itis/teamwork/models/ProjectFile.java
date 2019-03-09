@@ -21,7 +21,7 @@ public class ProjectFile {
     private String originalName;
 
     @Column(name = "hash_name")
-    private String hash_name;
+    private String hashName;
 
     @Column(name = "extension")
     private String extension;

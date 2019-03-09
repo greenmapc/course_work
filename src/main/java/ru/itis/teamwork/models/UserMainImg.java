@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_main_img")
 @Data
-@Builder
 public class UserMainImg {
 
     @Id
@@ -20,7 +19,7 @@ public class UserMainImg {
     private String originalName;
 
     @Column(name = "hash_name")
-    private String hash_name;
+    private String hashName;
 
     @Column(name = "type")
     private String type;
