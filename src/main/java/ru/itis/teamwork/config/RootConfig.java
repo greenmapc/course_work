@@ -18,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"ru.itis.teamwork.models"})
+@ComponentScan({"ru.itis.teamwork.models", "ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
 @PropertySource("classpath:/db.properties")
 public class RootConfig {
@@ -58,6 +58,12 @@ public class RootConfig {
 
         return transactionManager;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(8);
+    }
+
 
     private Properties getHibernateProperties() {
         Properties properties = new Properties();

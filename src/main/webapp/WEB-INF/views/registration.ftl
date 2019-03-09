@@ -8,7 +8,7 @@
 
 <body class="align">
 <div class="grid">
-    <form method="post" class="form login" action="/registration">
+    <form method="post" class="form login" action="${context.getContextPath()}/registration">
         <header class="login__header">
             <span>Registration</span>
         </header>
@@ -28,7 +28,7 @@
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign Up">
-            <div class="ref_oth_pg"><a href="/login">Sign In</a></div>
+            <div class="ref_oth_pg"><a href="${context.getContextPath()}/login">Sign In</a></div>
         </footer>
     </form>
 </div>
