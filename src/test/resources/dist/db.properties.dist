@@ -1,0 +1,14 @@
+#Database properties
+
+db.url=db_url
+db.user=postgres
+db.password=
+db.driverClassName=org.postgresql.Driver
+
+#Hibernate config
+
+hibernate.dialect=org.hibernate.dialect.PostgreSQL9Dialect
+hibernate.show_sql=true
+entitymanager.packages.to.scan=ru.itis.teamwork.models
+hibernate.hbm2ddl.auto=update
+hibernate.enable_lazy_load_no_trans=true
