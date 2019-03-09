@@ -3,17 +3,17 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-
+    color: var(--color);
 }
 
 a {
     text-decoration: none;
 }
+.min-width {
+    min-width: fit-content;;
+}
 a:hover {
     text-decoration: none;
-}
-.navbar a {
-    color: white;
 }
 
 .align {
@@ -26,6 +26,7 @@ a:hover {
 :root {
     --gridMaxWidth: 24em;
     --gridWidth: 90%;
+    --color :#504f4f;
 }
 
 .grid {
@@ -62,8 +63,9 @@ a:hover {
 }
 
 :root {
-    --bodyBackgroundColor: #eaeaea;
-    --bodyColor: #999;
+    /*--bodyBackgroundColor: #eaeaea;*/
+    /*--bodyColor: #999;*/
+    --color: #504f4f;
     --bodyFontSize: 0.875rem;
     --bodyFontWeight: 400;
     --bodyLineHeight: 1.5;
@@ -81,7 +83,6 @@ html {
 }
 
 body {
-    background-color: var(--bodyBackgroundColor);
     font-size: var(--bodyFontSize);
     font-weight: var(--bodyFontWeight);
     line-height: var(--bodyLineHeight);
@@ -126,7 +127,9 @@ input[type='submit'] {
 }
 
 
-
+body.sign {
+    background-color: #e5e5e5;
+}
 :root {
     --loginBorderRadius: 0.25em;
     --loginHeaderBackgroundColor: #0770c3;
@@ -199,7 +202,6 @@ input[type='submit'] {
 
 .login input[type='submit']:focus,
 .login input[type='submit']:hover {
-
     background-color: #0770c3;
 }
 .error-message {
@@ -240,9 +242,85 @@ input[type='submit'] {
     margin-top: 15px;
     float: right;
 }
-.ref_oth_pg a {
-     color: #888888!important;
+.logo-img {
+    width: 100px;
 }
-.ref_oth_pg a:hover {
-    color: #0770c3!important;
+
+.main-navbar {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+/* Profile page /**/
+
+.profile-main-inf {
+    text-align: center;
+}
+.profile-photo {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+
+}
+.profile-photo img{
+    width: 100%;
+    border-radius: 50%;
+}
+.profile-name {
+    text-align: center;
+    font-size: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e1e4e8;
+}
+.profile-project-card {
+    width: 100%;
+    height: 120px;
+    padding: 20px;
+    text-align: left;
+    border: 1px solid #e1e4e8;
+    margin-bottom: 20px;
+}
+.profile-project-name {
+    color: #6dbbf9;
+    font-size: 20px;
+}
+.profile-project-name:hover {
+    color: #0770c3;
+}
+.profile-main-inf {
+    margin-bottom: 40px;
+}
+.profile-main-inf a.nav-link {
+    border-bottom: 1px solid white;
+}
+.profile-main-inf a.nav-link:hover {
+    border-bottom: 1px solid #6dbbf9;
+}
+.profile-main-inf .navbar-nav a.add-link {
+    color: #6dbbf9;
+    font-weight: bold;
+}
+.profile-main-inf button {
+    width: 100%;
+    margin-top: 20px;
+}
+.profile-edit-button {
+    border-radius: 20px;
+    color: white;
+    background-color: #6dbbf9;
+    border: navajowhite;
+    cursor: pointer;
+}
+.profile-nav {
+    margin-bottom: 20px;
+}
+
+.projects {
+    margin-top: 20px;
+}
+.project-card-in {
+    text-align: left;
+    border-bottom: 1px solid #e1e4e8;
+    padding-bottom: 20px;
 }
