@@ -1,4 +1,4 @@
-package test.java.ru.itis.teamwork;
+package ru.itis.teamwork;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
