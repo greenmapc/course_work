@@ -10,8 +10,8 @@ import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.repositories.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,6 +35,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
     public boolean addUser(User user) {
         User userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb != null) {
@@ -51,6 +55,19 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateInfo(User user) {
+        userRepository.save(user);
+    }
+
+    public void saveUser(User user, Map<String, String> form) {
+        Set<String> roles = Arrays.stream(Roles.values())
+                .map(Roles::name)
+                .collect(Collectors.toSet());
+        user.getRoles().clear();
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Roles.valueOf(key));
+            }
+        }
         userRepository.save(user);
     }
 }

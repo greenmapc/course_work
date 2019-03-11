@@ -67,11 +67,4 @@ public class HomeController {
         return "redirect:" +  MvcUriComponentsBuilder.fromMappingName("HC#loginPage").build();
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String getUsers(@AuthenticationPrincipal User user,
-                           Model model) {
-        model.addAttribute("user", user);
-        return "users";
-    }
-
 }
