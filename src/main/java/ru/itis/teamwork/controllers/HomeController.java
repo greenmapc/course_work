@@ -9,10 +9,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.controllers.util.ControllerUtils;
+import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -70,7 +73,29 @@ public class HomeController {
     }
 
     @GetMapping("/projects")
-    public String projects() {
+    public String projects(Model model) {
+        Project project1 = Project.builder()
+                .id(1l)
+                .name("course-work")
+                .build();
+        Project project2 = Project.builder()
+                .id(2l)
+                .name("java-work")
+                .build();
+        Project project3 = Project.builder()
+                .id(3l)
+                .name("spring-twitter")
+                .build();
+        Project project4 = Project.builder()
+                .id(4l)
+                .name("hometask")
+                .build();
+        List<Project> projects = new ArrayList<>();
+        projects.add(project1);
+        projects.add(project2);
+        projects.add(project3);
+        projects.add(project4);
+        model.addAttribute("projects", projects);
         return "projects";
     }
 }
