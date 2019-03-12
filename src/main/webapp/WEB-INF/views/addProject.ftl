@@ -37,7 +37,7 @@
         <div class="profile-name">
             <span>Kuzmenko Anna</span>
         </div>
-        <form action="logOut">
+        <form action="${context.getContextPath()}/logout">
             <input type="submit" value="Edit" class="profile-edit-submit"/>
         </form>
     </div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="row add-project-form">
-                <form class="add-project-form" action="addProject" method="post">
+                <form class="add-project-form" action="/addProject" method="post">
                     <label for="field1">
                         <span>Project name</span><input type="text" name="field1" required="true" id="field1"/>
                     </label><br>
@@ -80,7 +80,6 @@
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 </body>

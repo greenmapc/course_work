@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.controllers.util.ControllerUtils;
 import ru.itis.teamwork.models.User;
@@ -26,7 +24,7 @@ public class HomeController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    @GetMapping("/registration")
     public String registrationPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
             return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
@@ -34,7 +32,7 @@ public class HomeController {
         return "registration";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
             return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
@@ -42,29 +40,37 @@ public class HomeController {
         return "login";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @PostMapping("/registration")
     public String registerUser(@Valid User user,
-                               @RequestParam(value = "password2", required = false) String password2,
+                               @RequestParam("password2") String passwordConfirm,
                                BindingResult bindingResult,
                                Model model) {
-//        boolean isConfirmEmpty = StringUtils.isEmpty(password2);
-//        if (isConfirmEmpty) {
-//            model.addAttribute("password2Error", "Password confirmation cannot be empty");
-//        }
-//        if (user.getPassword() != null && !user.getPassword().equals(password2)) {
-//            model.addAttribute("passwordError", "Passwords are different");
-//        }
-//        if (isConfirmEmpty || bindingResult.hasErrors()) {
-//            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-//            model.mergeAttributes(errorsMap);
-//            return "registration";
-//        }
+        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
+        if (isConfirmEmpty) {
+            model.addAttribute("password2Error", "Password confirmation cannot be empty");
+        }
+        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
+            model.addAttribute("passwordError", "Passwords are different");
+        }
+        if (isConfirmEmpty || bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            return "registration";
+        }
         if (!userService.addUser(user)) {
-            System.out.println("3");
             model.addAttribute("usernameError", "User exists!");
             return "registration";
         }
-        return "redirect:" +  MvcUriComponentsBuilder.fromMappingName("HC#loginPage").build();
+        return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#loginPage").build();
     }
 
+    @GetMapping("/addProject")
+    public String addProject() {
+        return "addProject";
+    }
+
+    @GetMapping("/projects")
+    public String projects() {
+        return "projects";
+    }
 }

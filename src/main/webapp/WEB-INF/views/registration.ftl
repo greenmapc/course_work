@@ -1,3 +1,5 @@
+<#include "parts/security.ftl">
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,13 +16,16 @@
         </header>
         <div class="login__body">
             <div class="form__field">
-                <input id="firstName" name="firstName" type="text" placeholder="First name" required>
+                <input id="firstName" name="firstName" type="text" placeholder="First name"
+                       value="<#if user??>${user.firstName}</#if>" required>
             </div>
             <div class="form__field">
-                <input id="lastName" name="lastName" type="text" placeholder="Last name" required>
+                <input id="lastName" name="lastName" type="text" placeholder="Last name"
+                       value="<#if user??>${user.lastName}</#if>" required>
             </div>
             <div class="form__field">
-                <input id="username" name="username" type="text" placeholder="Username" required>
+                <input id="username" name="username" type="text" placeholder="Username"
+                       value="<#if user??>${user.username}</#if>" required>
             </div>
             <div class="form__field">
                 <input type="password" name="password" placeholder="Password" required>

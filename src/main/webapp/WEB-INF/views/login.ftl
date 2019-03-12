@@ -23,7 +23,9 @@
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign In">
-            <div class="ref_oth_pg"><a href="${context.getContextPath()}/registration">Sign Up</a></div>
+            <div class="ref_oth_pg">
+                <a href="${context.getContextPath()}/registration">Sign Up</a>
+            </div>
         </footer>
     </form>
 </div>
