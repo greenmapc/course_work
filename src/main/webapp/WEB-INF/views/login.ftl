@@ -11,7 +11,7 @@
     <form method="post" class="form login" action="${context.getContextPath()}/login">
         <header class="login__header">
             <span>Sign In</span>
-            <div class="git_img"><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png"/></div>
+            <a href="https://github.com/MerenovaAnastasiya"><div class="git_img"><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png"/></div></a>
         </header>
         <div class="login__body">
             <div class="form__field">

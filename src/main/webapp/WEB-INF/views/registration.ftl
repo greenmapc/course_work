@@ -25,6 +25,9 @@
             <div class="form__field">
                 <input type="password" name="password" placeholder="Password" required>
             </div>
+            <div class="form__field">
+                <input type="password" name="password2" placeholder="Repeat password" required>
+            </div>
         </div>
         <footer class="login__footer">
             <input type="submit" value="Sign Up">
