@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
-        resolver.setCache(true);
+        resolver.setCache(false);
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
         resolver.setRequestContextAttribute("context");
@@ -31,11 +31,12 @@ public class WebConfig implements WebMvcConfigurer {
     public FreeMarkerConfigurer freemarkerConfig() {
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/views/");
+        freeMarkerConfigurer.setDefaultEncoding("UTF-8");
         return freeMarkerConfigurer;
     }
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController( "/login").setViewName("login");
     }
 
     @Override

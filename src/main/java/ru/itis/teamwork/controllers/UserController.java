@@ -33,7 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Model model) {
+    public String profilePage(@AuthenticationPrincipal User user,
+                              Model model) {
         Project project1 = Project.builder()
                 .id(1l)
                 .name("course-work")
@@ -78,6 +79,7 @@ public class UserController {
         return "profile";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{userId}")
     public String userEditForm(@PathVariable String userId,
                                Model model) {
@@ -91,12 +93,14 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user")
     public String getUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/user")
     public String saveUser(@RequestParam String username,
                            @RequestParam String firstName,

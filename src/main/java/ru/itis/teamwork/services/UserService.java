@@ -40,22 +40,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    public boolean addUser(SignUpForm user) {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+    public boolean addUser(SignUpForm userForm) {
+        User userFromDb = userRepository.findByUsername(userForm.getUsername());
         if (userFromDb != null) {
             return false;
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(Roles.USER));
+        userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        userForm.setRoles(Collections.singleton(Roles.USER));
 
         User newUser = new User();
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.setRoles(user.getRoles());
+        newUser.setFirstName(userForm.getFirstName());
+        newUser.setLastName(userForm.getLastName());
+        newUser.setUsername(userForm.getUsername());
+        newUser.setPassword(userForm.getPassword());
+        newUser.setRoles(userForm.getRoles());
 
-        System.out.println(user);
+        System.out.println(userForm);
 
         userRepository.save(newUser);
         return true;
