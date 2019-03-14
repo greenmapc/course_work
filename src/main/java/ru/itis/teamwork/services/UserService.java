@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.itis.teamwork.forms.SignUpForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.repositories.UserRepository;
@@ -39,14 +40,24 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    public boolean addUser(User user) {
+    public boolean addUser(SignUpForm user) {
         User userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb != null) {
             return false;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(Roles.USER));
-        userRepository.save(user);
+
+        User newUser = new User();
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setRoles(user.getRoles());
+
+        System.out.println(user);
+
+        userRepository.save(newUser);
         return true;
     }
 

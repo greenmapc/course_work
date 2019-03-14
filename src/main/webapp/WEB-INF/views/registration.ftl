@@ -1,30 +1,31 @@
 <#import "parts/common.ftl" as c>
+<#import "/spring.ftl" as spring/>
 
 <@c.page "Registration">
 <#--<body class="align">-->
     <div class="grid">
+
+
         <form method="post" class="form login" action="${context.getContextPath()}/registration">
+            <@spring.bind "form"/>
             <header class="login__header">
                 <span>Registration</span>
             </header>
             <div class="login__body">
                 <div class="form__field">
-                    <input id="firstName" name="firstName" type="text" placeholder="First name"
-                           value="<#if user??>${user.firstName}</#if>" required>
+                    <@spring.formInput "form.firstName" "placeholder='First name'"/>
                 </div>
                 <div class="form__field">
-                    <input id="lastName" name="lastName" type="text" placeholder="Last name"
-                           value="<#if user??>${user.lastName}</#if>" required>
+                    <@spring.formInput "form.lastName" "placeholder='Last name'"/>
                 </div>
                 <div class="form__field">
-                    <input id="username" name="username" type="text" placeholder="Username"
-                           value="<#if user??>${user.username}</#if>" required>
+                    <@spring.formInput "form.username" "placeholder='Username'"/>
                 </div>
                 <div class="form__field">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <@spring.formPasswordInput "form.password" "placeholder='Password required'"/>
                 </div>
                 <div class="form__field">
-                    <input type="password" name="password2" placeholder="Repeat password" required>
+                    <@spring.formPasswordInput "form.repeatPassword" "placeholder='Repeat password'"/>
                 </div>
             </div>
             <footer class="login__footer">

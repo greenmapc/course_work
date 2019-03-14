@@ -4,19 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import ru.itis.teamwork.controllers.util.ControllerUtils;
+import ru.itis.teamwork.forms.SignUpForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -28,10 +26,13 @@ public class HomeController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@AuthenticationPrincipal User authUser) {
+    public String registrationPage(@AuthenticationPrincipal User authUser,
+                                   Model model) {
         if (authUser != null) {
             return "redirect:" + MvcUriComponentsBuilder.fromMappingName("HC#getUsers").build();
         }
+
+        model.addAttribute("form", new SignUpForm());
         return "registration";
     }
 
@@ -44,23 +45,24 @@ public class HomeController {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@Valid User user,
-                               @RequestParam("password2") String passwordConfirm,
+    public String registerUser(@Validated @ModelAttribute("form") SignUpForm form,
                                BindingResult bindingResult,
                                Model model) {
-        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
-        if (isConfirmEmpty) {
-            model.addAttribute("password2Error", "Password confirmation cannot be empty");
-        }
-        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
-            model.addAttribute("passwordError", "Passwords are different");
-        }
-        if (isConfirmEmpty || bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            return "registration";
-        }
-        if (!userService.addUser(user)) {
+        System.out.println(form);
+        //ToDO: поменяю на constraints
+//        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
+//        if (isConfirmEmpty) {
+//            model.addAttribute("password2Error", "Password confirmation cannot be empty");
+//        }
+//        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
+//            model.addAttribute("passwordError", "Passwords are different");
+//        }
+//        if (isConfirmEmpty || bindingResult.hasErrors()) {
+//            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+//            model.mergeAttributes(errorsMap);
+//            return "registration";
+//        }
+        if (!userService.addUser(form)) {
             model.addAttribute("usernameError", "User exists!");
             return "registration";
         }
