@@ -1,4 +1,6 @@
-<#import "parts/common.ftl" as c>
+<#import "../parts/common.ftl" as c>
+<#import "/spring.ftl" as spring/>
+
 <@c.page "Project">
     <div class="nav">
         <div class="inner">
@@ -61,12 +63,15 @@
                     </div>
                 </div>
                 <div class="row add-project-form">
-                    <form class="add-project-form" action="${context.getContextPath()}/addProject" method="post">
-                        <label for="field1">
-                            <span>Project name</span><input type="text" name="field1" required id="field1"/>
+                    <form class="add-project-form" action="${context.getContextPath()}/newProject" method="post">
+                        <@spring.bind "form"/>
+                        <label for="nameField">
+                            <span>Project name</span>
+                            <@spring.formInput "form.name" "id = 'nameField'"/>
                         </label><br>
-                        <label for="field2">
-                            <span>Description</span><textarea name="field2" required id="field2"></textarea>
+                        <label for="descriptionField">
+                            <span>Description</span>
+                            <@spring.formTextarea "form.description" "id = 'descriptionField'"/>
                         </label><br>
                         <input type="submit" value="Create" class="add-project-submit"/>
                     </form>

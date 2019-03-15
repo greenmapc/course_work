@@ -28,23 +28,12 @@ public class CreationProjectServiceTest {
     @Autowired
     private CreationService createProjectService;
 
-    @Ignore
     @Test
     public void create() {
-        User teamLeader = userRepository.findByUsername("greenmapc");
-        User firstUser = userRepository.findByUsername("merenaas");
-
-        Set<User> users = new HashSet<>();
-        users.add(teamLeader);
-        users.add(firstUser);
-
-
-        CreateProjectForm createProjectForm = CreateProjectForm.builder()
-                .description("good project!")
-                .name("ok project")
-                .teamLeaderLogin(teamLeader)
-                .participants(users)
-                .build();
+        CreateProjectForm createProjectForm = new CreateProjectForm();
+        createProjectForm.setDescription("good project!");
+        createProjectForm.setName("ok project");
+        createProjectForm.setTeamLeaderLogin("greenmapc");
 
         assertTrue(createProjectService.create(createProjectForm));
     }

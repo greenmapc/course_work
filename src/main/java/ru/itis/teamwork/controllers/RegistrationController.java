@@ -5,7 +5,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -31,7 +30,7 @@ public class RegistrationController {
         }
 
         model.addAttribute("form", new RegistrationForm());
-        return "registration";
+        return "security/registration";
     }
 
     @GetMapping("/login")
@@ -39,21 +38,20 @@ public class RegistrationController {
         if (authUser != null) {
             return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#profilePage").build();
         }
-        return "login";
+        return "security/login";
     }
 
     @PostMapping("/registration")
     public String registerUser(@Validated @ModelAttribute("form") RegistrationForm form,
-                               BindingResult bindingResult,
-                               Model model) {
+                               BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            return "registration";
+            return "security/registration";
         }
 
         if (!userService.addUser(form)) {
             bindingResult.rejectValue( "username", "exist.user");
-            return "registration";
+            return "security/registration";
         }
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("RC#loginPage").build();
     }
