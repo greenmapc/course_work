@@ -69,10 +69,12 @@
                             <span>Project name</span>
                             <@spring.formInput "form.name" "id = 'nameField'"/>
                         </label><br>
+                        <@spring.showErrors "form.name"/>
                         <label for="descriptionField">
                             <span>Description</span>
                             <@spring.formTextarea "form.description" "id = 'descriptionField'"/>
                         </label><br>
+                        <@spring.showErrors "form.description"/>
                         <input type="submit" value="Create" class="add-project-submit"/>
                     </form>
                 </div>

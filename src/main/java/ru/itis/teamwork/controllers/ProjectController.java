@@ -34,6 +34,10 @@ public class ProjectController {
     public String addProject(@Validated @ModelAttribute("form") CreateProjectForm form,
                              BindingResult bindingResult,
                              Principal principal) {
+        if(bindingResult.hasErrors()) {
+            return "creators/newProject";
+        }
+
         form.setTeamLeaderLogin(principal.getName());
         projectService.create(form);
         return "projects";

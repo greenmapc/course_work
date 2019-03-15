@@ -30,7 +30,7 @@ public class CreationProjectService implements CreationService<CreateProjectForm
         participants.add(user);
 
         form.setName(form.getName().replace(" ", "_"));
-        
+
         Project project = Project.builder()
                 .name(form.getName())
                 .description(form.getDescription())
