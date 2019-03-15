@@ -29,6 +29,8 @@ public class CreationProjectService implements CreationService<CreateProjectForm
         Set<User> participants = new HashSet<>();
         participants.add(user);
 
+        form.setName(form.getName().replace(" ", "_"));
+        
         Project project = Project.builder()
                 .name(form.getName())
                 .description(form.getDescription())
