@@ -27,7 +27,15 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
         final Object firstObj = bean.getPropertyValue(firstFieldName);
         final Object secondObj = bean.getPropertyValue(secondFieldName);
 
-        boolean returnValue = firstObj == null && secondObj == null || firstObj != null && firstObj.equals(secondObj);
+        boolean returnValue = true;
+        if(firstObj == null) {
+            return true;
+        } else {
+            if(secondObj != null && !firstObj.equals(secondObj)) {
+                returnValue = false;
+            }
+        }
+
         if (!returnValue) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext.buildConstraintViolationWithTemplate(errorMessage)

@@ -11,21 +11,27 @@
             <header class="login__header">
                 <span>Registration</span>
             </header>
+
             <div class="login__body">
                 <div class="form__field">
                     <@spring.formInput "form.firstName" "placeholder='First name'"/>
+                    <@spring.showErrors "form.firstName"/>
                 </div>
                 <div class="form__field">
                     <@spring.formInput "form.lastName" "placeholder='Last name'"/>
+                    <@spring.showErrors "form.lastName"/>
                 </div>
                 <div class="form__field">
                     <@spring.formInput "form.username" "placeholder='Username'"/>
+                    <@spring.showErrors "form.username"/>
                 </div>
                 <div class="form__field">
                     <@spring.formPasswordInput "form.password" "placeholder='Password required'"/>
+                    <@spring.showErrors "form.password"/>
                 </div>
                 <div class="form__field">
                     <@spring.formPasswordInput "form.repeatPassword" "placeholder='Repeat password'"/>
+                    <@spring.showErrors "form.repeatPassword"/>
                 </div>
             </div>
             <footer class="login__footer">
