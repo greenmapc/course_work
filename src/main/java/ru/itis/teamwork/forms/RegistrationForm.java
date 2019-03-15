@@ -19,7 +19,7 @@ import java.util.Set;
 @FieldMatch.List({
         @FieldMatch(firstField = "password", secondField = "repeatPassword")
 })
-public class SignUpForm extends Form {
+public class RegistrationForm extends Form {
 
     @NotBlank(message = "{emptyField}")
     private String firstName;

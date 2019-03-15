@@ -10,7 +10,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "site_user")
+@Table(name = "site_user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username")
+        })
 @Data
 public class User implements UserDetails {
     @Id

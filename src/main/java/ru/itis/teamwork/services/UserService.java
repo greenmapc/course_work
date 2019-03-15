@@ -1,12 +1,13 @@
 package ru.itis.teamwork.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.itis.teamwork.forms.SignUpForm;
+import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.repositories.UserRepository;
@@ -40,11 +41,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    public boolean addUser(SignUpForm userForm) {
-        User userFromDb = userRepository.findByUsername(userForm.getUsername());
-        if (userFromDb != null) {
-            return false;
-        }
+    public boolean addUser(RegistrationForm userForm) {
+
         userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
         userForm.setRoles(Collections.singleton(Roles.USER));
 
@@ -55,9 +53,12 @@ public class UserService implements UserDetailsService {
         newUser.setPassword(userForm.getPassword());
         newUser.setRoles(userForm.getRoles());
 
-        System.out.println(userForm);
 
-        userRepository.save(newUser);
+        try {
+            userRepository.save(newUser);
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
         return true;
     }
 
