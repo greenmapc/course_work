@@ -1,38 +1,14 @@
 <#import "parts/common.ftl" as c>
 <@c.page "Profile">
-    <div class="nav">
-        <div class="inner">
-        </div>
-        <div class="container navbar-container ">
-            <nav class="navbar navbar-expand navbar-light main-navbar">
-                <!--Основное меню для всего сайта-->
-                <a class="navbar-brand" href="#">Navbar</a>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link3</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0" method="post" action="/logout">
-                    <input type="submit" class="logOutSubmit" value="Logout"></input>
-                </form>
-            </nav>
-        </div>
-    </div>
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">
                 <img src="https://pp.userapi.com/c851228/v851228331/c4598/wjAQ3oPDgs8.jpg">
             </div>
             <div class="profile-name">
-                <span>Kuzmenko Anna</span>
+                <span>${user.firstName} ${user.lastName}</span>
             </div>
-            <form action="${context.getContextPath()}/profile_settings">
+            <form action="${context.getContextPath()}/profileSettings">
                 <input type="submit" value="Edit" class="profile-edit-submit"/>
             </form>
         </div>
@@ -51,7 +27,7 @@
                                 <a class="nav-link" href="#">Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link add-link" href="/newProject">Add project</a>
+                                <a class="nav-link add-link" href="${context.getContextPath()}/newProject">Add project</a>
                             </li>
                         </ul>
                     </div>

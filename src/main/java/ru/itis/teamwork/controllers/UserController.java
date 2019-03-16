@@ -37,6 +37,7 @@ public class UserController {
                               Model model) {
         Set<Project> projects = user.getProjects();
         model.addAttribute("projects", projects);
+        model.addAttribute("user", user);
         return "profile";
     }
 

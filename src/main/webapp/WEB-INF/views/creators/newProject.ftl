@@ -2,30 +2,6 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page "Project">
-    <div class="nav">
-        <div class="inner">
-        </div>
-        <div class="container navbar-container ">
-            <nav class="navbar navbar-expand navbar-light main-navbar">
-                <!--Основное меню для всего сайта-->
-                <a class="navbar-brand" href="#">Navbar</a>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link3</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0" method="post" action="/logout">
-                    <input type="submit" class="logOutSubmit" value="Logout"></input>
-                </form>
-            </nav>
-        </div>
-    </div>
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">

@@ -1,5 +1,5 @@
+<#include "security.ftl">
 <#macro page namePage>
-    <#include "security.ftl">
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${context.getContextPath()}/assets/style/style.css">
     </head>
     <body>
+    <#include "mainNavbar.ftl">
     <#nested>
     </body>
     </html>

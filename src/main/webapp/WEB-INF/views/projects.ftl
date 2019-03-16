@@ -1,26 +1,5 @@
 <#import "parts/common.ftl" as c>
 <@c.page "Projects">
-    <div class="nav">
-        <div class="inner">
-        </div>
-        <div class="container navbar-container ">
-            <nav class="navbar navbar-expand-lg navbar-light main-navbar">
-                <!--Основное меню для всего сайта-->
-                <a class="navbar-brand" href="#">Navbar</a>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link3</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf col-3 min-width">
             <div class="profile-photo">
