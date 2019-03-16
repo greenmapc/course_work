@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Builder
@@ -89,5 +90,7 @@ public class RepositoryGithub {
     @JsonProperty("id")
     private Long id;
 
+    private List<RepositoryContent> repositoryContentList;
+    private List<Owner> collaborators;
 
 }

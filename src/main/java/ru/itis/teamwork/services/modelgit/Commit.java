@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.contrib.jsonpath.annotation.JsonPath;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,4 +24,8 @@ public class Commit {
     private String htmlUrl;
     @JsonPath("$.commit.message")
     private String message;
+    @JsonProperty("url")
+    private String url;
+
+    private List<CommitFile> commitFileList;
 }

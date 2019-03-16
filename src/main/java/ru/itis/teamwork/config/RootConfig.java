@@ -9,10 +9,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.itis.teamwork.services.GitHubApi;
+import ru.itis.teamwork.services.githubApi.GitHubApi;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -45,7 +43,7 @@ public class RootConfig {
 
         gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
         gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
-        gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+//        gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
         gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
         gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
         gitHubApi.setHttpClient(HttpClients.createDefault());

@@ -7,10 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
-import ru.itis.teamwork.services.GitHubApi;
+import ru.itis.teamwork.services.githubApi.GitHubApi;
 
 import javax.validation.Valid;
 
@@ -61,7 +62,8 @@ public class HomeController {
 
     @RequestMapping(value = "/gitAuth", method = RequestMethod.GET)
     public String gitAuth(){
-        return "redirect:" + gitHubApi.getAuthLink();
+//        return "redirect:" + gitHubApi.getAuthLink();
+        return "";
     }
 
     @RequestMapping(value = "/gitCode", method = RequestMethod.GET)
