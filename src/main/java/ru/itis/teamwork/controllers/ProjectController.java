@@ -1,6 +1,7 @@
 package ru.itis.teamwork.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,20 +9,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
-import ru.itis.teamwork.repositories.UserRepository;
+import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.creators.CreationProjectService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ProjectController {
-    private final CreationProjectService projectService;
+    private final CreationProjectService creationProjectService;
 
     @Autowired
-    public ProjectController(CreationProjectService projectService) {
-        this.projectService = projectService;
+    public ProjectController(CreationProjectService creationProjectService) {
+        this.creationProjectService = creationProjectService;
     }
 
     @GetMapping("/newProject")
@@ -34,38 +34,22 @@ public class ProjectController {
     public String addProject(@Validated @ModelAttribute("form") CreateProjectForm form,
                              BindingResult bindingResult,
                              Principal principal) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "creators/newProject";
         }
-
         form.setTeamLeaderLogin(principal.getName());
-        projectService.create(form);
-        return "projects";
+        creationProjectService.create(form);
+        return "redirect:/projects";
     }
 
     @GetMapping("/projects")
-    public String projects(Model model) {
-        Project project1 = Project.builder()
-                .id(1l)
-                .name("course-work")
-                .build();
-        Project project2 = Project.builder()
-                .id(2l)
-                .name("java-work")
-                .build();
-        Project project3 = Project.builder()
-                .id(3l)
-                .name("spring-twitter")
-                .build();
-        Project project4 = Project.builder()
-                .id(4l)
-                .name("hometask")
-                .build();
-        List<Project> projects = new ArrayList<>();
-        projects.add(project1);
-        projects.add(project2);
-        projects.add(project3);
-        projects.add(project4);
+    public String projects(@AuthenticationPrincipal User user,
+                           Model model) {
+        Set<Project> projects = user.getProjects();
+        for (Project project :
+                projects) {
+            System.out.println(project);
+        }
         model.addAttribute("projects", projects);
         return "projects";
     }
@@ -73,11 +57,7 @@ public class ProjectController {
     @GetMapping("/project/{projectId}")
     public String projectOverview(Model model,
                                   @PathVariable String projectId) {
-        System.out.println(projectId);
-        model.addAttribute("project", Project.builder()
-                .id(4l)
-                .name("hometask")
-                .build());
+
         return "project";
     }
 }

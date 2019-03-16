@@ -1,9 +1,6 @@
 package ru.itis.teamwork.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,8 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "project")
 @Data
-@Builder
 @EqualsAndHashCode
+@ToString(exclude = {"users", "teamLeader"})
 public class Project {
 
     @Id

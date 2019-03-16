@@ -31,12 +31,12 @@ public class CreationProjectService implements CreationService<CreateProjectForm
 
         form.setName(form.getName().replace(" ", "_"));
 
-        Project project = Project.builder()
-                .name(form.getName())
-                .description(form.getDescription())
-                .teamLeader(user)
-                .users(participants)
-                .build();
+
+        Project project = new Project();
+        project.setName(form.getName());
+        project.setDescription(form.getDescription());
+        project.setTeamLeader(user);
+        project.setUsers(participants);
 
         return !(projectRepository.save(project) == null);
 
