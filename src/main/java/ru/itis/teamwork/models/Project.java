@@ -1,8 +1,6 @@
 package ru.itis.teamwork.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,6 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "project")
 @Data
+@EqualsAndHashCode
+@ToString(exclude = {"users", "teamLeader"})
 public class Project {
 
     @Id
@@ -23,12 +23,26 @@ public class Project {
     @Column(name = "git_link")
     private String gitLink;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "project")
     private Set<ProjectFile> files;
 
     @OneToMany(mappedBy = "project")
     private Set<Task> projectTasks;
 
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectCommand> commands;
+    @ManyToMany
+    @JoinTable(
+            name = "user_project",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users;
+
+    @ManyToOne
+    @JoinColumn(name = "team_leader_id")
+    private User teamLeader;
+
+
 }

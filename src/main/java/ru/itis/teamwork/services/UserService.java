@@ -1,17 +1,19 @@
 package ru.itis.teamwork.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.repositories.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,18 +37,49 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public boolean addUser(User user) {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
-        if (userFromDb != null) {
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public boolean addUser(RegistrationForm userForm) {
+
+        userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        userForm.setRoles(Collections.singleton(Roles.USER));
+
+        User newUser = new User();
+        newUser.setFirstName(userForm.getFirstName());
+        newUser.setLastName(userForm.getLastName());
+        newUser.setUsername(userForm.getUsername());
+        newUser.setPassword(userForm.getPassword());
+        newUser.setRoles(userForm.getRoles());
+
+
+        try {
+            userRepository.save(newUser);
+        } catch (DataIntegrityViolationException e) {
             return false;
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(Roles.USER));
-        userRepository.save(user);
         return true;
     }
 
     public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
+    }
+
+    public void updateInfo(User user) {
+        userRepository.save(user);
+    }
+
+    public void saveUser(User user, Map<String, String> form) {
+        Set<String> roles = Arrays.stream(Roles.values())
+                .map(Roles::name)
+                .collect(Collectors.toSet());
+        user.getRoles().clear();
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Roles.valueOf(key));
+            }
+        }
+        userRepository.save(user);
     }
 }

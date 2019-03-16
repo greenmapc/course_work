@@ -9,6 +9,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.itis.teamwork.services.githubApi.GitHubApi;
 
@@ -18,7 +20,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"ru.itis.teamwork.models"})
+@ComponentScan({"ru.itis.teamwork.models", "ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 public class RootConfig {
@@ -72,6 +74,12 @@ public class RootConfig {
 
         return transactionManager;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(8);
+    }
+
 
     private Properties getHibernateProperties() {
         Properties properties = new Properties();

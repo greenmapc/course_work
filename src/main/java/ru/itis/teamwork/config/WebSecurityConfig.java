@@ -8,17 +8,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import ru.itis.teamwork.services.UserService;
 
 @EnableWebSecurity
 @ComponentScan(value = {"ru.itis.teamwork.services", "ru.itis.teamwork.controllers"})
-@EnableGlobalMethodSecurity(securedEnabled = true)
 @PropertySource("classpath:application.properties")
+@ComponentScan({"ru.itis.teamwork.services"})
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -37,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/users", true)
+                .defaultSuccessUrl("/profile", true)
                 .permitAll()
                 .and()
                 .logout()
@@ -59,5 +58,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
-
 }

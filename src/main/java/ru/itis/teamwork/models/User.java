@@ -1,15 +1,20 @@
 package ru.itis.teamwork.models;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "site_user")
+@Table(name = "site_user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username")
+        })
 @Data
 public class User implements UserDetails {
     @Id
@@ -57,8 +62,11 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "performers")
     private Set<Task> tasks;
 
-    @OneToMany(mappedBy = "user")
-    private Set<ProjectCommand> commands;
+    @ManyToMany(mappedBy = "users")
+    private Set<Project> projects;
+
+    @OneToMany(mappedBy = "teamLeader")
+    private Set<Project> leaderProjects;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -93,5 +101,22 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean isAdmin() {
+        return roles.contains(Roles.ADMIN);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

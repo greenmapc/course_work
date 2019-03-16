@@ -19,7 +19,7 @@ public class UserMainImg {
     private String originalName;
 
     @Column(name = "hash_name")
-    private String hash_name;
+    private String hashName;
 
     @Column(name = "type")
     private String type;

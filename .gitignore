@@ -11,10 +11,10 @@
 *.tar.gz
 *.iml
 *.lck
-
 .idea/
 target
 
 
 # Properties #
 src/main/resources/db.properties
+src/test/resources/db.properties
