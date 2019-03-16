@@ -19,12 +19,12 @@ import ru.itis.teamwork.services.modelgit.RepositoryGithubModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitHubApiComment implements GitHubComment {
+public class GitHubApiCommentImpl implements GitHubComment {
 
     private JsonUnmarshaller jsonUnmarshaller;
     private HttpClient httpClient;
 
-    public GitHubApiComment(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient){
+    public GitHubApiCommentImpl(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient){
         this.jsonUnmarshaller = jsonUnmarshaller;
         this.httpClient = httpClient;
     }

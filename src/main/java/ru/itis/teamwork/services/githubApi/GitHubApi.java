@@ -38,9 +38,9 @@ public class GitHubApi {
     private GitHubComment gitHubComment;
 
     public GitHubApi(){
-        this.githubCommit = new GitHubApiCommit(jsonUnmarshaller, httpClient);
-        this.gitHubRepository = new GitHubApiRepository(jsonUnmarshaller, httpClient);
-        this.gitHubComment = new GitHubApiComment(jsonUnmarshaller, httpClient);
+        this.githubCommit = new GitHubApiCommitImpl(jsonUnmarshaller, httpClient);
+        this.gitHubRepository = new GitHubApiRepositoryImpl(jsonUnmarshaller, httpClient);
+        this.gitHubComment = new GitHubApiCommentImpl(jsonUnmarshaller, httpClient);
     }
 
     //   не убирать пока полностью не готово!!!!

@@ -12,12 +12,12 @@ import ru.itis.teamwork.services.modelgit.Commit;
 import java.util.ArrayList;
 import java.util.List;
 
-class GitHubApiCommit implements GitHubCommit {
+class GitHubApiCommitImpl implements GitHubCommit {
 
     private JsonUnmarshaller jsonUnmarshaller;
     private HttpClient httpClient;
 
-    public GitHubApiCommit(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient){
+    public GitHubApiCommitImpl(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient){
         this.jsonUnmarshaller = jsonUnmarshaller;
         this.httpClient = httpClient;
     }

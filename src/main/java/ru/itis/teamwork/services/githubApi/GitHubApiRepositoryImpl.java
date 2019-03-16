@@ -19,12 +19,12 @@ import ru.itis.teamwork.services.modelgit.RepositoryGithubModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitHubApiRepository implements GitHubRepository {
+public class GitHubApiRepositoryImpl implements GitHubRepository {
 
     private JsonUnmarshaller jsonUnmarshaller;
     private HttpClient httpClient;
 
-    public GitHubApiRepository(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient) {
+    public GitHubApiRepositoryImpl(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient) {
         this.jsonUnmarshaller = jsonUnmarshaller;
         this.httpClient = httpClient;
     }
