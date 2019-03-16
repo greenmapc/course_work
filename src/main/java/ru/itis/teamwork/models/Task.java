@@ -10,7 +10,6 @@ import java.util.Set;
 @Entity
 @Table(name = "task")
 @Data
-@Builder
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

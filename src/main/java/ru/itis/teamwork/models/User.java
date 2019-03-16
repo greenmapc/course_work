@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @Column(name = "git_name")
     private String gitName;
 
+    @Column(name = "github_token")
+    private String githubToken;
+
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)

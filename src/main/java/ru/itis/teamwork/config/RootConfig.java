@@ -1,5 +1,6 @@
 package ru.itis.teamwork.config;
 
+import org.apache.http.impl.client.HttpClients;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -11,6 +12,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.itis.teamwork.services.githubApi.GitHubApi;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -20,7 +22,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan({"ru.itis.teamwork.models", "ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
-@PropertySource("classpath:/db.properties")
+@PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 public class RootConfig {
     @Resource
     private Environment env;
@@ -35,6 +37,20 @@ public class RootConfig {
         dataSource.setPassword(env.getRequiredProperty("db.password"));
 
         return dataSource;
+    }
+
+    @Bean
+    public GitHubApi gitHubApi() {
+        GitHubApi gitHubApi = new GitHubApi();
+
+        gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
+        gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
+//        gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+        gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
+        gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
+        gitHubApi.setHttpClient(HttpClients.createDefault());
+
+        return gitHubApi;
     }
 
     @Bean
