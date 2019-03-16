@@ -40,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController( "/login").setViewName("login");
+        registry.addViewController( "/login").setViewName("security/login");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource resourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
-        resourceBundleMessageSource.setBasenames("classpath:errors/security");
+        resourceBundleMessageSource.setBasenames("classpath:errors/security", "classpath:errors/creation");
         resourceBundleMessageSource.setCacheSeconds(0);
         resourceBundleMessageSource.setDefaultEncoding("UTF-8");
         resourceBundleMessageSource.setUseCodeAsDefaultMessage(false);
