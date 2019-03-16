@@ -20,6 +20,9 @@
                         <a class="nav-link" href="#">Link3</a>
                     </li>
                 </ul>
+                <form class="form-inline my-2 my-lg-0" method="post" action="/logout">
+                    <input type="submit" class="logOutSubmit" value="Logout"></input>
+                </form>
             </nav>
         </div>
     </div>
@@ -31,13 +34,12 @@
             <div class="profile-name">
                 <span>Kuzmenko Anna</span>
             </div>
-            <form action="${context.getContextPath()}/logout">
+            <form action="${context.getContextPath()}/profile_settings">
                 <input type="submit" value="Edit" class="profile-edit-submit"/>
             </form>
         </div>
-        <div class="float-left profile-main-inf profile-add-project">
+        <div class="float-left profile-main-inf profile-main-inf-r profile-add-project">
             <div class="row">
-                <!--<div class="col-1"></div>-->
                 <nav class="navbar navbar-expand navbar-light pl-0">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">

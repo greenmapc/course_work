@@ -2,10 +2,8 @@
 <#import "/spring.ftl" as spring/>
 
 <@c.page "Registration">
-<#--<body class="align">-->
+<div class="align">
     <div class="grid">
-
-
         <form method="post" class="form login" action="${context.getContextPath()}/registration">
             <@spring.bind "form"/>
             <header class="login__header">
@@ -40,5 +38,5 @@
             </footer>
         </form>
     </div>
-<#--</body>-->
+</div>
 </@c.page>
