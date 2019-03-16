@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.UserService;
 import ru.itis.teamwork.services.githubApi.GitHubApi;
+import ru.itis.teamwork.services.githubApi.GitHubScope;
 
 import javax.validation.Valid;
 
@@ -62,8 +63,7 @@ public class HomeController {
 
     @RequestMapping(value = "/gitAuth", method = RequestMethod.GET)
     public String gitAuth(){
-//        return "redirect:" + gitHubApi.getAuthLink();
-        return "";
+        return "redirect:" + gitHubApi.getAuthLink(GitHubScope.getFullAccess());
     }
 
     @RequestMapping(value = "/gitCode", method = RequestMethod.GET)

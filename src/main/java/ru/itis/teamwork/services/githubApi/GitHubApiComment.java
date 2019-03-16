@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.modelgit.Comment;
 import ru.itis.teamwork.services.modelgit.Commit;
-import ru.itis.teamwork.services.modelgit.RepositoryGithub;
+import ru.itis.teamwork.services.modelgit.RepositoryGithubModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class GitHubApiComment implements GitHubComment {
 
     @SneakyThrows
     public int addCommentToCommit(User user,
-                                  RepositoryGithub repositoryGithub,
+                                  RepositoryGithubModel repositoryGithubModel,
                                   Commit commit,
                                   Comment comment) {
 
@@ -41,7 +41,7 @@ public class GitHubApiComment implements GitHubComment {
                 .concat("/")
                 .concat(user.getGitName())
                 .concat("/")
-                .concat(repositoryGithub.getName())
+                .concat(repositoryGithubModel.getName())
                 .concat(GitHubSource.COMMITS.source)
                 .concat("/")
                 .concat(commit.getSha())
@@ -61,7 +61,7 @@ public class GitHubApiComment implements GitHubComment {
 
     @SneakyThrows
     public List<Comment> getCommentsByRepo(User user,
-                                           RepositoryGithub repositoryGithub) {
+                                           RepositoryGithubModel repositoryGithubModel) {
 
         HttpGet get = GitHubApi.getGetRequest(
                 GitHubApi.GITHUB
@@ -69,7 +69,7 @@ public class GitHubApiComment implements GitHubComment {
                         .concat("/")
                         .concat(user.getGitName())
                         .concat("/")
-                        .concat(repositoryGithub.getName())
+                        .concat(repositoryGithubModel.getName())
                         .concat(GitHubSource.COMMENTS.source),
                 user.getGithubToken());
 
@@ -92,7 +92,7 @@ public class GitHubApiComment implements GitHubComment {
 
     @SneakyThrows
     public int deleteComment(User user,
-                             RepositoryGithub repositoryGithub,
+                             RepositoryGithubModel repositoryGithubModel,
                              Comment comment){
 
         URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
@@ -100,7 +100,7 @@ public class GitHubApiComment implements GitHubComment {
                 .concat("/")
                 .concat(user.getGitName())
                 .concat("/")
-                .concat(repositoryGithub.getName())
+                .concat(repositoryGithubModel.getName())
                 .concat(GitHubSource.COMMENTS.source)
                 .concat("/")
                 .concat(String.valueOf(comment.getCommentId())));

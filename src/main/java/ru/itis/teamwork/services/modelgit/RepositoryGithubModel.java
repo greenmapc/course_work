@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RepositoryGithub {
+public class RepositoryGithubModel {
 
     @NotNull
     @JsonProperty("name")
@@ -90,7 +90,7 @@ public class RepositoryGithub {
     @JsonProperty("id")
     private Long id;
 
-    private List<RepositoryContent> repositoryContentList;
+    private List<RepositoryContentModel> repositoryContentModelList;
     private List<Owner> collaborators;
 
 }

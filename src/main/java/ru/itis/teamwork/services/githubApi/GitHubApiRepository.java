@@ -13,8 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.services.modelgit.Owner;
-import ru.itis.teamwork.services.modelgit.RepositoryContent;
-import ru.itis.teamwork.services.modelgit.RepositoryGithub;
+import ru.itis.teamwork.services.modelgit.RepositoryContentModel;
+import ru.itis.teamwork.services.modelgit.RepositoryGithubModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class GitHubApiRepository implements GitHubRepository {
     }
 
     @SneakyThrows
-    public List<RepositoryGithub> getRepos(User user) {
+    public List<RepositoryGithubModel> getRepos(User user) {
         HttpGet httpGet = GitHubApi.getGetRequest(
                 GitHubApi.GITHUB
                         .concat(GitHubSource.USER.source)
@@ -40,32 +40,32 @@ public class GitHubApiRepository implements GitHubRepository {
 
         JSONArray reposJson = GitHubApi.getJsonResp(this.httpClient.execute(httpGet));
 
-        List<RepositoryGithub> repositoryGitHubs = new ArrayList<>();
+        List<RepositoryGithubModel> repositoryGitHubModels = new ArrayList<>();
         for (int i = 0; i < reposJson.length(); i++) {
 
 //          вопрос нужно ли сразу вытаскивать контент из репозитория???
-            RepositoryGithub repositoryGithub = this.getRepo(reposJson.getJSONObject(i));
-            List<RepositoryContent> repositoryContents = this.getRepositoryContent(user, repositoryGithub.getName());
-            repositoryGithub.setRepositoryContentList(repositoryContents);
+            RepositoryGithubModel repositoryGithubModel = this.getRepo(reposJson.getJSONObject(i));
+            List<RepositoryContentModel> repositoryContentModels = this.getRepositoryContent(user, repositoryGithubModel.getName());
+            repositoryGithubModel.setRepositoryContentModelList(repositoryContentModels);
 
-            repositoryGithub.setCollaborators(this.getCollaborators(
+            repositoryGithubModel.setCollaborators(this.getCollaborators(
                     user,
                     reposJson.getJSONObject(i)
                             .getString("collaborators_url").replace("{/collaborator}","")));
 
-            repositoryGitHubs.add(repositoryGithub);
+            repositoryGitHubModels.add(repositoryGithubModel);
         }
 
-        return repositoryGitHubs;
+        return repositoryGitHubModels;
     }
 
     @SneakyThrows
-    private RepositoryGithub getRepo(JSONObject repoJson) {
+    private RepositoryGithubModel getRepo(JSONObject repoJson) {
 
-        RepositoryGithub repositoryGithub = jsonUnmarshaller.
-                unmarshal(RepositoryGithub.class, repoJson.toString());
+        RepositoryGithubModel repositoryGithubModel = jsonUnmarshaller.
+                unmarshal(RepositoryGithubModel.class, repoJson.toString());
 
-        return repositoryGithub;
+        return repositoryGithubModel;
     }
 
     @SneakyThrows
@@ -92,7 +92,7 @@ public class GitHubApiRepository implements GitHubRepository {
     }
 
     @SneakyThrows
-    public int createRepo(User user, RepositoryGithub repository) {
+    public int createRepo(User user, RepositoryGithubModel repository) {
         URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
                 .concat(GitHubSource.USER.source)
                 .concat(GitHubSource.REPOS.source));
@@ -123,7 +123,7 @@ public class GitHubApiRepository implements GitHubRepository {
     }
 
     @SneakyThrows
-    public List<RepositoryContent> getRepositoryContent(User user, String repoName) {
+    public List<RepositoryContentModel> getRepositoryContent(User user, String repoName) {
         HttpGet httpGet = GitHubApi.getGetRequest(
                 GitHubApi.GITHUB
                         .concat(GitHubSource.REPOS.source)
@@ -135,21 +135,21 @@ public class GitHubApiRepository implements GitHubRepository {
 
         JSONArray contentArray = GitHubApi.getJsonResp(this.httpClient.execute(httpGet));
 
-        List<RepositoryContent> repositoryContents = new ArrayList<>();
+        List<RepositoryContentModel> repositoryContentModels = new ArrayList<>();
         for (int i = 0; i < contentArray.length(); i++) {
-            repositoryContents.add(this.getContentFileDescription(
+            repositoryContentModels.add(this.getContentFileDescription(
                     contentArray.getJSONObject(i)
             ));
         }
-        return repositoryContents;
+        return repositoryContentModels;
     }
 
     @SneakyThrows
-    private RepositoryContent getContentFileDescription(JSONObject content) {
-        RepositoryContent repositoryContent = jsonUnmarshaller.unmarshal(
-                RepositoryContent.class,
+    private RepositoryContentModel getContentFileDescription(JSONObject content) {
+        RepositoryContentModel repositoryContentModel = jsonUnmarshaller.unmarshal(
+                RepositoryContentModel.class,
                 content.toString()
         );
-        return repositoryContent;
+        return repositoryContentModel;
     }
 }

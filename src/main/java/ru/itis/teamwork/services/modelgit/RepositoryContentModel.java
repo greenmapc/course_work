@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RepositoryContent {
+public class RepositoryContentModel {
 
     @JsonProperty("name")
     private String name;

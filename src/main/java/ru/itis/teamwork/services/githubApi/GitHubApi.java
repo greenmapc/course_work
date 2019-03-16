@@ -126,13 +126,13 @@ public class GitHubApi {
 
 
     @SneakyThrows
-    public List<RepositoryGithub> getRepos(User user) {
+    public List<RepositoryGithubModel> getRepos(User user) {
         return this.gitHubRepository.getRepos(user);
     }
 
 
     @SneakyThrows
-    public int createRepo(User user, RepositoryGithub repository) {
+    public int createRepo(User user, RepositoryGithubModel repository) {
         return this.gitHubRepository.createRepo(user, repository);
     }
 
@@ -142,7 +142,7 @@ public class GitHubApi {
     }
 
     @SneakyThrows
-    public List<RepositoryContent> getRepositoryContent(User user, String repoName) {
+    public List<RepositoryContentModel> getRepositoryContent(User user, String repoName) {
         return this.gitHubRepository.getRepositoryContent(user, repoName);
     }
 
@@ -162,27 +162,27 @@ public class GitHubApi {
 
     @SneakyThrows
     public int addCommentToCommit(User user,
-                                  RepositoryGithub repositoryGithub,
+                                  RepositoryGithubModel repositoryGithubModel,
                                   Commit commit,
                                   Comment comment) {
 
-        return this.gitHubComment.addCommentToCommit(user, repositoryGithub, commit, comment);
+        return this.gitHubComment.addCommentToCommit(user, repositoryGithubModel, commit, comment);
     }
 
     @SneakyThrows
     public List<Comment> getCommentsByRepo(User user,
-                                           RepositoryGithub repositoryGithub) {
+                                           RepositoryGithubModel repositoryGithubModel) {
 
 
-        return this.gitHubComment.getCommentsByRepo(user, repositoryGithub);
+        return this.gitHubComment.getCommentsByRepo(user, repositoryGithubModel);
     }
 
     @SneakyThrows
     public int deleteComment(User user,
-                             RepositoryGithub repositoryGithub,
+                             RepositoryGithubModel repositoryGithubModel,
                              Comment comment){
 
-        return this.gitHubComment.deleteComment(user, repositoryGithub, comment);
+        return this.gitHubComment.deleteComment(user, repositoryGithubModel, comment);
     }
 
 
@@ -197,7 +197,7 @@ public class GitHubApi {
 
         user.setGithubToken(" ");
         user.setGitName("daniszam");
-//        List<RepositoryGithub> repositoryGithub = gitHubApi.getRepos(user);
+//        List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
 
 
 //        System.out.println(repositoryGithub.get(0));
@@ -218,11 +218,11 @@ public class GitHubApi {
 //        List<Comment> comments = gitHubApi.getCommentsByRepo(user, repositoryGithub.get(0));
 //        System.out.println(comments);
 //        System.out.println(gitHubApi.deleteComment(user, repositoryGithub.get(0), comments.get(0)));
-//          gitHubApi.createRepo(user, RepositoryGithub.builder().name("First1 api rep").build());
+//          gitHubApi.createRepo(user, RepositoryGithubModel.builder().name("First1 api rep").build());
           gitHubApi.deleteRepo(user, "First1-api-rep");
 //        System.out.println(gitHubApi.deleteRepo(user, "First-api-rep"));
 //        List<Commit> commitList = gitHubApi.getCommitsByRepoName(USER, "bankservice");
-//        List<RepositoryGithub> repositoryGithubs = gitHubApi.getRepos(USER);
+//        List<RepositoryGithubModel> repositoryGithubs = gitHubApi.getRepos(USER);
 //        System.out.println(repositoryGithubs);
 
     }
