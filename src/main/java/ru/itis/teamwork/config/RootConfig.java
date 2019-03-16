@@ -12,7 +12,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.itis.teamwork.services.githubApi.GitHubApi;
+import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;

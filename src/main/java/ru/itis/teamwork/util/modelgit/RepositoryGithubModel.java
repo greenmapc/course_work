@@ -1,4 +1,4 @@
-package ru.itis.teamwork.services.modelgit;
+package ru.itis.teamwork.util.modelgit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

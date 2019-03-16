@@ -1,4 +1,4 @@
-package ru.itis.teamwork.services.githubApi;
+package ru.itis.teamwork.util.githubApi;
 
 public enum GitHubOperation {
     AUTHORIZE("/authorize"),

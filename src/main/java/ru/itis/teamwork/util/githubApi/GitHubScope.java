@@ -1,8 +1,7 @@
-package ru.itis.teamwork.services.githubApi;
+package ru.itis.teamwork.util.githubApi;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public enum GitHubScope {

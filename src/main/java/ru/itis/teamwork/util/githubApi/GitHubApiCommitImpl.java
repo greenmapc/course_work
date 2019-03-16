@@ -1,4 +1,4 @@
-package ru.itis.teamwork.services.githubApi;
+package ru.itis.teamwork.util.githubApi;
 
 import com.fasterxml.jackson.contrib.jsonpath.JsonUnmarshaller;
 import lombok.SneakyThrows;
@@ -7,7 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.itis.teamwork.models.User;
-import ru.itis.teamwork.services.modelgit.Commit;
+import ru.itis.teamwork.util.modelgit.Commit;
 
 import java.util.ArrayList;
 import java.util.List;
