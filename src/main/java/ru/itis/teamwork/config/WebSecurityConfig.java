@@ -43,10 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-
-
-
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

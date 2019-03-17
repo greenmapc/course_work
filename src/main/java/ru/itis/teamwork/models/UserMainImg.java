@@ -24,6 +24,9 @@ public class UserMainImg {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "src")
+    private String path;
+
     @OneToOne(mappedBy = "img")
     private User user;
 }

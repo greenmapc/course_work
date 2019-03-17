@@ -53,7 +53,6 @@ public class UserService implements UserDetailsService {
         newUser.setPassword(userForm.getPassword());
         newUser.setRoles(userForm.getRoles());
 
-
         try {
             userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {

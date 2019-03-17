@@ -36,28 +36,59 @@ public class UserController {
     public String profilePage(@AuthenticationPrincipal User user,
                               Model model) {
         Set<Project> projects = user.getProjects();
+        model.addAttribute("isCurrentUser", true);
         model.addAttribute("projects", projects);
         model.addAttribute("user", user);
         return "profile";
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/profileSettings")
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @RequestParam String firstName,
                                 @RequestParam String lastName,
-                                @RequestParam String password,
-                                @RequestParam String password2,
-                                @RequestParam("file") MultipartFile file,
+                                @RequestParam(required = false) String password,
+                                @RequestParam(required = false) String password2,
+                                /*@RequestParam(value = "file", required = false) MultipartFile file,*/
                                 Model model) {
-        if (StringUtils.isEmpty(password) || !password.equals(password2)) {
-            model.addAttribute("passwordError", "Passwords is not similar");
-            return "profile";
+        if (password == null || password2 == null || password.equals("") || password2.equals("")) {
+
+        } else if (!password.equals(password2)) {
+            model.addAttribute("passwordError", "Password is not similar");
+            return "profileSettings";
+        } else {
+            user.setPassword(password);
         }
+        //System.out.println("File size: " + file.getSize());
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setPassword(password);
         userService.updateInfo(user);
-        return "profile";
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/profileSettings")
+    public String profileSettings(@AuthenticationPrincipal User user,
+                                  Model model) {
+        model.addAttribute("user", user);
+        return "profileSettings";
+    }
+
+    @GetMapping("/profile/{userId}")
+    public String profilePageAnotherUser(@AuthenticationPrincipal User user,
+                                         @PathVariable String userId,
+                                         Model model) {
+        Long uId = Long.valueOf(userId);
+        model.addAttribute("isCurrentUser", user.getId().equals(uId));
+        if (user.getId().equals(uId)) {
+            return "redirect:/profile";
+        }
+        Optional<User> anotherUserCandidate = userService.getUserById(uId);
+        if (anotherUserCandidate.isPresent()) {
+            model.addAttribute("user", anotherUserCandidate.get());
+            model.addAttribute("projects", anotherUserCandidate.get().getProjects());
+            return "profile";
+        } else {
+            return "redirect:/profile";
+        }
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

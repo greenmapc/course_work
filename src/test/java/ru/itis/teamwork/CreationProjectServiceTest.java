@@ -29,6 +29,7 @@ public class CreationProjectServiceTest {
     private CreationService createProjectService;
 
     @Test
+    @Ignore
     public void create() {
         CreateProjectForm createProjectForm = new CreateProjectForm();
         createProjectForm.setDescription("good project!");
