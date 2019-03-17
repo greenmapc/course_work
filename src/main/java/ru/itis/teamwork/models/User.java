@@ -22,19 +22,19 @@ public class User implements UserDetails {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, length = 16)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "about")
+    @Column(name = "about", length = 65535)
     private String about;
 
     @Column(name = "git_name")

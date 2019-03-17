@@ -16,10 +16,10 @@ public class Task {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 65535)
     private String description;
 
     @Column(name = "beginning")
@@ -29,7 +29,7 @@ public class Task {
     private Date ending;
 
     @ManyToOne
-    @JoinColumn(name = "creator")
+    @JoinColumn(name = "creator", nullable = false)
     private User creator;
 
     @ManyToMany
@@ -41,7 +41,7 @@ public class Task {
     private Set<User> performers;
 
     @ManyToOne
-    @JoinColumn(name = "project")
+    @JoinColumn(name = "project", nullable = false)
     private Project project;
 
 }

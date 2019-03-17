@@ -17,13 +17,13 @@ public class Project {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "git_link")
     private String gitLink;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 65535)
     private String description;
 
     @OneToMany(mappedBy = "project")
@@ -41,7 +41,7 @@ public class Project {
     private Set<User> users;
 
     @ManyToOne
-    @JoinColumn(name = "team_leader_id")
+    @JoinColumn(name = "team_leader_id", nullable = false)
     private User teamLeader;
 
 
