@@ -2,6 +2,7 @@ package ru.itis.teamwork.models;
 
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -15,16 +16,18 @@ public class UserMainImg {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "original_name")
+    @Column(name = "original_name", nullable = false)
     private String originalName;
 
-    @Column(name = "hash_name")
+    @Column(name = "hash_name", nullable = false)
     private String hashName;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @Column(name = "src")
+//    ToDO: здесь укажем, где по умолчанию будут лежать фотки
+//    @ColumnDefault()
     private String path;
 
     @OneToOne(mappedBy = "img")
