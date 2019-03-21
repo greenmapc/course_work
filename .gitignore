@@ -18,3 +18,9 @@ target
 # Properties #
 src/main/resources/db.properties
 src/test/resources/db.properties
+
+# USER DATA #
+*.jpg
+*.JPG
+*.png
+*.jpeg
