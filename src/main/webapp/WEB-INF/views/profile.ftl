@@ -3,13 +3,13 @@
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">
-                <img src="<#if user??>
-                            <#if user.getImg()??>
-                                ${user.getImg().getPath()}
-                            <#else>
-                                https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg
+                <img <#if user??>
+                        <#if user.getImg()??>
+                            src="${context.getContextPath()}/img/${user.getImg().getHashName()}.${user.getImg().getType()}"
+                        <#else>
+                            src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
                             </#if>
-                          <#else>https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg</#if>">
+                     </#if>>
             </div>
             <div class="profile-name">
                 <span>

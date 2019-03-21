@@ -23,21 +23,6 @@ public class UserMainImg {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "src")
-    private String path;
-
     @OneToOne(mappedBy = "img")
     private User user;
-
-    public String getImg() {
-        return path + hashName + type;
-    }
-
-    @PrePersist
-    void preInsert() {
-        if(this.path == null) {
-            this.path = "/WEB-INF/userData/mainImg/";
-        }
-
-    }
 }
