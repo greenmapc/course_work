@@ -25,4 +25,8 @@ public class UserMainImg {
 
     @OneToOne(mappedBy = "img")
     private User user;
+
+    public String getFullName() {
+        return hashName + "." + type;
+    }
 }

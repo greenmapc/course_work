@@ -5,7 +5,7 @@
             <div class="profile-photo">
                 <img <#if user??>
                         <#if user.getImg()??>
-                            src="${context.getContextPath()}/img/${user.getImg().getHashName()}.${user.getImg().getType()}"
+                            src="${context.getContextPath()}/img/${user.getImg().getFullName()}"
                         <#else>
                             src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
                             </#if>
