@@ -36,6 +36,7 @@ public class UserController {
     public String profilePage(@AuthenticationPrincipal User user,
                               Model model) {
         Set<Project> projects = user.getProjects();
+        System.out.println(user);
         model.addAttribute("isCurrentUser", true);
         model.addAttribute("projects", projects);
         model.addAttribute("user", user);
