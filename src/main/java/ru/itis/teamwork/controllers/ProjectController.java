@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
-import ru.itis.teamwork.services.creators.CreationProjectService;
+import ru.itis.teamwork.services.ProjectService;
 
 import java.security.Principal;
 import java.util.Set;
 
 @Controller
 public class ProjectController {
-    private final CreationProjectService creationProjectService;
+    private final ProjectService projectService;
 
     @Autowired
-    public ProjectController(CreationProjectService creationProjectService) {
-        this.creationProjectService = creationProjectService;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
     @GetMapping("/newProject")
@@ -38,8 +38,11 @@ public class ProjectController {
             return "creators/newProject";
         }
         form.setTeamLeaderLogin(principal.getName());
-        creationProjectService.create(form);
-        return "redirect:/projects";
+        if (projectService.create(form)) {
+            return "redirect:/projects";
+        } else {
+            return "projects";
+        }
     }
 
     @GetMapping("/projects")
@@ -50,6 +53,7 @@ public class ProjectController {
                 projects) {
             System.out.println(project);
         }
+        model.addAttribute("isCurrentUser", true);
         model.addAttribute("projects", projects);
         return "projects";
     }

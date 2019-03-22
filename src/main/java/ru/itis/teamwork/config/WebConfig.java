@@ -21,7 +21,7 @@ import java.util.List;
 @Configuration
 @ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
 @EnableWebMvc
-@Import({RootConfig.class, WebSecurityConfig.class})
+@PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -43,13 +43,15 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController( "/login").setViewName("security/login");
+        registry.addViewController("/login").setViewName("security/login");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").
                 addResourceLocations("/assets/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
     }
 
     @Bean
@@ -63,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalValidatorFactoryBean validator(){
+    public LocalValidatorFactoryBean validator() {
         return new LocalValidatorFactoryBean();
     }
 

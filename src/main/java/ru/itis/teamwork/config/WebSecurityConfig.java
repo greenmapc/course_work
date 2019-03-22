@@ -14,9 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.itis.teamwork.services.UserService;
 
 @EnableWebSecurity
-@ComponentScan(value = {"ru.itis.teamwork.services", "ru.itis.teamwork.controllers"})
 @PropertySource("classpath:application.properties")
-@ComponentScan({"ru.itis.teamwork.services"})
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired

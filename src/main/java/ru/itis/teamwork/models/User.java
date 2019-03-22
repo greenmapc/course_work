@@ -1,7 +1,6 @@
 package ru.itis.teamwork.models;
 
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
