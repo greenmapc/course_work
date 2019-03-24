@@ -17,6 +17,12 @@ a {
 a:hover {
     text-decoration: none;
 }
+h1 {
+    color: #57b1ffd9;
+}
+label {
+    margin: 0;
+}
 
 .align {
     background-color: #f5f5f9;
@@ -274,12 +280,9 @@ body.sign {
     width: 200px;
     height: 200px;
     margin-bottom: 20px;
-
-}
-.profile-photo img{
-    width: 100%;
     border-radius: 50%;
 }
+
 .profile-name {
     text-align: center;
     font-size: 20px;
@@ -375,5 +378,16 @@ body.sign {
     height: 80px;
     width: 350px;
     resize:none;
+}
+.profile-main-block {
+    margin-top: 40px;
+}
+.profileSettings {
+    margin-top: 40px;
+}
+.profileSettings div.row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e4e8;
 }
 

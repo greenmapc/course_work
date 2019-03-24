@@ -2,15 +2,17 @@
 <@c.page "Profile">
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
-            <div class="profile-photo">
-                <img <#if user??>
-                        <#if user.getImg()??>
-                            src="${context.getContextPath()}/img/${user.getImg().getFullName()}"
-                        <#else>
-                            src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
-                            </#if>
-                     </#if>>
-            </div>
+             <#if user??>
+                <#if user.getImg()??>
+                    <div class="profile-photo" style="background: url('${context.getContextPath()}/img/${user.getImg().getFullName()}') center no-repeat">
+                    </div>
+                <#else>
+                <div class="profile-photo" style="background: url('https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg')  center no-repeat">
+
+                </#if>
+            </#if>
+
+
             <div class="profile-name">
                 <span>
                     <#if user??>

@@ -2,7 +2,7 @@
     <div class="inner">
     </div>
     <div class="container navbar-container ">
-        <nav class="navbar navbar-expand-lg navbar-light main-navbar">
+        <nav class="navbar navbar-expand navbar-light pl-0">
             <a class="navbar-brand" href="#">Navbar</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
