@@ -2,7 +2,7 @@
 <@c.page "Profile Settings">
     <div class="container">
         <h3>Update profile</h3>
-        <form method="post" action="${context.getContextPath()}/profileSettings" <#--enctype="multipart/form-data"-->>
+        <form method="post" action="${context.getContextPath()}/profileSettings" enctype="multipart/form-data">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" readonly value="${user.username}">
             <br>
@@ -12,9 +12,9 @@
             <label for="lastName">Last name</label>
             <input type="text" id="lastName" name="lastName" value="${user.lastName}">
             <br>
-            <#--<label for="file">Choose photo</label>
-            <input type="file" id="file" name="file">
-            <br>-->
+            <label for="file">Choose photo</label>
+            <input type="file" accept="image/*" name="file" id="file">
+            <br>
             <label for="password">Password</label>
             <input type="password" id="password" name="password">
             <br>
