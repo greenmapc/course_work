@@ -51,7 +51,7 @@ public class User implements UserDetails {
 
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "main_img", referencedColumnName = "id")
     private UserMainImg img;
 

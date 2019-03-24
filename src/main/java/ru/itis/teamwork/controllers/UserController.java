@@ -19,7 +19,6 @@ import ru.itis.teamwork.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 @Controller
@@ -54,11 +53,14 @@ public class UserController {
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 Model model,
                                 HttpServletRequest request) {
+        Optional<UserMainImg> userMainImg = Optional.empty();
         try {
-            saveFile(user, file);
+            userMainImg = saveFile(user, file);
         } catch (IOException e) {
+            //ToDo: catch norm exception
             e.printStackTrace();
         }
+
         if (password == null || password2 == null || password.equals("") || password2.equals("")) {
 
         } else if (!password.equals(password2)) {
@@ -67,10 +69,16 @@ public class UserController {
         } else {
             user.setPassword(password);
         }
-        //System.out.println("File size: " + file.getSize());
+
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        userService.updateInfo(user);
+
+        if(userMainImg.isPresent()) {
+            userService.updateInfo(user, userMainImg.get());
+        } else {
+            userService.updateInfo(user);
+        }
+
         return "redirect:/profile";
     }
 
@@ -139,7 +147,7 @@ public class UserController {
         return "redirect:/user";
     }
 
-    private void saveFile(User user, MultipartFile file) throws IOException {
+    private Optional<UserMainImg> saveFile(User user, MultipartFile file) throws IOException {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -148,17 +156,18 @@ public class UserController {
             }
 
             String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-            System.out.println(uploadPath + resultFilename);
+            String resultFilename = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
 
             file.transferTo(new File(uploadPath + resultFilename));
-//
-//            UserMainImg userMainImg = new UserMainImg();
-//            userMainImg.setHashName(resultFilename);
-//            userMainImg.setOriginalName(file.getOriginalFilename());
-//            userMainImg.setType(FilenameUtils.getExtension(file.getOriginalFilename()));
-//            user.setImg(userMainImg);
+
+            UserMainImg userMainImg = new UserMainImg();
+            userMainImg.setHashName(resultFilename.substring(0, resultFilename.indexOf('.')));
+            userMainImg.setOriginalName(file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf('.')));
+            userMainImg.setType(FilenameUtils.getExtension(file.getOriginalFilename()));
+
+            return Optional.of(userMainImg);
         }
+
+        return Optional.empty();
     }
 }
