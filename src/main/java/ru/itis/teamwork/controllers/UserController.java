@@ -156,13 +156,13 @@ public class UserController {
             }
 
             String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+            String resultFilename = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 
             file.transferTo(new File(uploadPath + resultFilename));
 
             UserMainImg userMainImg = new UserMainImg();
-            userMainImg.setHashName(resultFilename.substring(0, resultFilename.indexOf('.')));
-            userMainImg.setOriginalName(file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf('.')));
+            userMainImg.setHashName(resultFilename.substring(0, resultFilename.lastIndexOf('.')));
+            userMainImg.setOriginalName(file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf('.')));
             userMainImg.setType(FilenameUtils.getExtension(file.getOriginalFilename()));
 
             return Optional.of(userMainImg);
