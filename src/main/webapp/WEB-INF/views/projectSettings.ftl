@@ -8,18 +8,19 @@
         </div>
         <div class="row">
             <div class="container ml-3">
-                <h4>Update project:</h4>
                 <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
+                    <h4>Update project:</h4>
                     <div class="form-group">
-                        <label class="col-form-label">Name of project</label>
                         <div class="col-md-6">
-                            <input type="text" name="name" class="form-control" value="${project.name}"/>
+                        <label for="name">Name of project</label>
+                            <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Description</label>
                         <div class="col-md-6">
-                            <textarea class="form-control" name="description">${project.description}</textarea>
+                        <label for="description">Description</label>
+                            <textarea class="form-control" id="description"
+                                      name="description">${project.description}</textarea>
                         </div>
                     </div>
                     <div class="form-group">

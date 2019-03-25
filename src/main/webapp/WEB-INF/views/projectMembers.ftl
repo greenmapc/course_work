@@ -20,7 +20,7 @@
                         <div class="card-body" align="center">
                             <h5 class="card-title">Full-stack developer</h5>
                             <p class="card-text">Java, Java and one more Java</p>
-                            <a href="#" class="btn btn-info">Info</a>
+                            <a href="#" class="btn btn-outline-info">Info</a>
                         </div>
                     </div>
                     <div class="card my-3" style="width: 200px;">
@@ -30,7 +30,7 @@
                         <div class="card-body" align="center">
                             <h5 class="card-title">Full-stack developer</h5>
                             <p class="card-text">Java, Java and one more Java</p>
-                            <a href="#" class="btn btn-info">Info</a>
+                            <a href="#" class="btn btn-outline-info">Info</a>
                         </div>
                     </div>
                     <div class="card my-3" style="width: 200px;">
@@ -40,7 +40,7 @@
                         <div class="card-body" align="center">
                             <h5 class="card-title">Full-stack developer</h5>
                             <p class="card-text">Java, Java and one more Java</p>
-                            <a href="#" class="btn btn-info">Info</a>
+                            <a href="#" class="btn btn-outline-info">Info</a>
                         </div>
                     </div>
                     <div class="card my-3" style="width: 200px;">
@@ -50,7 +50,7 @@
                         <div class="card-body" align="center">
                             <h5 class="card-title">Full-stack developer</h5>
                             <p class="card-text">Java, Java and one more Java</p>
-                            <a href="#" class="btn btn-info">Info</a>
+                            <a href="#" class="btn btn-outline-info">Info</a>
                         </div>
                     </div>
                 </div>

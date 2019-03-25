@@ -46,7 +46,9 @@ public class ProjectController {
             return "creators/newProject";
         }
         form.setTeamLeaderLogin(user.getUsername());
-        if (projectService.create(form)) {
+        Project project = projectService.create(form);
+        if (project != null) {
+            user.getProjects().add(project);
             return "redirect:/profile";
         } else {
             return "creators/newProject";
@@ -57,10 +59,6 @@ public class ProjectController {
     public String projects(@AuthenticationPrincipal User user,
                            Model model) {
         Set<Project> projects = user.getProjects();
-        for (Project project :
-                projects) {
-            System.out.println(project);
-        }
         model.addAttribute("isCurrentUser", true);
         model.addAttribute("projects", projects);
         return "projects";

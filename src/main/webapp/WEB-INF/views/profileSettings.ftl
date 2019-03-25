@@ -11,7 +11,6 @@
                     <input type="text" id="username" name="username" readonly value="${user.username}">
                 </div>
             </div>
-
             <div class="row">
                 <div class="col">
                     <label for="firstName">First name</label>
@@ -55,7 +54,7 @@
             <div class="row">
                 <div class="col"></div>
                 <div class="col">
-                    <button type="submit">Update</button>
+                    <button type="submit" class="btn btn-dark">Update</button>
                 </div>
             </div>
         </form>

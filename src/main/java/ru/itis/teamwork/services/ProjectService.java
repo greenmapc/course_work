@@ -26,7 +26,7 @@ public class ProjectService {
         return new ArrayList<>();
     }
 
-    public boolean create(CreateProjectForm form) {
+    public Project create(CreateProjectForm form) {
         User user = userRepository.findByUsername(form.getTeamLeaderLogin());
 
         Set<User> participants = new HashSet<>();
@@ -41,8 +41,7 @@ public class ProjectService {
         project.setTeamLeader(user);
         project.setUsers(participants);
 
-        return !(projectRepository.save(project) == null);
-
+        return projectRepository.save(project);
     }
 
     public Project getProjectById(Long id) {
