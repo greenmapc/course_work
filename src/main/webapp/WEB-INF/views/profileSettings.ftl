@@ -59,6 +59,5 @@
                 </div>
             </div>
         </form>
-        </form>
     </div>
 </@c.page>

@@ -73,7 +73,7 @@ public class UserController {
         user.setFirstName(firstName);
         user.setLastName(lastName);
 
-        if(userMainImg.isPresent()) {
+        if (userMainImg.isPresent()) {
             userService.updateInfo(user, userMainImg.get());
         } else {
             userService.updateInfo(user);

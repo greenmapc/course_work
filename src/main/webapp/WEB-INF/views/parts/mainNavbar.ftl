@@ -2,17 +2,17 @@
     <div class="inner">
     </div>
     <div class="container navbar-container ">
-        <nav class="navbar navbar-expand navbar-light pl-0">
-            <a class="navbar-brand" href="#">Navbar</a>
+        <nav class="navbar navbar-expand-lg navbar-light main-navbar">
+            <a class="navbar-brand" href="#">TeamWorker</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link1</a>
+                    <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link2</a>
+                    <a class="nav-link" href="#">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link3</a>
+                    <a class="nav-link" href="#">About</a>
                 </li>
                 <#if isAdmin>
                     <li class="nav-item">

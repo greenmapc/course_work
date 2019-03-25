@@ -8,10 +8,7 @@ import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.repositories.ProjectRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -46,5 +43,10 @@ public class ProjectService {
 
         return !(projectRepository.save(project) == null);
 
+    }
+
+    public Project getProjectById(Long id) {
+        Optional<Project> byId = projectRepository.findById(id);
+        return byId.orElse(new Project());
     }
 }

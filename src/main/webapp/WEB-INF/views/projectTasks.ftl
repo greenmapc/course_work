@@ -3,7 +3,6 @@
 <@c.page "Tasks">
     <div class="container">
         <div class="row">
-            <div class="col-1"></div>
             <@p.projectNavbar/>
         </div>
         <div class="row">

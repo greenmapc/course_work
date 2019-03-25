@@ -3,22 +3,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="">Overview</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/${project.id}">Overview</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Members</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/members/${project.id}">Members</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Tasks</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/tasks/${project.id}">Tasks</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Messages</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/messages/${project.id}">Messages</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Files</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/files/${project.id}">Files</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Settings</a>
+                    <a class="nav-link" href="${context.getContextPath()}/project/settings/${project.id}">Settings</a>
                 </li>
             </ul>
         </div>
