@@ -276,10 +276,14 @@ body.sign {
     margin-bottom: 40px;
 }
 .profile-photo {
-    display: inline-block;
     width: 200px;
     height: 200px;
-    margin-bottom: 20px;
+}
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0 0;
     border-radius: 50%;
 }
 
