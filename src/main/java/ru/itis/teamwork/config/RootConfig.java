@@ -37,7 +37,6 @@ public class RootConfig {
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.user"));
         dataSource.setPassword(env.getRequiredProperty("db.password"));
-        System.out.println(dataSource);
         return dataSource;
     }
 

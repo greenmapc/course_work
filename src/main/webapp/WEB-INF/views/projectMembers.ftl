@@ -4,14 +4,14 @@
     <div class="container">
         <div class="row">
             <@p.projectNavbar/>
-            <hr>
         </div>
+        <div class="row ml-1 justify-content-between">
+            <h4>Members of project:</h4>
+            <a role="button" href="#" class="btn btn-info">Add</a>
+        </div>
+        <hr>
         <div class="row">
             <div class="container">
-                <div class="row justify-content-between d-flex w-100">
-                    <h3>Members of project:</h3>
-                    <a role="button" href="#" class="btn btn-info">Add member</a>
-                </div>
                 <div class="card-deck">
                     <div class="card my-3" style="width: 200px;">
                         <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"

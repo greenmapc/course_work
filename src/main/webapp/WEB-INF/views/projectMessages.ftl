@@ -12,7 +12,7 @@
                     <p class="lead">Simple to use in your project</p>
                     <hr class="my-4">
 
-                    <a class="btn btn-primary btn-lg" href="#" role="button">Connect to Telegram</a>
+                    <a class="btn btn-primary btn-lg" href="/telegram/connect" role="button">Connect to Telegram</a>
                 </div>
             </div>
         </div>

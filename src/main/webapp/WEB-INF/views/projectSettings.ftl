@@ -12,20 +12,18 @@
                     <h4>Update project:</h4>
                     <div class="form-group">
                         <div class="col-md-6">
-                        <label for="name">Name of project</label>
+                            <label for="name">Name of project</label>
                             <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-6">
-                        <label for="description">Description</label>
+                            <label for="description">Description</label>
                             <textarea class="form-control" id="description"
                                       name="description">${project.description}</textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-dark">Update</button>
-                    </div>
+                    <button type="submit" class="btn btn-dark">Update</button>
                 </form>
             </div>
         </div>
@@ -41,6 +39,15 @@
                         container.</p>
                     <a class="btn btn-info btn-lg" href="#" role="button">Connect</a>
                 </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="container">
+                <h6>Delete this project</h6>
+                <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
+                    <button class="btn btn-outline-danger" type="submit">Delete</button>
+                </form>
             </div>
         </div>
     </div>

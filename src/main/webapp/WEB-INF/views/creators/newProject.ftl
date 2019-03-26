@@ -5,13 +5,13 @@
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">
-    <#if user??>
-        <#if user.getImg()??>
-                <img src="${context.getContextPath()}/img/${user.getImg().getFullName()}">
-        <#else>
-            <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg">
-        </#if>
-    </#if>
+                <#if user??>
+                    <#if user.getImg()??>
+                        <img src="${context.getContextPath()}/img/${user.getImg().getFullName()}">
+                    <#else>
+                        <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg">
+                    </#if>
+                </#if>
             </div>
             <div class="profile-name">
                 <span>${user.firstName} ${user.lastName}</span>
@@ -22,7 +22,7 @@
                 </form>
             </#if>
         </div>
-        <div class="float-left profile-main-inf profile-main-inf-r profile-add-project">
+        <div class="float-left profile-main-inf-r profile-main-inf col-8">
             <div class="row">
                 <nav class="navbar navbar-expand navbar-light pl-0">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -34,15 +34,17 @@
                                 <a class="nav-link" href="#">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Settings</a>
+                                <a class="nav-link" href="${context.getContextPath()}/profileSettings">Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link add-link" href="#">Add project</a>
+                                <a class="nav-link add-link"
+                                   href="${context.getContextPath()}/newProject">Add project</a>
                             </li>
                         </ul>
                     </div>
                 </nav>
             </div>
+
             <div class="profile-add-project-container">
                 <div class="row mb-4">
                     <div class="text-left col-12 pl-0"><h1>Create a new project</h1>
