@@ -49,7 +49,8 @@ public class ProjectController {
         Project project = projectService.create(form);
         if (project != null) {
             user.getProjects().add(project);
-            return "redirect:/profile";
+            model.addAttribute("project", project);
+            return "redirect:/project/" + project.getId();
         } else {
             return "creators/newProject";
         }
