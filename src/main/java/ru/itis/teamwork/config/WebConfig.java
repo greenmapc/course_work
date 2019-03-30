@@ -23,6 +23,7 @@ import java.util.List;
 @ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
 @EnableWebMvc
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
+@Import(WebSecurityConfig.class)
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean

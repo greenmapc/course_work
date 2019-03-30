@@ -3,12 +3,14 @@ package ru.itis.teamwork.controllers;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.Roles;
@@ -19,7 +21,10 @@ import ru.itis.teamwork.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -108,8 +113,8 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String userEditForm(@PathVariable String userId,
                                Model model) {
         Optional<User> userCandidate = userService.getUserById(Long.valueOf(userId));
@@ -122,15 +127,15 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "userList";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/user")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String saveUser(@RequestParam String username,
                            @RequestParam String firstName,
                            @RequestParam String lastName,
