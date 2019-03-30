@@ -1,4 +1,4 @@
-package ru.itis.teamwork.services.githubApi;
+package ru.itis.teamwork.util.githubApi;
 
 import com.fasterxml.jackson.contrib.jsonpath.DefaultJsonUnmarshaller;
 import com.fasterxml.jackson.contrib.jsonpath.JsonUnmarshaller;
@@ -17,7 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-import ru.itis.teamwork.services.modelgit.*;
+import ru.itis.teamwork.util.modelgit.*;
 import ru.itis.teamwork.models.User;
 
 import java.net.URI;

@@ -1,8 +1,8 @@
-package ru.itis.teamwork.services.githubApi;
+package ru.itis.teamwork.util.githubApi;
 
 import ru.itis.teamwork.models.User;
-import ru.itis.teamwork.services.modelgit.RepositoryContentModel;
-import ru.itis.teamwork.services.modelgit.RepositoryGithubModel;
+import ru.itis.teamwork.util.modelgit.RepositoryContentModel;
+import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
 import java.util.List;
 

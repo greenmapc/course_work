@@ -3,14 +3,28 @@
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">
-                <img src="https://pp.userapi.com/c851228/v851228331/c4598/wjAQ3oPDgs8.jpg">
+    <#if user??>
+        <#if user.getImg()??>
+                <img src="${context.getContextPath()}/img/${user.getImg().getFullName()}">
+        <#else>
+            <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg">
+        </#if>
+    </#if>
             </div>
+
+
             <div class="profile-name">
-                <span>${user.firstName} ${user.lastName}</span>
+                <span>
+                    <#if user??>
+                        ${user.firstName} ${user.lastName}
+                    </#if>
+                </span>
             </div>
-            <form action="${context.getContextPath()}/profileSettings">
-                <input type="submit" value="Edit" class="profile-edit-submit"/>
-            </form>
+            <#if isCurrentUser>
+                <form action="${context.getContextPath()}/profileSettings">
+                    <input type="submit" value="Edit" class="profile-edit-submit"/>
+                </form>
+            </#if>
         </div>
         <div class="float-left profile-main-inf-r profile-main-inf col-8">
             <div class="row">
@@ -24,10 +38,11 @@
                                 <a class="nav-link" href="#">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Settings</a>
+                                <a class="nav-link" href="${context.getContextPath()}/profileSettings">Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link add-link" href="${context.getContextPath()}/newProject">Add project</a>
+                                <a class="nav-link add-link"
+                                   href="${context.getContextPath()}/newProject">Add project</a>
                             </li>
                         </ul>
                     </div>
@@ -51,65 +66,13 @@
                     <div class="col-1"></div>
                     <#if project_index % 2 == 1>
                         </div>
-
                     </#if>
                 </#list>
             <#else>
-                <button><a class="nav-link add-link" href="${context.getContextPath()}/addProject">Add project</a>
+                <button>
+                    <a class="nav-link add-link" href="${context.getContextPath()}/newProject">Add project</a>
                 </button>
             </#if>
-        <#--<div class="row">
-            <div class="col-1">
-            </div>
-            <div class="col-5 profile-project-card">
-                <a href="/">
-                    <h3 class="profile-project-name">
-                        Project1
-                    </h3>
-                </a>
-                <span class="profile-project-about">
-                About this project
-            </span>
-            </div>
-            <div class="col-1">
-            </div>
-            <div class="col-5 profile-project-card">
-                <a href="/">
-                    <h3 class="profile-project-name">
-                        Project2
-                    </h3>
-                </a>
-                <span class="profile-project-about">
-                About this project
-            </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">
-            </div>
-            <div class="col-5 profile-project-card">
-                <a href="/">
-                    <h3 class="profile-project-name">
-                        Project3
-                    </h3>
-                </a>
-                <span class="profile-project-about">
-                About this project
-            </span>
-            </div>
-            <div class="col-1">
-            </div>
-            <div class="col-5 profile-project-card">
-                <a href="/">
-                    <h3 class="profile-project-name">
-                        Project4
-                    </h3>
-                </a>
-                <span class="profile-project-about">
-                About this project
-            </span>
-            </div>
-        </div>-->
         </div>
     </div>
 </@c.page>

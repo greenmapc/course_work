@@ -3,12 +3,22 @@
     <div class="profile-main-block container">
         <div class="float-left profile-main-inf col-3 min-width">
             <div class="profile-photo">
-                <img src="https://pp.userapi.com/c851228/v851228331/c4598/wjAQ3oPDgs8.jpg">
+                <img src="<#if user??>
+                            <#if user.getImg()??>
+                                ${user.getImg().getPath()}
+                            <#else>
+                                https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg
+                            </#if>
+                          <#else>https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg</#if>">
             </div>
             <div class="profile-name">
                 <span>Kuzmenko Anna</span>
             </div>
-            <button class="profile-edit-button" onclick="">Edit</button>
+            <#if isCurrentUser>
+                <form action="${context.getContextPath()}/profileSettings">
+                    <input type="submit" value="Edit" class="profile-edit-submit"/>
+                </form>
+            </#if>
         </div>
         <div class="float-left profile-main-inf col-9">
             <div class="row">

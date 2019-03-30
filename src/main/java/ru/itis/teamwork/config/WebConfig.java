@@ -1,13 +1,14 @@
 package ru.itis.teamwork.config;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -15,10 +16,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
 @EnableWebMvc
-@Import({RootConfig.class, WebSecurityConfig.class})
+@PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
+@Import(WebSecurityConfig.class)
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -40,7 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController( "/login").setViewName("security/login");
+        registry.addViewController("/login").setViewName("security/login");
     }
 
     @Override
@@ -60,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalValidatorFactoryBean validator(){
+    public LocalValidatorFactoryBean validator() {
         return new LocalValidatorFactoryBean();
     }
 
@@ -72,4 +77,30 @@ public class WebConfig implements WebMvcConfigurer {
         return bean;
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(byteArrayHttpMessageConverter());
+    }
+
+    @Bean
+    public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+        ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
+        return arrayHttpMessageConverter;
+    }
+
+    private List<MediaType> getSupportedMediaTypes() {
+        List<MediaType> list = new ArrayList<>();
+        list.add(MediaType.IMAGE_JPEG);
+        list.add(MediaType.IMAGE_PNG);
+        list.add(MediaType.APPLICATION_OCTET_STREAM);
+        return list;
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver createMultipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(500000);
+        return resolver;
+    }
 }

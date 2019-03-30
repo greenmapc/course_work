@@ -18,3 +18,7 @@ target
 # Properties #
 src/main/resources/db.properties
 src/test/resources/db.properties
+src/main/resources/application.properties
+
+# USER STATIC DATA #
+src/main/webapp/static

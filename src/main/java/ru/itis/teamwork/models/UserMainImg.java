@@ -1,6 +1,5 @@
 package ru.itis.teamwork.models;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,15 +14,19 @@ public class UserMainImg {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "original_name")
+    @Column(name = "original_name", nullable = false)
     private String originalName;
 
-    @Column(name = "hash_name")
+    @Column(name = "hash_name", nullable = false, unique = true)
     private String hashName;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @OneToOne(mappedBy = "img")
     private User user;
+
+    public String getFullName() {
+        return hashName + "." + type;
+    }
 }

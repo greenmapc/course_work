@@ -12,7 +12,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.itis.teamwork.services.githubApi.GitHubApi;
+import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -20,14 +20,16 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"ru.itis.teamwork.models", "ru.itis.teamwork.services"})
+@ComponentScan({"ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
+@Import({WebSecurityConfig.class})
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 public class RootConfig {
     @Resource
     private Environment env;
 
     @Bean
+    @Primary
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
@@ -35,7 +37,6 @@ public class RootConfig {
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.user"));
         dataSource.setPassword(env.getRequiredProperty("db.password"));
-
         return dataSource;
     }
 
@@ -45,7 +46,7 @@ public class RootConfig {
 
         gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
         gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
-//        gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+//      gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
         gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
         gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
         gitHubApi.setHttpClient(HttpClients.createDefault());
@@ -79,7 +80,6 @@ public class RootConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
-
 
     private Properties getHibernateProperties() {
         Properties properties = new Properties();

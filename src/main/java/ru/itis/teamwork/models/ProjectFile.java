@@ -16,16 +16,16 @@ public class ProjectFile {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "original_name")
+    @Column(name = "original_name", nullable = false)
     private String originalName;
 
-    @Column(name = "hash_name")
+    @Column(name = "hash_name", nullable = false)
     private String hashName;
 
-    @Column(name = "extension")
+    @Column(name = "extension", nullable = false)
     private String extension;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 }
