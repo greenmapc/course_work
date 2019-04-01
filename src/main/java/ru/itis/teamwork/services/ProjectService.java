@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.models.dto.MembersDto;
 import ru.itis.teamwork.repositories.ProjectRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
@@ -60,5 +61,10 @@ public class ProjectService {
         projectRepository.save(project);
 
         return true;
+    }
+
+    public MembersDto getUsersLike(String username) {
+        MembersDto membersDto = new MembersDto(userRepository.findLikeUsername(username + "%"));
+        return membersDto;
     }
 }

@@ -1,6 +1,9 @@
 package ru.itis.teamwork.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.models.dto.MembersDto;
 import ru.itis.teamwork.services.ProjectService;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -120,13 +125,22 @@ public class ProjectController {
         Project project = projectService.getProjectById(projectId);
 
         if(!projectService.addMember(project, username)) {
-            System.out.println("erero");
             modelMap.addAttribute("error", "User " + username + " not found");
             modelMap.addAttribute("project", project);
             return "projectMembers";
         }
 
         return "redirect: " + MvcUriComponentsBuilder.fromMappingName("PC#members").arg(0, String.valueOf(projectId)).build();
+    }
+
+
+    @GetMapping(value="/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @SneakyThrows
+    public List<User> showLikeUsers(@RequestParam String username) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("ASD");
+        return projectService.getUsersLike(username).getUserList();
     }
 
 }
