@@ -43,5 +43,14 @@
                 </div>
             </div>
         </div>
+        <form method="post" action="${context.getContextPath()}/project/${project.getId()}/settings/addMember">
+            <input type="text" name="username" id="add_member_name" style="
+    border: 2px solid;
+">
+            <input type="submit" value="Add member" >
+        </form>
+        <#if error??>
+            <p style="color: mediumvioletred"> ${error} </p>
+        </#if>
     </div>
 </@p.projectTemplate>

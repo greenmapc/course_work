@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
@@ -113,4 +112,21 @@ public class ProjectController {
         model.addAttribute("project", projectService.getProjectById(id));
         return "projectMembers";
     }
+
+    @PostMapping("/project/{projectId}/settings/addMember")
+    public String addMember(@PathVariable("projectId") Long projectId,
+                            @RequestParam("username") String username,
+                            ModelMap modelMap) {
+        Project project = projectService.getProjectById(projectId);
+
+        if(!projectService.addMember(project, username)) {
+            System.out.println("erero");
+            modelMap.addAttribute("error", "User " + username + " not found");
+            modelMap.addAttribute("project", project);
+            return "projectMembers";
+        }
+
+        return "redirect: " + MvcUriComponentsBuilder.fromMappingName("PC#members").arg(0, String.valueOf(projectId)).build();
+    }
+
 }

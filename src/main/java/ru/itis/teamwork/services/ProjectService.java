@@ -48,4 +48,17 @@ public class ProjectService {
         Optional<Project> byId = projectRepository.findById(id);
         return byId.orElse(new Project());
     }
+
+    public boolean addMember(Project project, String username) {
+
+        User user = userRepository.findByUsername(username);
+        if(user == null) {
+            return false;
+        }
+
+        project.getUsers().add(user);
+        projectRepository.save(project);
+
+        return true;
+    }
 }
