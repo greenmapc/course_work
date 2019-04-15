@@ -1,6 +1,8 @@
 package ru.itis.teamwork.models;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -43,6 +45,4 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "team_leader_id", nullable = false)
     private User teamLeader;
-
-
 }

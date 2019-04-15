@@ -2,9 +2,7 @@
 <#import "parts/projectNavbar.ftl" as p>
 <@c.page "Files">
     <div class="container">
-        <div class="row">
-            <@p.projectNavbar/>
-        </div>
+        <@p.projectNavbar/>
 
         <div class="container profileSettings" style="margin-top:10px;">
             <h2>Upload files:</h2>

@@ -2,14 +2,12 @@
 <#import "parts/projectNavbar.ftl" as p>
 <@c.page "Settings">
     <div class="container">
+        <@p.projectNavbar/>
+        <hr>
         <div class="row">
-            <@p.projectNavbar/>
-            <hr>
-        </div>
-        <div class="row">
+            <h4 class="ml-5">Update project:</h4>
             <div class="container ml-3">
                 <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
-                    <h4>Update project:</h4>
                     <div class="form-group">
                         <div class="col-md-6">
                             <label for="name">Name of project</label>
@@ -23,7 +21,11 @@
                                       name="description">${project.description}</textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-dark">Update</button>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-dark">Update</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -44,7 +46,7 @@
         <hr>
         <div class="row">
             <div class="container">
-                <h6>Delete this project</h6>
+                <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
                 <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
                     <button class="btn btn-outline-danger" type="submit">Delete</button>
                 </form>

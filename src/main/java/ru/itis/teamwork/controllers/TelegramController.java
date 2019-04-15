@@ -7,24 +7,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.itis.teamwork.services.UserService;
 
 @Controller
 public class TelegramController {
-    private final UserService userService;
-
     private String number = null;
-
-    @Autowired
-    public TelegramController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/telegram/connect")
     public String getConnect() {
@@ -97,6 +88,6 @@ public class TelegramController {
         HttpResponse httpResponse = httpClient.execute(httpPost);
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         model.addAttribute("statusCode", statusCode);
-        return "telegram/sendMessage";
+        return "telegram/formSendMessage";
     }
 }

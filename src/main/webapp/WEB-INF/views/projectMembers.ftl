@@ -2,9 +2,7 @@
 <#import "parts/projectNavbar.ftl" as p>
 <@c.page "Members">
     <div class="container">
-        <div class="row">
-            <@p.projectNavbar/>
-        </div>
+        <@p.projectNavbar/>
         <div class="row ml-1 justify-content-between">
             <h4>Members of project:</h4>
             <a role="button" href="#" class="btn btn-info">Add</a>
