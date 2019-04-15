@@ -1,10 +1,4 @@
-<#import "parts/common.ftl" as c>
-<#import "parts/projectNavbar.ftl" as p>
-<@c.page "Tasks">
-    <div class="container">
-        <@p.projectNavbar/>
-        <div class="row">
+<#import "parts/projectTemplate.ftl" as p>
+<@p.projectTemplate "Tasks">
 
-        </div>
-    </div>
-</@c.page>
+</@p.projectTemplate>

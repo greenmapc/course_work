@@ -1,9 +1,6 @@
-
-<#import "parts/common.ftl" as c>
-<#import "parts/projectNavbar.ftl" as p>
-<@c.page "Settings">
+<#import "parts/projectTemplate.ftl" as p>
+<@p.projectTemplate"Settings">
     <div class="container">
-        <@p.projectNavbar/>
         <hr>
         <div class="row">
             <h4 class="ml-5">Update project:</h4>
@@ -30,7 +27,7 @@
                 </form>
             </div>
         </div>
-     </div>
+    </div>
     <hr>
     <div class="row">
         <div class="container" align="center">
@@ -47,11 +44,11 @@
     </div>
     <hr>
     <div class="row">
-            <div class="container">
-                <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
-                <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
-                    <button class="btn btn-outline-danger" type="submit">Delete</button>
-                </form>
-            </div>
+        <div class="container">
+            <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
+            <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
+            </form>
         </div>
+    </div>
 </@p.projectTemplate>
