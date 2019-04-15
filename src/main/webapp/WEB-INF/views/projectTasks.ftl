@@ -2,9 +2,7 @@
 <#import "parts/projectNavbar.ftl" as p>
 <@c.page "Tasks">
     <div class="container">
-        <div class="row">
-            <@p.projectNavbar/>
-        </div>
+        <@p.projectNavbar/>
         <div class="row">
 
         </div>

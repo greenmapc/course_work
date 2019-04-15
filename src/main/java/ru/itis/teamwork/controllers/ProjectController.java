@@ -59,6 +59,7 @@ public class ProjectController {
     public String projects(@AuthenticationPrincipal User user,
                            Model model) {
         Set<Project> projects = user.getProjects();
+        model.addAttribute("user", user);
         model.addAttribute("isCurrentUser", true);
         model.addAttribute("projects", projects);
         return "projects";
@@ -74,42 +75,76 @@ public class ProjectController {
     }
 
     @GetMapping("/project/messages/{id}")
-    public String messages(@PathVariable("id") String projectId,
+    public String messages(@AuthenticationPrincipal User user,
+                           @PathVariable("id") String projectId,
                            Model model) {
         Long id = Long.parseLong(projectId);
-        model.addAttribute("project", projectService.getProjectById(id));
+        Project project = projectService.getProjectById(id);
+        model.addAttribute("project", project);
+        //if (isMemberOfProject(user, project)) {
         return "projectMessages";
+        //} else {
+        //    return "redirect:/profile";
+        //}
     }
 
     @GetMapping("/project/files/{id}")
-    public String files(@PathVariable("id") String projectId,
+    public String files(@AuthenticationPrincipal User user,
+                        @PathVariable("id") String projectId,
                         Model model) {
         Long id = Long.parseLong(projectId);
-        model.addAttribute("project", projectService.getProjectById(id));
+        Project project = projectService.getProjectById(id);
+        model.addAttribute("project", project);
+        //if (isMemberOfProject(user, project)) {
         return "projectFiles";
+        //} else {
+        //    return "redirect:/profile";
+        //}
     }
 
     @GetMapping("/project/tasks/{id}")
-    public String tasks(@PathVariable("id") String projectId,
+    public String tasks(@AuthenticationPrincipal User user,
+                        @PathVariable("id") String projectId,
                         Model model) {
         Long id = Long.parseLong(projectId);
-        model.addAttribute("project", projectService.getProjectById(id));
+        Project project = projectService.getProjectById(id);
+        model.addAttribute("project", project);
+        //if (isMemberOfProject(user, project)) {
         return "projectTasks";
+        //} else {
+        //    return "redirect:/profile";
+        //}
     }
 
     @GetMapping("/project/settings/{id}")
-    public String settings(@PathVariable("id") String projectId,
+    public String settings(@AuthenticationPrincipal User user,
+                           @PathVariable("id") String projectId,
                            Model model) {
         Long id = Long.parseLong(projectId);
+        Project project = projectService.getProjectById(id);
         model.addAttribute("project", projectService.getProjectById(id));
+        //if (isMemberOfProject(user, project)) {
         return "projectSettings";
+        //} else {
+        //    return "redirect:/profile";
+        //}
     }
 
     @GetMapping("/project/members/{id}")
-    public String members(@PathVariable("id") String projectId,
+    public String members(@AuthenticationPrincipal User user,
+                          @PathVariable("id") String projectId,
                           Model model) {
         Long id = Long.parseLong(projectId);
-        model.addAttribute("project", projectService.getProjectById(id));
+        Project project = projectService.getProjectById(id);
+        model.addAttribute("project", project);
+        //if (isMemberOfProject(user, project)) {
         return "projectMembers";
+        //} else {
+        //    return "redirect:/profile";
+        //}
+    }
+
+    private boolean isMemberOfProject(User user, Project project) {
+        return user.getProjects().contains(project);
     }
 }
