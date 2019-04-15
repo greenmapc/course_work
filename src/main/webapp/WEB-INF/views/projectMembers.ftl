@@ -40,6 +40,7 @@
                     <h5 class="card-title">Full-stack developer</h5>
                     <p class="card-text">Java, Java and one more Java</p>
                     <a href="#" class="btn btn-outline-info">Info</a>
+
                 </div>
             </div>
         </div>

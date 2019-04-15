@@ -190,17 +190,17 @@ public class GitHubApi {
         GitHubApi gitHubApi = new GitHubApi();
         User user = new User();
 
-//        System.out.println(gitHubApi.getAuthLink());
+        System.out.println(gitHubApi.getAuthLink(GitHubScope.getFullAccess()));
 
 
-//        System.out.println(gitHubApi.getAccessToken("6fece3d7c5bdd6f62529"));
+//        System.out.println(gitHubApi.getAccessToken("0ba39ca7cefcf858db7e"));
 
-        user.setGithubToken(" ");
-        user.setGitName("daniszam");
-//        List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
+        user.setGithubToken("92067b1819a5591b31134e73bf76641e41b2d6f9");
+        user.setGitName("alxarsnk");
+        List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
 
 
-//        System.out.println(repositoryGithub.get(0));
+        System.out.println(repositoryGithub);
 //        List<Commit> commits = gitHubApi.getCommitsByRepoName(user, repositoryGithub.get(0).getName());
 //        System.out.println(commits.get(0));
         Comment comment = Comment.builder()
@@ -218,8 +218,8 @@ public class GitHubApi {
 //        List<Comment> comments = gitHubApi.getCommentsByRepo(user, repositoryGithub.get(0));
 //        System.out.println(comments);
 //        System.out.println(gitHubApi.deleteComment(user, repositoryGithub.get(0), comments.get(0)));
-//          gitHubApi.createRepo(user, RepositoryGithubModel.builder().name("First1 api rep").build());
-          gitHubApi.deleteRepo(user, "First1-api-rep");
+         gitHubApi.createRepo(user, RepositoryGithubModel.builder().name("Sanya lox").build());
+//          gitHubApi.deleteRepo(user, "First1-api-rep");
 //        System.out.println(gitHubApi.deleteRepo(user, "First-api-rep"));
 //        List<Commit> commitList = gitHubApi.getCommitsByRepoName(USER, "bankservice");
 //        List<RepositoryGithubModel> repositoryGithubs = gitHubApi.getRepos(USER);

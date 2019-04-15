@@ -47,10 +47,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
-    public User() {
-
-    }
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "main_img", referencedColumnName = "id")
     private UserMainImg img;
@@ -66,6 +62,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "teamLeader")
     private Set<Project> leaderProjects;
+
+    public User() {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
