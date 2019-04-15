@@ -1,36 +1,32 @@
-
-<#import "parts/common.ftl" as c>
-<#import "parts/projectNavbar.ftl" as p>
-<@c.page "Settings">
-    <div class="container">
-        <@p.projectNavbar/>
-        <hr>
-        <div class="row">
-            <h4 class="ml-5">Update project:</h4>
-            <div class="container ml-3">
-                <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <label for="name">Name of project</label>
-                            <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
-                        </div>
+<#import "parts/projectTemplate.ftl" as p>
+<@p.projectTemplate "Settings">
+    <hr>
+    <div class="row">
+        <h4 class="ml-5">Update project:</h4>
+        <div class="container ml-3">
+            <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="name">Name of project</label>
+                        <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description"
-                                      name="description">${project.description}</textarea>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description"
+                                  name="description">${project.description}</textarea>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <button type="submit" class="btn btn-dark">Update</button>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-dark">Update</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-     </div>
+    </div>
+    </div>
     <hr>
     <div class="row">
         <div class="container" align="center">
@@ -47,11 +43,11 @@
     </div>
     <hr>
     <div class="row">
-            <div class="container">
-                <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
-                <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
-                    <button class="btn btn-outline-danger" type="submit">Delete</button>
-                </form>
-            </div>
+        <div class="container">
+            <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
+            <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
+            </form>
         </div>
+    </div>
 </@p.projectTemplate>
