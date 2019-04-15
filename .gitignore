@@ -2,8 +2,8 @@
 *.log
 
 # Package Files #
-//*.jar
-//*.war
+*.jar
+*.war
 
 *.nar
 *.ear
@@ -12,12 +12,12 @@
 *.iml
 *.lck
 .idea/
-//target
+/target
 
 
 # Properties #
-//src/main/resources/db.properties
-//src/test/resources/db.properties
+src/main/resources/db.properties
+src/test/resources/db.properties
 src/main/resources/application.properties
 
 # USER STATIC DATA #
