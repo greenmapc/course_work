@@ -51,7 +51,6 @@ public class RegistrationController {
 
         if (!userService.addUser(form)) {
             bindingResult.rejectValue( "username", "exist.user");
-            return "security/registration";
         }
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("RC#loginPage").build();
     }

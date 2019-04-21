@@ -396,3 +396,56 @@ body.sign {
     border-bottom: 1px solid #e1e4e8;
 }
 
+/*------------------------------------*/
+
+/*Add member style*/
+
+/*------------------------------------*/
+
+.found_memebers ul{
+    padding: 0;
+}
+/*.found_memebers li {
+
+}*/
+.found_memebers li:hover {
+    background-color: #7bbdf3;
+
+}
+.found_memebers li a {
+    color: rgba(0,0,0,0.5);
+}
+
+.found_memeber_node {
+    list-style-type: none;
+}
+#add_member_input_text {
+    border: 1px solid #e1e4e8;
+    outline: none;
+}
+#add_member_input_submit{
+    width: 120px;
+    color: white;
+    background-color: #7bbdf3;
+    padding: 2px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font: inherit;
+    outline: none;
+}
+.found_memeber_node a {
+    text-decoration: none;
+}
+.add_member_left_col, .add_member_right_col {
+    display: flex;
+    flex-direction: column;
+}
+.add_member_left_col {
+    margin-right: 20px;
+}
+
+.form_add_member {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}

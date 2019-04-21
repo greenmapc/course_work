@@ -15,6 +15,7 @@ var ready = $(document).ready(function () {
                 success:function(response){
                     console.log("success");
                     console.log(response);
+                    // return response;
                 }
             })
         });

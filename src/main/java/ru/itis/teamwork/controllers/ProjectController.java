@@ -1,6 +1,8 @@
 package ru.itis.teamwork.controllers;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.parser.JSONParser;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +19,10 @@ import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.dto.MembersDto;
 import ru.itis.teamwork.services.ProjectService;
+import ru.itis.teamwork.services.UserService;
 
+import javax.json.Json;
+import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Set;
 
@@ -135,11 +140,8 @@ public class ProjectController {
 
 
     @GetMapping(value="/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     @SneakyThrows
-    public List<User> showLikeUsers(@RequestParam String username) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("ASD");
+    public @ResponseBody List<User> showLikeUsers(@RequestParam String username) {
         return projectService.getUsersLike(username).getUserList();
     }
 

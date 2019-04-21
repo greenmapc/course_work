@@ -6,6 +6,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -80,6 +81,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(byteArrayHttpMessageConverter());
+        converters.add(new MappingJackson2HttpMessageConverter());
     }
 
     @Bean
@@ -94,6 +96,7 @@ public class WebConfig implements WebMvcConfigurer {
         list.add(MediaType.IMAGE_JPEG);
         list.add(MediaType.IMAGE_PNG);
         list.add(MediaType.APPLICATION_OCTET_STREAM);
+        list.add(MediaType.APPLICATION_JSON);
         return list;
     }
 
