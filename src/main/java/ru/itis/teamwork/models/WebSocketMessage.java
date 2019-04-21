@@ -2,7 +2,7 @@ package ru.itis.teamwork.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class WebSocketMessage {
@@ -14,6 +14,6 @@ public class WebSocketMessage {
     @JsonProperty("to_phone")
     private String toPhone;
     @JsonIgnoreProperties
-    private String userName;
+    private String username;
 }
 

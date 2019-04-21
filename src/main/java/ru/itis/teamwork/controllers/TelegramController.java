@@ -109,7 +109,7 @@ public class TelegramController {
         HttpResponse httpResponse = httpClient.execute(httpPost);
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         model.addAttribute("statusCode", statusCode);
-        return "telegram/sendMessage";
+        return "telegram/formSendMessage";
     }
 
     @SneakyThrows

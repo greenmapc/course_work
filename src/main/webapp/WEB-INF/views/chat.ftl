@@ -1,7 +1,5 @@
-<#import "parts/common.ftl" as c>
 <#import "/spring.ftl" as spring/>
 
-<@c.page "Chat">
 
 <html>
 <head>
@@ -17,6 +15,11 @@
             document.getElementById('conversationDiv').style.visibility
                 = connected ? 'visible' : 'hidden';
             document.getElementById('response').innerHTML = '';
+            if (connected) {
+                document.getElementById('from').readOnly = true;
+            } else {
+                document.getElementById('from').readOnly = false;
+            }
         }
 
         function connect() {
@@ -25,17 +28,17 @@
             console.log(socket);
             stompClient = Stomp.over(socket);
             console.log(stompClient);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect({}, function (frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function(messageOutput) {
+                stompClient.subscribe('/topic/messages', function (messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body));
                 });
             });
         }
 
         function disconnect() {
-            if(stompClient != null) {
+            if (stompClient != null) {
                 stompClient.disconnect();
             }
             setConnected(false);
@@ -46,15 +49,16 @@
             var from = document.getElementById('from').value;
             var text = document.getElementById('text').value;
             stompClient.send("/app/chat", {},
-                JSON.stringify({'from':from, 'text':text}));
+                JSON.stringify({from: from, text: text, username: from}));
+            document.getElementById('text').value = ''
         }
 
         function showMessageOutput(messageOutput) {
             var response = document.getElementById('response');
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(messageOutput.from + ": "
-                + messageOutput.text + " (" + messageOutput.time + ")"));
+            p.appendChild(document.createTextNode(messageOutput.username + ": "
+                + messageOutput.text + " (" + messageOutput.dateTime + ")"));
             response.appendChild(p);
         }
     </script>
@@ -64,21 +68,19 @@
     <div>
         <input type="text" id="from" placeholder="Choose a nickname"/>
     </div>
-    <br />
+    <br/>
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">
             Disconnect
         </button>
     </div>
-    <br />
+    <br/>
     <div id="conversationDiv">
         <input type="text" id="text" placeholder="Write a message..."/>
         <button id="sendMessage" onclick="sendMessage();">Send</button>
         <p id="response"></p>
     </div>
 </div>
-
 </body>
 </html>
-</@c.page>
