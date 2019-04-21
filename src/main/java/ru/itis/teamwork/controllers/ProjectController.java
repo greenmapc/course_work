@@ -18,11 +18,13 @@ import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.dto.MembersDto;
+import ru.itis.teamwork.models.dto.UserDto;
 import ru.itis.teamwork.services.ProjectService;
 import ru.itis.teamwork.services.UserService;
 
 import javax.json.Json;
 import javax.ws.rs.Produces;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -128,7 +130,6 @@ public class ProjectController {
                             @RequestParam("username") String username,
                             ModelMap modelMap) {
         Project project = projectService.getProjectById(projectId);
-
         if(!projectService.addMember(project, username)) {
             modelMap.addAttribute("error", "User " + username + " not found");
             modelMap.addAttribute("project", project);
@@ -141,8 +142,9 @@ public class ProjectController {
 
     @GetMapping(value="/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
     @SneakyThrows
-    public @ResponseBody List<User> showLikeUsers(@RequestParam String username) {
-        return projectService.getUsersLike(username).getUserList();
+    public @ResponseBody List<UserDto> showLikeUsers(@RequestParam String username) {
+        List<UserDto> users = projectService.getUsersLike(username).getUserDtoList();
+        return users;
     }
 
 }

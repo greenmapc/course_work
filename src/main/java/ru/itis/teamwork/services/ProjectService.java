@@ -6,10 +6,12 @@ import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.dto.MembersDto;
+import ru.itis.teamwork.models.dto.UserDto;
 import ru.itis.teamwork.repositories.ProjectRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -64,7 +66,9 @@ public class ProjectService {
     }
 
     public MembersDto getUsersLike(String username) {
-        MembersDto membersDto = new MembersDto(userRepository.findLikeUsername(username + "%"));
-        return membersDto;
+        List<User> users = userRepository.findLikeUsername(username + "%");
+//        MembersDto membersDto = new MembersDto(userRepository.findLikeUsername(username + "%"));
+        List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
+        return MembersDto.builder().userDtoList(userDtos).build();
     }
 }

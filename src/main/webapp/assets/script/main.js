@@ -15,7 +15,25 @@ var ready = $(document).ready(function () {
                 success:function(response){
                     console.log("success");
                     console.log(response);
+
+                    let found_memebers_ul = document.getElementById("found_memebers_ul");
+                    if(found_memebers_ul.hasChildNodes()){
+                        found_memebers_ul.innerHTML = '';
+                    }
+                    for (const member of response) {
+                        let found_memeber_node = document.createElement('li');
+                        found_memeber_node.className = 'found_memeber_node';
+                        //вставляем имя (логин?)
+                        found_memeber_node.innerHTML = member.username;
+                        found_memebers_ul.appendChild(found_memeber_node);
+                    }
                     // return response;
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(jqXHR.responseText);
+                    console.log(textStatus);
+                    console.log(errorThrown);
                 }
             })
         });
