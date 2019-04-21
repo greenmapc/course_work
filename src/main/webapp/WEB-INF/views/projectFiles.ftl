@@ -1,3 +1,4 @@
+<#import "parts/common.ftl" as c>
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Files">
     <div class="container profileSettings" style="margin-top:10px;">
