@@ -45,12 +45,12 @@ public class RegistrationController {
     public String registerUser(@Validated @ModelAttribute("form") RegistrationForm form,
                                BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "security/registration";
         }
 
         if (!userService.addUser(form)) {
-            bindingResult.rejectValue( "username", "exist.user");
+            bindingResult.rejectValue("username", "exist.user");
             return "security/registration";
         }
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("RC#loginPage").build();

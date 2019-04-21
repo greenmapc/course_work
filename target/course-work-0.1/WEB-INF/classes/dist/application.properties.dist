@@ -1,5 +1,0 @@
-spring.security.oauth2.client.registration.github.client-id=b8e1772648afd427f8cc
-spring.security.oauth2.client.registration.github.client-secret=df0f334bc2c424539e911af3b6be9f8a11f8ecc3
-CLIENT_PROPERTY_KEY=spring.security.oauth2.client.registration.
-mainImg.path = /WEB-INF/userData/mainImg/
-upload.path =
