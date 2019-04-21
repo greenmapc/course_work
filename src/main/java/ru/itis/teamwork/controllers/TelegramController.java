@@ -1,5 +1,7 @@
 package ru.itis.teamwork.controllers;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConnectionFactory;
 import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,13 +19,23 @@ import ru.itis.teamwork.services.UserService;
 
 @Controller
 public class TelegramController {
-    private final UserService userService;
+
+
+    private UserService userService;
 
     private String number = null;
 
+    private ConnectionFactory factory;
+
     @Autowired
+    @SneakyThrows
     public TelegramController(UserService userService) {
         this.userService = userService;
+        this.factory = new ConnectionFactory();
+        factory.setHost("http://35.204.168.100");
+        Channel channel =factory.newConnection().createChannel();
+        channel.queueDeclare("telegram", false, false, false, null);
+        channel.basicPublish("", "telegram", null, "hallo".getBytes());
     }
 
     @GetMapping("/telegram/connect")
@@ -98,5 +110,16 @@ public class TelegramController {
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         model.addAttribute("statusCode", statusCode);
         return "telegram/sendMessage";
+    }
+
+    @SneakyThrows
+    public static void main(String[] args) {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        System.out.println('d');
+        Channel channel =factory.newConnection().createChannel();
+        System.out.println('a');
+        channel.queueDeclare("telegram", false, false, false, null);
+        channel.basicPublish("", "telegram", null, "hallo".getBytes());
     }
 }
