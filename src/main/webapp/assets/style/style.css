@@ -334,6 +334,19 @@ body.sign {
     cursor: pointer;
 
 }
+.profile-subscribe-submit {
+    width: 100%;
+}
+.profile-subscribe-submit {
+
+    margin-top: 20px;
+    border-radius: 20px;
+    color: white;
+    background-color: lightgreen;
+    border: navajowhite;
+    cursor: pointer;
+
+}
 .profile-edit-submit {
     width: 100%;
 }

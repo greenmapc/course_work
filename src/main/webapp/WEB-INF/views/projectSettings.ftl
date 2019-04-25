@@ -1,23 +1,30 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Settings">
-    <div class="container ml-3">
-        <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
-            <h4>Update project:</h4>
-            <div class="form-group">
-                <div class="col-md-6">
-                    <label for="name">Name of project</label>
-                    <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
+    <hr>
+    <div class="row">
+        <h4 class="ml-5">Update project:</h4>
+        <div class="container ml-3">
+            <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="name">Name of project</label>
+                        <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-6">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description"
-                              name="description">${project.description}</textarea>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description"
+                                  name="description">${project.description}</textarea>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-dark">Update</button>
-        </form>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-dark">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     </div>
     <hr>
@@ -37,7 +44,7 @@
     <hr>
     <div class="row">
         <div class="container">
-            <h6>Delete this project</h6>
+            <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
             <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
                 <button class="btn btn-outline-danger" type="submit">Delete</button>
             </form>

@@ -46,6 +46,4 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "team_leader_id", nullable = false)
     private User teamLeader;
-
-
 }
