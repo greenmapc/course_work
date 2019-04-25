@@ -1,20 +1,31 @@
 package ru.itis.teamwork.controllers;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.parser.JSONParser;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.models.dto.MembersDto;
+import ru.itis.teamwork.models.dto.UserDto;
 import ru.itis.teamwork.services.ProjectService;
+import ru.itis.teamwork.services.UserService;
 
+import javax.json.Json;
+import javax.ws.rs.Produces;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -148,4 +159,27 @@ public class ProjectController {
     private boolean isMemberOfProject(User user, Project project) {
         return user.getProjects().contains(project);
     }
+
+    @PostMapping("/project/{projectId}/settings/addMember")
+    public String addMember(@PathVariable("projectId") Long projectId,
+                            @RequestParam("username") String username,
+                            ModelMap modelMap) {
+        Project project = projectService.getProjectById(projectId);
+        if(!projectService.addMember(project, username)) {
+            modelMap.addAttribute("error", "User " + username + " not found");
+            modelMap.addAttribute("project", project);
+            return "projectMembers";
+        }
+
+        return "redirect: " + MvcUriComponentsBuilder.fromMappingName("PC#members").arg(0, String.valueOf(projectId)).build();
+    }
+
+
+    @GetMapping(value="/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SneakyThrows
+    public @ResponseBody List<UserDto> showLikeUsers(@RequestParam String username) {
+        List<UserDto> users = projectService.getUsersLike(username).getUserDtoList();
+        return users;
+    }
+
 }
