@@ -64,26 +64,45 @@
         <#--</div>-->
         <#--</div>-->
         <#--</div>-->
-        <form method="post" id="add_member"
-              action="${context.getContextPath()}/project/${project.getId()}/settings/addMember">
-            <input type="text" name="username" id="add_member_name" style="
-    border: 2px solid;
-">
-            <input type="submit" value="Add member">
-        </form>
+        <div class="container" id="members_of_project" style="font-size: 14px">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list members as user>
+                    <tr>
+                        <th scope="row">${user_index + 1}</th>
+                        <td><a href="${context.getContextPath()}/profile/${user.id}">${user.username}</a></td>
+                        <td><#list user.roles as role>${role}<#sep>, </#list></td>
+                        <td><a href="#" style="color: #bd2130">Delete</a></td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        </div>
+        <div class=container">
+            <form method="post" id="add_member"
+                  action="${context.getContextPath()}/project/${project.getId()}/settings/addMember">
+                <input type="text" name="username" id="add_member_name" style="border: 2px solid;">
+                <input type="submit" value="Add member">
+            </form>
+        </div>
         <div class="found_memebers">
             <ul id="found_memebers_ul">
             </ul>
-
         </div>
     </div>
-
     <#if error??>
         <p style="color: mediumvioletred"> ${error} </p>
     </#if>
-    </div>
     <script type="text/javascript">
-        //получаем div found_memebers
+        //получаем div found_members
         let found_memebers_ul = document.getElementById("found_memebers_ul");
 
         function searchMembers() {

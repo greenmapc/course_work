@@ -49,13 +49,12 @@ public class ProjectService {
 
     public Project getProjectById(Long id) {
         Optional<Project> byId = projectRepository.findById(id);
-        return byId.orElse(new Project());
+        return byId.orElse(null);
     }
 
     public boolean addMember(Project project, String username) {
-
         User user = userRepository.findByUsername(username);
-        if(user == null) {
+        if (user == null) {
             return false;
         }
 
