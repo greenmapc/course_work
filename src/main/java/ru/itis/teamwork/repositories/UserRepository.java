@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itis.teamwork.models.User;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByUsername(String username);
@@ -24,4 +26,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
                         @Param("id") Long id,
                         @Param("telegramJoined") Boolean telegramJoined,
                         @Param("phone") String phone);
+                        @Param("" +
+                                "id") Long id);
+    @Modifying
+    @Transactional
+    @Query("SELECT u FROM User u WHERE u.username LIKE :part_username")
+    List<User> findLikeUsername(@Param("part_username") String partUsername);
 }

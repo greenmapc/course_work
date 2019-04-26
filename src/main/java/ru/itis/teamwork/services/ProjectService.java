@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.models.dto.MembersDto;
+import ru.itis.teamwork.models.dto.UserDto;
 import ru.itis.teamwork.repositories.ProjectRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -46,7 +49,26 @@ public class ProjectService {
 
     public Project getProjectById(Long id) {
         Optional<Project> byId = projectRepository.findById(id);
-        return byId.orElse(new Project());
+        return byId.orElse(null);
+    }
+
+    public boolean addMember(Project project, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return false;
+        }
+
+        project.getUsers().add(user);
+        projectRepository.save(project);
+
+        return true;
+    }
+
+    public MembersDto getUsersLike(String username) {
+        List<User> users = userRepository.findLikeUsername(username + "%");
+//        MembersDto membersDto = new MembersDto(userRepository.findLikeUsername(username + "%"));
+        List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
+        return MembersDto.builder().userDtoList(userDtos).build();
     }
 
     public void update(Project project){

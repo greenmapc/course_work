@@ -1,8 +1,8 @@
 package ru.itis.teamwork.models;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -40,6 +40,7 @@ public class Project {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonBackReference
     private Set<User> users;
 
     @OneToOne(fetch = FetchType.LAZY)

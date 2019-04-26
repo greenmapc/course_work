@@ -1,19 +1,25 @@
 package ru.itis.teamwork.models;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "site_user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username")
         })
+
 @Data
 public class User implements UserDetails {
     @Id
@@ -64,6 +70,7 @@ public class User implements UserDetails {
     private Set<Task> tasks;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private Set<Project> projects;
 
     @ManyToMany(mappedBy = "members")

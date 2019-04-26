@@ -36,7 +36,6 @@ public class RootConfig {
     @Primary
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
         dataSource.setDriverClassName(env.getRequiredProperty("db.driverClassName"));
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.user"));
@@ -68,7 +67,6 @@ public class RootConfig {
         jpaVendorAdapter.setGenerateDdl(true);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
-
         return entityManagerFactoryBean;
     }
 
