@@ -1,5 +1,8 @@
 package ru.itis.teamwork.services;
 
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
@@ -11,8 +14,10 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriBuilder;
+import ru.itis.teamwork.models.Message;
 import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import java.io.IOException;
@@ -28,6 +33,9 @@ public class TelegramService {
     private String host;
     private Integer port;
     private URIBuilder uriBuilder;
+
+    @Autowired
+    private Connection rabbitmqConnection;
 
     public TelegramService(String host, Integer port)  {
         this.host = host;
@@ -117,6 +125,24 @@ public class TelegramService {
         return Optional.empty();
 
     }
+
+    public void sendMessage(Message message) throws IOException {
+        Channel channel = rabbitmqConnection.createChannel();
+
+        String messageRabbit = "{\"sender\":\""+message.getSender().getPhone() +
+                "\",\"recipient\":\""+message.getChat().getId() +
+                "\",\"text\":\""+message.getText() +"\"}";
+
+        channel.queueDeclare("telegram", false, false, false, null);
+        channel.basicPublish("", "telegram-in",
+                new AMQP.BasicProperties.Builder()
+                        .contentType("application/json")
+                        .deliveryMode(2)
+                        .priority(1)
+                        .build(),
+                messageRabbit.getBytes());
+    }
+
 
 
 }

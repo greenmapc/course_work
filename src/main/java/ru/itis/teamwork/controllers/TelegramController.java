@@ -59,12 +59,6 @@ public class TelegramController {
     @SneakyThrows
     public TelegramController(UserService userService) {
         this.userService = userService;
-
-//        this.factory = new ConnectionFactory();
-//        factory.setHost("http://35.204.168.100");
-//        Channel channel =factory.newConnection().createChannel();
-//        channel.queueDeclare("telegram", false, false, false, null);
-//        channel.basicPublish("", "telegram", null, "hallo".getBytes());
     }
 
     @GetMapping(value = "/telegram/connect", produces = MediaType.APPLICATION_JSON_VALUE)

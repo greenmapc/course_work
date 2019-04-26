@@ -59,18 +59,30 @@
 
         function showMessageOutput(messageOutput) {
             console.log("ahsda");
-            var response = document.getElementById('response');
+            var response = document.getElementById('chat_messages');
             var p = document.createElement('p');
-            console.log(p);
-            p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(messageOutput.username + ": "
-                + messageOutput.text + " (" + messageOutput.dateTime + ")"));
-            response.appendChild(p);
+
+            var span = document.createElement('span');
+            span.innerText = messageOutput.text;
+            var sender = document.createElement('h6');
+            sender.innerText = messageOutput.username;
+            var date = document.createElement('h6');
+            date.innerText = messageOutput.dateTime;
+
+            // console.log(p);
+            // p.style.wordWrap = 'break-word';
+            //
+            // p.appendChild(document.createTextNode(messageOutput.username + ": "
+            //     + messageOutput.text + " (" + messageOutput.dateTime + ")"));
+            response.appendChild(span);
+            response.appendChild(sender);
+            response.appendChild(date);
+            // response.appendChild(p);
         }
     </script>
     <#--если у проекта есть чат выводим все сообщения + поле для ввода-->
     <#if project.chat??>
-        <div class="container">
+        <div class="container" id="chat_messages" style="height: 60%; overflow: scroll" >
             <#list messages as message>
                 <span>${message.text}</span>
                 <h6>${message.senderUserName}</h6>
