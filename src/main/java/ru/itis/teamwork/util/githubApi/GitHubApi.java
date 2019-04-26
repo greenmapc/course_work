@@ -17,8 +17,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-import ru.itis.teamwork.util.modelgit.*;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.util.modelgit.Comment;
+import ru.itis.teamwork.util.modelgit.Commit;
+import ru.itis.teamwork.util.modelgit.RepositoryContentModel;
+import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -83,11 +86,13 @@ public class GitHubApi {
     }
 
     @SneakyThrows
-    static JSONArray getJsonResp(HttpResponse response) {
+    public static JSONArray getJsonResp(HttpResponse response) {
         HttpEntity httpEntity = response.getEntity();
         String jsonRes = EntityUtils.toString(httpEntity);
-        if (jsonRes.charAt(0) != '[') {
-            jsonRes = ("[").concat(jsonRes).concat("]");
+        if (jsonRes != null) {
+            if (jsonRes.charAt(0) != '[') {
+                jsonRes = ("[").concat(jsonRes).concat("]");
+            }
         }
         return new JSONArray(jsonRes);
     }
@@ -195,7 +200,7 @@ public class GitHubApi {
 
 //        System.out.println(gitHubApi.getAccessToken("0ba39ca7cefcf858db7e"));
 
-        user.setGithubToken("92067b1819a5591b31134e73bf76641e41b2d6f9");
+        user.setGithubToken("");
         user.setGitName("alxarsnk");
         List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
 

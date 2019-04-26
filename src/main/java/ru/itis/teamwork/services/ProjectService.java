@@ -70,4 +70,8 @@ public class ProjectService {
         List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
         return MembersDto.builder().userDtoList(userDtos).build();
     }
+
+    public void update(Project project){
+        this.projectRepository.save(project);
+    }
 }

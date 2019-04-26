@@ -13,12 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
+
+import ru.itis.teamwork.models.dto.MessageDto;
+
 import ru.itis.teamwork.models.dto.UserDto;
+
 import ru.itis.teamwork.services.ProjectService;
 import ru.itis.teamwork.services.UserService;
 
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProjectController {
@@ -94,11 +101,29 @@ public class ProjectController {
         Long id = Long.parseLong(projectId);
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
+
+        model.addAttribute("user", user);
+        if (!user.getTelegramJoined()) {
+            model.addAttribute("buttonForm", true);
+        }
+
+        Set<User> members = project.getUsers();
+        members.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
+
+        List<MessageDto> messageDtos = new ArrayList<>();
+        if (project.getChat() != null && project.getChat().getMessages() != null) {
+            messageDtos = project.getChat().getMessages().stream().map(MessageDto::new).collect(Collectors.toList());
+            model.addAttribute("chat", project.getChat());
+        }
+        model.addAttribute("messages", messageDtos);
+        members.remove(user);
+        model.addAttribute("members", members);
         if (isMemberOfProject(user, project)) {
             return "projectMessages";
         } else {
             return "redirect:/profile";
         }
+
     }
 
     @GetMapping("/project/files/{id}")

@@ -1,8 +1,10 @@
 package ru.itis.teamwork.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,18 +20,31 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import ru.itis.teamwork.converter.StringToUserConverter;
+import ru.itis.teamwork.converter.StringsToUserConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 @Configuration
-@ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
+@ComponentScan(basePackages = {"ru.itis.teamwork.controllers", "ru.itis.teamwork.converter"})
 @EnableWebMvc
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 @Import({WebSecurityConfig.class, WebSocketConfig.class})
 @EnableAsync
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private StringsToUserConverter stringsToUserConverter;
+
+    @Autowired
+    private StringToUserConverter stringToUserConverter;
+
+    public void addFormatters(FormatterRegistry formatterRegistry) {
+        formatterRegistry.addConverter(stringsToUserConverter);
+        formatterRegistry.addConverter(stringToUserConverter);
+    }
 
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
@@ -38,6 +53,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
         resolver.setRequestContextAttribute("context");
+        resolver.setContentType("text/html; charset=UTF-8");
         return resolver;
     }
 
@@ -109,16 +125,5 @@ public class WebConfig implements WebMvcConfigurer {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setMaxUploadSize(500000);
         return resolver;
-    }
-
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("TelegramLookup-");
-        executor.initialize();
-        return executor;
     }
 }

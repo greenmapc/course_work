@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class WebSocketMessage {
 
-    @JsonProperty("from_phone")
-    private String fromPhone;
+    @JsonProperty("from")
+    private String fromUserName;
     @JsonProperty("text")
     private String text;
-    @JsonProperty("to_phone")
-    private String toPhone;
+    @JsonProperty("chat_id")
+    private String chatId;
     @JsonIgnoreProperties
-    private String username;
+    private User user;
 }
 

@@ -1,26 +1,27 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Members">
-<#--<div class="container">
-    <div class="card my-3" style="width: 200px;">
-        <div class="card-deck">
-            <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
-                 class="card-img-top p-2" style="border-radius: 50%"
-                 alt="...">
-            <div class="card-body" align="center">
-                <h5 class="card-title">Full-stack developer</h5>
-                <p class="card-text">Java, Java and one more Java</p>
-                <a href="#" class="btn btn-outline-info">Info</a>
-            </div>
-        </div>
-        <div class="card my-3" style="width: 200px;">
-            img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
-            class="card-img-top p-2" style="border-radius: 50%"
-            alt="...">
-            <div class="card-body" align="center">
-                <h5 class="card-title">Full-stack developer</h5>
-                <p class="card-text">Java, Java and one more Java</p>
-                <a href="#" class="btn btn-outline-info">Info</a>
-            </div>
+    <div class="container">
+        <div class="container" id="members_of_project" style="font-size: 14px">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list members as user>
+                    <tr>
+                        <th scope="row">${user_index + 1}</th>
+                        <td><a href="${context.getContextPath()}/profile/${user.id}">${user.username}</a></td>
+                        <td><#list user.roles as role>${role}<#sep>, </#list></td>
+                        <td><a href="#" style="color: #bd2130">Delete</a></td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
         </div>
         <div class="card my-3" style="width: 200px;">
             <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg"
