@@ -31,6 +31,16 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Set<User> getUsers(List<Long> ids){
+            Set<User> users = new HashSet<>();
+            for (Long id: ids){
+                Optional<User> user = userRepository.findById(id);
+                user.ifPresent(users::add);
+            }
+            return users;
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -77,7 +87,9 @@ public class UserService implements UserDetailsService {
         userRepository.settingsUpdate(user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
-                user.getId());
+                user.getId(),
+                user.getTelegramJoined(),
+                user.getPhone());
     }
 
     public void saveUser(User user, Map<String, String> form) {

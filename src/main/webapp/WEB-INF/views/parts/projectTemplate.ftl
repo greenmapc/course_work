@@ -4,7 +4,9 @@
     <@c.page title>
         <div class="container">
             <@p.projectNavbar/>
-            <#nested>
+            <div class="row">
+                <#nested>
+            </div>
         </div>
     </@c.page>
 </#macro>

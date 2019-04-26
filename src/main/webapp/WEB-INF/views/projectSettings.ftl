@@ -12,21 +12,22 @@
                             <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description"
-                                      name="description">${project.description}</textarea>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description"
+                                  name="description">${project.description}</textarea>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <button type="submit" class="btn btn-dark">Update</button>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-dark">Update</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
+    </div>
     </div>
     <hr>
     <div class="row">

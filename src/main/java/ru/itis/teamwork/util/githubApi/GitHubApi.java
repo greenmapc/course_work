@@ -83,7 +83,7 @@ public class GitHubApi {
     }
 
     @SneakyThrows
-    static JSONArray getJsonResp(HttpResponse response) {
+    public static JSONArray getJsonResp(HttpResponse response) {
         HttpEntity httpEntity = response.getEntity();
         String jsonRes = EntityUtils.toString(httpEntity);
         if (jsonRes.charAt(0) != '[') {
@@ -195,7 +195,7 @@ public class GitHubApi {
 
 //        System.out.println(gitHubApi.getAccessToken("0ba39ca7cefcf858db7e"));
 
-        user.setGithubToken("92067b1819a5591b31134e73bf76641e41b2d6f9");
+        user.setGithubToken("");
         user.setGitName("alxarsnk");
         List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
 
