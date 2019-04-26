@@ -105,8 +105,11 @@ public class TelegramService {
         uriBuilder.setPath("/create_chat");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Content-Type", "application/json");
+        if (title.length() < 1){
+            title = "project";
+        }
         String request = "{\"phone\":\"" +
-                creatorPhone + "\",\"members\":" + membersPhone.toString() + ",\"title\":\"" + "project" + "\"}";
+                creatorPhone + "\",\"members\":" + membersPhone.toString() + ",\"title\":\"" + title + "\"}";
         System.out.println(request);
         StringEntity stringEntity = new StringEntity(request);
         httpPost.setEntity(stringEntity);
