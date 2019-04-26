@@ -1,13 +1,10 @@
 package ru.itis.teamwork.controllers;
 
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.itis.teamwork.models.Message;

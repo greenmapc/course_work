@@ -1,10 +1,11 @@
 package ru.itis.teamwork.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.ejb.Remote;
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Builder

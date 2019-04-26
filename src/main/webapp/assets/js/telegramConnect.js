@@ -15,6 +15,7 @@ var ready = $(document).ready(function () {
                 $('#connection_btn').replaceWith(' <form action="/telegram/connect" method="post" id="telegram_form">\n' +
                     '        <label for="code" id="code_label">Enter phone</label>\n' +
                     '        <input type="text" name="code" id="code" value="'+response+'">\n' +
+                    '        <input type="hidden" name="projectId" value="${project.id}">' +
                     '        <button type="submit" id="send_code_btn">Send</button>\n' +
                     '    </form>');
             },

@@ -7,12 +7,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
-import ru.itis.teamwork.repositories.UserMainImgRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
 import java.util.*;
@@ -65,7 +63,7 @@ public class UserService implements UserDetailsService {
         newUser.setUsername(userForm.getUsername());
         newUser.setPassword(userForm.getPassword());
         newUser.setRoles(userForm.getRoles());
-
+        newUser.setTelegramJoined(false);
         try {
             userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {

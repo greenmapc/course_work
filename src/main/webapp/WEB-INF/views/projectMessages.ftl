@@ -5,7 +5,7 @@
     <script type="text/javascript">
         var stompClient = null;
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             disconnect();
             connect();
         });
@@ -34,7 +34,7 @@
             stompClient.connect({}, function (frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages/'+chat_id, function (messageOutput) {
+                stompClient.subscribe('/topic/messages/' + chat_id, function (messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body));
                 });
             });
@@ -52,7 +52,7 @@
             var from = document.getElementById('from').value;
             var text = document.getElementById('text').value;
             var chat = document.getElementById('chat_id').value;
-            stompClient.send("/app/chat/"+chat.trim().replace(/\s+/g, ''), {},
+            stompClient.send("/app/chat/" + chat.trim().replace(/\s+/g, ''), {},
                 JSON.stringify({from: from, text: text, username: from, chat_id: chat}));
             document.getElementById('text').value = ''
         }
@@ -80,7 +80,7 @@
             // response.appendChild(p);
         }
     </script>
-    <#--если у проекта есть чат выводим все сообщения + поле для ввода-->
+<#--если у проекта есть чат выводим все сообщения + поле для ввода-->
     <#if project.chat??>
         <div class="container" id="chat_messages" style="height: 60%; overflow: scroll" >
             <#list messages as message>
@@ -90,9 +90,6 @@
                 <br>
             </#list>
         </div>
-
-
-
         <div class="container">
             <label for="textMessage">Enter message</label>
             <input type="text" name="textMessage" id="text">
@@ -102,18 +99,18 @@
             <p id="response"></p>
         </div>
     <#else>
-<#--если нет смотрим подключен ли узер к телеграмму-->
+    <#--если нет смотрим подключен ли узер к телеграмму-->
         <#if user.telegramJoined>
-            <#--если подключен-->
+        <#--если подключен-->
             <#if members?size gt 0 >
                 <form id="create_chat" method="post" action="/telegram/createChat">
                     <#--выводим всех у кого подключен телеграмм-->
                     <select multiple name="members">
                         <#list members as member>
                             <option value="${member.id}">${member.username}</option>
-                            <#--<input type="checkbox" name="${member.id}">-->
-                            <#--<label for="${member.id}">${member.username}</label>-->
-                            <#--<br>-->
+                        <#--<input type="checkbox" name="${member.id}">-->
+                        <#--<label for="${member.id}">${member.username}</label>-->
+                        <#--<br>-->
                         </#list>
                     </select>
                     <input type="hidden" value="${project.id}" name="project_id">
@@ -124,20 +121,42 @@
             <#else>
                 <h4>У вас еще нет пользователей с телегой</h4>
             </#if>
-            <#--если нет предлагаем подключиться-->
-        <#else >
+        <#--если нет предлагаем подключиться-->
+        <#else>
             <div class="row">
                 <div class="container mt-5" align="center">
                     <div class="jumbotron col-md-8" align="center">
                         <h1 class="display-4">Connect to Telegram</h1>
                         <p class="lead">Simple to use in your project</p>
                         <hr class="my-4">
-                        <a class="btn btn-primary btn-lg" id="connection_btn" role="button">Connect
-                            to Telegram</a>
+
+                        <#if codeForm?? || phoneForm??>
+                            <#--<#if codeForm || phoneForm>-->
+                                <form action="${context.getContextPath()}/telegram/connect" method="post"
+                                      id="telegram_form">
+                                    <label for="code"
+                                           id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
+                                    <input type="text" name="code" id="code" value="">
+                                    <input type="hidden" name="projectId" value="${project.id}">
+                                    <button type="submit" id="send_code_btn">Send</button>
+                                </form>
+                            <#--<#else>
+                                <form action="${context.getContextPath()}/telegram/connect" method="post">
+                                    <button type="submit" class="btn btn-primary btn-lg">Connect to Telegram</button>
+                                    <input type="hidden" name="buttonForm" value="buttonForm">
+                                    <input type="hidden" name="projectId" value="${project.id}">
+                                </form>
+                            </#if>-->
+                        <#else >
+                            <form action="${context.getContextPath()}/telegram/connect" method="post">
+                                <button type="submit" class="btn btn-primary btn-lg">Connect to Telegram</button>
+                                <input type="hidden" name="buttonForm" value="buttonForm">
+                                <input type="hidden" name="projectId" value="${project.id}">
+                            </form>
+                        </#if>
                     </div>
                 </div>
             </div>
         </#if>
-
     </#if>
 </@p.projectTemplate>

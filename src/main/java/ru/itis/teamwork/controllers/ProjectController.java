@@ -17,7 +17,6 @@ import ru.itis.teamwork.models.dto.MessageDto;
 import ru.itis.teamwork.services.ProjectService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -88,12 +87,15 @@ public class ProjectController {
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("user", user);
+        if (!user.getTelegramJoined()) {
+            model.addAttribute("buttonForm", true);
+        }
 
-        Set<User> members =  projectService.getProjectById(id).getUsers();
-        members.removeIf(a->(a.getTelegramJoined()==null || !a.getTelegramJoined()));
+        Set<User> members = project.getUsers();
+        members.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
 
         List<MessageDto> messageDtos = new ArrayList<>();
-        if (project.getChat() != null && project.getChat().getMessages()!=null) {
+        if (project.getChat() != null && project.getChat().getMessages() != null) {
             messageDtos = project.getChat().getMessages().stream().map(MessageDto::new).collect(Collectors.toList());
             model.addAttribute("chat", project.getChat());
         }
