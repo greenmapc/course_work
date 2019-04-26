@@ -1,14 +1,16 @@
 <#import "parts/projectTemplate.ftl" as p>
-<@p.projectTemplate "Settings">
-    <hr>
-    <div class="row">
-        <h4 class="ml-5">Update project:</h4>
-        <div class="container ml-3">
-            <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <label for="name">Name of project</label>
-                        <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
+<@p.projectTemplate"Settings">
+    <div class="container">
+        <hr>
+        <div class="row">
+            <h4 class="ml-5">Update project:</h4>
+            <div class="container ml-3">
+                <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="name">Name of project</label>
+                            <input type="text" name="name" id="name" class="form-control" value="${project.name}"/>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

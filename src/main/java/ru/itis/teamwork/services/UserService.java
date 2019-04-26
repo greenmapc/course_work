@@ -7,12 +7,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
-import ru.itis.teamwork.repositories.UserMainImgRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
 import java.util.*;
@@ -31,9 +29,20 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Set<User> getUsers(List<Long> ids){
+            Set<User> users = new HashSet<>();
+            for (Long id: ids){
+                Optional<User> user = userRepository.findById(id);
+                user.ifPresent(users::add);
+            }
+            return users;
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        System.out.println(user);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -55,7 +64,7 @@ public class UserService implements UserDetailsService {
         newUser.setUsername(userForm.getUsername());
         newUser.setPassword(userForm.getPassword());
         newUser.setRoles(userForm.getRoles());
-
+        newUser.setTelegramJoined(false);
         try {
             userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
@@ -77,7 +86,9 @@ public class UserService implements UserDetailsService {
         userRepository.settingsUpdate(user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
-                user.getId());
+                user.getId(),
+                user.getTelegramJoined(),
+                user.getPhone());
     }
 
     public void saveUser(User user, Map<String, String> form) {

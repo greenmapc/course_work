@@ -1,5 +1,6 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Members">
+
     <div class="container">
         <#--<div class="card-deck">-->
         <#--<div class="card my-3" style="width: 200px;">-->

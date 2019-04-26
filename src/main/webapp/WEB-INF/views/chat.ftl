@@ -49,7 +49,7 @@
             var from = document.getElementById('from').value;
             var text = document.getElementById('text').value;
             stompClient.send("/app/chat", {},
-                JSON.stringify({from: from, text: text, username: from}));
+                JSON.stringify({from: from, text: text, chat_id: from}));
             document.getElementById('text').value = ''
         }
 
@@ -66,7 +66,8 @@
 <body onload="disconnect()">
 <div>
     <div>
-        <input type="text" id="from" placeholder="Choose a nickname"/>
+        <#--<input type="text" id="from" placeholder="Choose a nickname"/>-->
+        <input type="hidden" id="from" value="${user.username}">
     </div>
     <br/>
     <div>
