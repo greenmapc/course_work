@@ -42,6 +42,10 @@ public class Project {
     )
     private Set<User> users;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_chat")
+    private Chat chat;
+
     @ManyToOne
     @JoinColumn(name = "team_leader_id", nullable = false)
     private User teamLeader;

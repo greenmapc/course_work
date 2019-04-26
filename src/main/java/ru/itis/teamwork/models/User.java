@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -42,6 +43,12 @@ public class User implements UserDetails {
     @Column(name = "github_token")
     private String githubToken;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "is_telegram_joined", nullable = false)
+    private Boolean telegramJoined;
+
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -59,6 +66,12 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "users")
     private Set<Project> projects;
+
+    @ManyToMany(mappedBy = "members")
+    private Set<Chat> chats;
+
+    @OneToMany(mappedBy = "sender")
+    private Set<Message> messages;
 
     @OneToMany(mappedBy = "teamLeader")
     private Set<Project> leaderProjects;

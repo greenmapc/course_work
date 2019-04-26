@@ -83,7 +83,7 @@ public class GitHubApi {
     }
 
     @SneakyThrows
-    static JSONArray getJsonResp(HttpResponse response) {
+    public static JSONArray getJsonResp(HttpResponse response) {
         HttpEntity httpEntity = response.getEntity();
         String jsonRes = EntityUtils.toString(httpEntity);
         if (jsonRes.charAt(0) != '[') {

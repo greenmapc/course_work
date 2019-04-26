@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itis.teamwork.models.User;
 
+import java.awt.*;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByUsername(String username);
@@ -18,10 +20,12 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Transactional
     @Query("UPDATE User SET " +
             "firstName = :firstName, lastName = :lastName, " +
-            "password = :password " +
+            "password = :password, telegramJoined = :telegramJoined, phone = :phone " +
             "WHERE id = :id")
     void settingsUpdate(@Param("firstName") String firstName,
                         @Param("lastName") String lastName,
                         @Param("password") String password,
-                        @Param("id") Long id);
+                        @Param("id") Long id,
+                        @Param("telegramJoined") Boolean telegramJoined,
+                        @Param("phone") String phone);
 }

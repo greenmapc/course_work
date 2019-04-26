@@ -11,6 +11,11 @@
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossorigin="anonymous">
         <link rel="stylesheet" href="${context.getContextPath()}/assets/style/style.css">
+
+        <link id="contextPath" data-contextPath="${context.getContextPath()}"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="${context.getContextPath()}/assets/js/telegramConnect.js"></script>
     </head>
     <body>
     <#include "mainNavbar.ftl">

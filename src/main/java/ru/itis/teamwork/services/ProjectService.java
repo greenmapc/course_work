@@ -48,4 +48,8 @@ public class ProjectService {
         Optional<Project> byId = projectRepository.findById(id);
         return byId.orElse(new Project());
     }
+
+    public void update(Project project){
+        this.projectRepository.save(project);
+    }
 }
