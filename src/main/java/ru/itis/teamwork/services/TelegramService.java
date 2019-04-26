@@ -105,16 +105,19 @@ public class TelegramService {
         uriBuilder.setPath("/create_chat");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Content-Type", "application/json");
-
-        StringEntity stringEntity = new StringEntity("{\"phone\":\"" +
-                creatorPhone + "\",\"members\":\"" + membersPhone.toString() + "\",\"title\":\"" + title + "\"}");
+        String request = "{\"phone\":\"" +
+                creatorPhone + "\",\"members\":" + membersPhone.toString() + ",\"title\":\"" + "project" + "\"}";
+        System.out.println(request);
+        StringEntity stringEntity = new StringEntity(request);
         httpPost.setEntity(stringEntity);
         HttpClient httpClient = HttpClients.createDefault();
         try {
             HttpResponse response = httpClient.execute(httpPost);
-
+            System.out.println(response);
             if (response.getStatusLine().getStatusCode() == 200) {
+                System.out.println(response);
                 JSONArray jsonArray = GitHubApi.getJsonResp(response);
+                System.out.println(jsonArray);
                 Long chat_id = jsonArray.getJSONObject(0).getLong("chat_id");
                 return Optional.of(chat_id);
             }
