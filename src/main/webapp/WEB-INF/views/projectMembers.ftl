@@ -1,6 +1,6 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Members">
-    <div class="container">
+    <#--<div class="container">
         <div class="container" id="members_of_project" style="font-size: 14px">
             <table class="table">
                 <thead>
@@ -64,7 +64,7 @@
                 <input type="submit" value="Add member" id="add_member_input_submit">
             </div>
         </div>
-</div>-->
+</div>&ndash;&gt;-->
     <div class="container" id="members_of_project" style="font-size: 14px">
         <table class="table">
             <thead>

@@ -37,7 +37,6 @@ public class ProjectService {
 
         form.setName(form.getName().replace(" ", "_"));
 
-
         Project project = new Project();
         project.setName(form.getName());
         project.setDescription(form.getDescription());
@@ -48,8 +47,8 @@ public class ProjectService {
     }
 
     public Project getProjectById(Long id) {
-        Optional<Project> byId = projectRepository.findById(id);
-        return byId.orElse(null);
+        Optional<Project> candidate = projectRepository.findById(id);
+        return candidate.orElse(null);
     }
 
     public boolean addMember(Project project, String username) {
@@ -57,21 +56,20 @@ public class ProjectService {
         if (user == null) {
             return false;
         }
-
         project.getUsers().add(user);
         projectRepository.save(project);
-
+        user.getProjects().add(project);
+        userRepository.save(user);
         return true;
     }
 
     public MembersDto getUsersLike(String username) {
         List<User> users = userRepository.findLikeUsername(username + "%");
-//        MembersDto membersDto = new MembersDto(userRepository.findLikeUsername(username + "%"));
         List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
         return MembersDto.builder().userDtoList(userDtos).build();
     }
 
-    public void update(Project project){
+    public void update(Project project) {
         this.projectRepository.save(project);
     }
 }

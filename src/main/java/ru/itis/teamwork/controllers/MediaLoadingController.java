@@ -19,7 +19,8 @@ public class MediaLoadingController {
     private String userImgPath;
 
     @GetMapping("/img/{imgFullName:.+}")
-    public @ResponseBody byte[] getImg(@PathVariable(value = "imgFullName") String imgFullName) throws IOException {
+    public @ResponseBody
+    byte[] getImg(@PathVariable(value = "imgFullName") String imgFullName) throws IOException {
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(userImgPath + imgFullName));
         return IOUtils.toByteArray(bis);
     }

@@ -1,6 +1,5 @@
 package ru.itis.teamwork.controllers;
 
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,24 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
-
 import ru.itis.teamwork.models.dto.MessageDto;
-
 import ru.itis.teamwork.models.dto.UserDto;
-
 import ru.itis.teamwork.services.ProjectService;
 import ru.itis.teamwork.services.UserService;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 public class ProjectController {
-    private final ProjectService projectService;
-    private final UserService userService;
+    private ProjectService projectService;
+    private UserService userService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
@@ -62,6 +57,7 @@ public class ProjectController {
         Project project = projectService.create(form);
         if (project != null) {
             user.getProjects().add(project);
+            userService.saveUser(user);
             model.addAttribute("project", project);
             return "redirect:/project/" + project.getId();
         } else {
@@ -79,13 +75,9 @@ public class ProjectController {
         return "projects";
     }
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping("/project/{id}")
     public String projectOverview(Model model,
-                                  @PathVariable String projectId,
-                                  @AuthenticationPrincipal User user) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-
+                                  @PathVariable("id") Project project) {
         if (project != null) {
             model.addAttribute("project", project);
             return "project";
@@ -96,12 +88,13 @@ public class ProjectController {
 
     @GetMapping("/project/messages/{id}")
     public String messages(@AuthenticationPrincipal User user,
-                           @PathVariable("id") String projectId,
+                           @PathVariable("id") Project project,
                            Model model) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
+        if (project == null) {
+            return "redirect:/profile";
+        }
 
+        model.addAttribute("project", project);
         model.addAttribute("user", user);
         if (!user.getTelegramJoined()) {
             model.addAttribute("buttonForm", true);
@@ -112,7 +105,12 @@ public class ProjectController {
 
         List<MessageDto> messageDtos = new ArrayList<>();
         if (project.getChat() != null && project.getChat().getMessages() != null) {
-            messageDtos = project.getChat().getMessages().stream().map(MessageDto::new).collect(Collectors.toList());
+            messageDtos = project
+                    .getChat()
+                    .getMessages()
+                    .stream()
+                    .map(MessageDto::new)
+                    .collect(Collectors.toList());
             model.addAttribute("chat", project.getChat());
         }
         model.addAttribute("messages", messageDtos);
@@ -123,17 +121,14 @@ public class ProjectController {
         } else {
             return "redirect:/profile";
         }
-
     }
 
     @GetMapping("/project/files/{id}")
     public String files(@AuthenticationPrincipal User user,
-                        @PathVariable("id") String projectId,
+                        @PathVariable("id") Project project,
                         Model model) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        if (isMemberOfProject(user, project)) {
+        if (isMemberOfProject(user, project) && project != null) {
+            model.addAttribute("project", project);
             return "projectFiles";
         } else {
             return "redirect:/profile";
@@ -142,12 +137,10 @@ public class ProjectController {
 
     @GetMapping("/project/tasks/{id}")
     public String tasks(@AuthenticationPrincipal User user,
-                        @PathVariable("id") String projectId,
+                        @PathVariable("id") Project project,
                         Model model) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        if (isMemberOfProject(user, project)) {
+        if (isMemberOfProject(user, project) && project != null) {
+            model.addAttribute("project", project);
             return "projectTasks";
         } else {
             return "redirect:/profile";
@@ -156,12 +149,10 @@ public class ProjectController {
 
     @GetMapping("/project/settings/{id}")
     public String settings(@AuthenticationPrincipal User user,
-                           @PathVariable("id") String projectId,
+                           @PathVariable("id") Project project,
                            Model model) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-        model.addAttribute("project", projectService.getProjectById(id));
-        if (isMemberOfProject(user, project)) {
+        if (isMemberOfProject(user, project) && project != null) {
+            model.addAttribute("project", project);
             return "projectSettings";
         } else {
             return "redirect:/profile";
@@ -170,12 +161,10 @@ public class ProjectController {
 
     @GetMapping("/project/members/{id}")
     public String members(@AuthenticationPrincipal User user,
-                          @PathVariable("id") String projectId,
+                          @PathVariable("id") Project project,
                           Model model) {
-        Long id = Long.parseLong(projectId);
-        Project project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        if (isMemberOfProject(user, project)) {
+        if (isMemberOfProject(user, project) && project != null) {
+            model.addAttribute("project", project);
             if (project.getUsers() != null) {
                 model.addAttribute("members", project.getUsers());
             }
@@ -184,7 +173,6 @@ public class ProjectController {
             return "redirect:/profile";
         }
     }
-
 
     @PostMapping("/project/{projectId}/settings/addMember")
     public String addMember(@PathVariable("projectId") Long projectId,
@@ -196,13 +184,10 @@ public class ProjectController {
             modelMap.addAttribute("project", project);
             return "projectMembers";
         }
-
         return "redirect:/project/members/" + projectId;
     }
 
-
     @GetMapping(value = "/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
-    @SneakyThrows
     public @ResponseBody
     List<UserDto> showLikeUsers(@RequestParam String username) {
         return projectService.getUsersLike(username).getUserDtoList();

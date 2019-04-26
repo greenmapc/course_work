@@ -11,14 +11,6 @@ import ru.itis.teamwork.models.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-
-    public UserDto(User user){
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.username = user.getUsername();
-    }
-
     private Long id;
 
     private String firstName;
@@ -27,5 +19,11 @@ public class UserDto {
 
     private String username;
 
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.username = user.getUsername();
+    }
 }
 

@@ -10,7 +10,6 @@ import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -20,12 +19,12 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import ru.itis.teamwork.converter.StringToProjectConverter;
 import ru.itis.teamwork.converter.StringToUserConverter;
 import ru.itis.teamwork.converter.StringsToUserConverter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 @Configuration
 @ComponentScan(basePackages = {"ru.itis.teamwork.controllers", "ru.itis.teamwork.converter"})
@@ -41,9 +40,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private StringToUserConverter stringToUserConverter;
 
+    @Autowired
+    private StringToProjectConverter stringToProjectConverter;
+
     public void addFormatters(FormatterRegistry formatterRegistry) {
         formatterRegistry.addConverter(stringsToUserConverter);
         formatterRegistry.addConverter(stringToUserConverter);
+        formatterRegistry.addConverter(stringToProjectConverter);
     }
 
     @Bean

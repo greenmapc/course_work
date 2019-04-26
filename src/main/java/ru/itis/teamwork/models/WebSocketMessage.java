@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class WebSocketMessage {
-
     @JsonProperty("from")
     private String fromUserName;
     @JsonProperty("text")

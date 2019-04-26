@@ -26,8 +26,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
                         @Param("id") Long id,
                         @Param("telegramJoined") Boolean telegramJoined,
                         @Param("phone") String phone);
-                        @Param("" +
-                                "id") Long id);
     @Modifying
     @Transactional
     @Query("SELECT u FROM User u WHERE u.username LIKE :part_username")

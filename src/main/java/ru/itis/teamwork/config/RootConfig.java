@@ -27,7 +27,9 @@ import java.util.Properties;
 @ComponentScan({"ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
 @Import({WebSecurityConfig.class})
-@PropertySource({"classpath:/db.properties", "classpath:/git.properties", "classpath:/rabbitmq.properties"})
+@PropertySource({"classpath:/db.properties",
+        "classpath:/git.properties",
+        "classpath:/rabbitmq.properties"})
 public class RootConfig {
     @Resource
     private Environment env;
@@ -49,7 +51,7 @@ public class RootConfig {
 
         gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
         gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
-//      gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+        //gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
         gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
         gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
         gitHubApi.setHttpClient(HttpClients.createDefault());
@@ -67,6 +69,7 @@ public class RootConfig {
         jpaVendorAdapter.setGenerateDdl(true);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
+
         return entityManagerFactoryBean;
     }
 
@@ -95,7 +98,6 @@ public class RootConfig {
 
     @Bean
     @SneakyThrows
-//    @Scope(WebApplicationContext.SCOPE_SESSION)
     public Connection rabbitmqConnection() {
         ConnectionFactory factory = new ConnectionFactory();
         String factoryUri = String.format("amqp://%s:%s@%s",
@@ -103,15 +105,13 @@ public class RootConfig {
                 env.getRequiredProperty("rabbit.password"),
                 env.getRequiredProperty("rabbit.host"));
         factory.setUri(factoryUri);
-        Connection connection = factory.newConnection();
-        return connection;
+        return factory.newConnection();
     }
 
     @Bean
-    public TelegramService telegramService(){
+    public TelegramService telegramService() {
         Integer port = env.getRequiredProperty("rabbit.host.port", Integer.class);
         String host = String.format("http://%s", env.getRequiredProperty("rabbit.host"));
-        TelegramService telegramService = new TelegramService(host, port);
-        return telegramService;
+        return new TelegramService(host, port);
     }
 }

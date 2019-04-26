@@ -1,16 +1,17 @@
 package ru.itis.teamwork.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "project")
 @Data
-@EqualsAndHashCode
+//@EqualsAndHashCode(exclude = "chat")
 @ToString(exclude = {"users", "teamLeader"})
 public class Project {
 
@@ -50,4 +51,22 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "team_leader_id", nullable = false)
     private User teamLeader;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id.equals(project.id) &&
+                name.equals(project.name) &&
+                Objects.equals(gitLink, project.gitLink) &&
+                Objects.equals(description, project.description) &&
+                Objects.equals(files, project.files) &&
+                Objects.equals(projectTasks, project.projectTasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, gitLink, description, files, projectTasks);
+    }
 }

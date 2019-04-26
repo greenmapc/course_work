@@ -38,9 +38,9 @@ public class UserService implements UserDetailsService {
             return users;
     }
 
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         System.out.println(user);
         if (user == null) {
@@ -54,7 +54,6 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(RegistrationForm userForm) {
-
         userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
         userForm.setRoles(Collections.singleton(Roles.USER));
 
@@ -104,5 +103,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 }

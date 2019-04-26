@@ -82,7 +82,7 @@
     </script>
 <#--если у проекта есть чат выводим все сообщения + поле для ввода-->
     <#if project.chat??>
-        <div class="container" id="chat_messages" style="height: 60%; overflow: scroll" >
+        <div class="container" id="chat_messages" style="height: 60%; overflow: scroll">
             <#list messages as message>
                 <span>${message.text}</span>
                 <h6>${message.senderUserName}</h6>
@@ -105,18 +105,25 @@
             <#if members?size gt 0 >
                 <form id="create_chat" method="post" action="/telegram/createChat">
                     <#--выводим всех у кого подключен телеграмм-->
-                    <select multiple name="members">
-                        <#list members as member>
-                            <option value="${member.id}">${member.username}</option>
-                        <#--<input type="checkbox" name="${member.id}">-->
-                        <#--<label for="${member.id}">${member.username}</label>-->
-                        <#--<br>-->
-                        </#list>
-                    </select>
+                    <label>Enter members
+                        <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
+                                name="members">
+                            <#list members as member>
+                                <option value="${member.id}">${member.username}</option>
+                            <#--<input type="checkbox" name="${member.id}">-->
+                            <#--<label for="${member.id}">${member.username}</label>-->
+                            <#--<br>-->
+                            </#list>
+                        </select>
+                    </label>
+                    <br/>
                     <input type="hidden" value="${project.id}" name="project_id">
-                    <input type="text" id="title" name="title">
-                    <label for="title">Title</label>
-                    <button type="submit">Create chat</button>
+
+                    <label for="title">Enter chat title
+                        <input type="text" name="title">
+                    </label>
+                    <br/>
+                    <button type="submit" class="profile-edit-submit">Create chat</button>
                 </form>
             <#else>
                 <h4>У вас еще нет пользователей с телегой</h4>
@@ -129,24 +136,16 @@
                         <h1 class="display-4">Connect to Telegram</h1>
                         <p class="lead">Simple to use in your project</p>
                         <hr class="my-4">
-
+                        <!--Если форма для кода или для телефона, то выводим ее-->
                         <#if codeForm?? || phoneForm??>
-                            <#--<#if codeForm || phoneForm>-->
-                                <form action="${context.getContextPath()}/telegram/connect" method="post"
-                                      id="telegram_form">
-                                    <label for="code"
-                                           id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
-                                    <input type="text" name="code" id="code" value="">
-                                    <input type="hidden" name="projectId" value="${project.id}">
-                                    <button type="submit" id="send_code_btn">Send</button>
-                                </form>
-                            <#--<#else>
-                                <form action="${context.getContextPath()}/telegram/connect" method="post">
-                                    <button type="submit" class="btn btn-primary btn-lg">Connect to Telegram</button>
-                                    <input type="hidden" name="buttonForm" value="buttonForm">
-                                    <input type="hidden" name="projectId" value="${project.id}">
-                                </form>
-                            </#if>-->
+                            <form action="${context.getContextPath()}/telegram/connect" method="post"
+                                  id="telegram_form">
+                                <label for="code"
+                                       id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
+                                <input type="text" name="code" id="code" value="">
+                                <input type="hidden" name="projectId" value="${project.id}">
+                                <button type="submit" id="send_code_btn">Send</button>
+                            </form>
                         <#else >
                             <form action="${context.getContextPath()}/telegram/connect" method="post">
                                 <button type="submit" class="btn btn-primary btn-lg">Connect to Telegram</button>
