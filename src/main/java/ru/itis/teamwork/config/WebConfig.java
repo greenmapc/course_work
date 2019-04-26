@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -19,12 +21,14 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Configuration
 @ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
 @EnableWebMvc
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
 @Import({WebSecurityConfig.class, WebSocketConfig.class})
+@EnableAsync
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -105,5 +109,16 @@ public class WebConfig implements WebMvcConfigurer {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setMaxUploadSize(500000);
         return resolver;
+    }
+
+    @Bean
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("TelegramLookup-");
+        executor.initialize();
+        return executor;
     }
 }
