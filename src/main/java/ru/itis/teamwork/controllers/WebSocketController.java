@@ -1,6 +1,8 @@
 package ru.itis.teamwork.controllers;
 
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -9,12 +11,15 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.itis.teamwork.models.Message;
+import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.WebSocketMessage;
 import ru.itis.teamwork.models.WebSocketOutputMessage;
 import ru.itis.teamwork.repositories.ChatRepository;
 import ru.itis.teamwork.repositories.MessageRepository;
+import ru.itis.teamwork.services.TelegramService;
 import ru.itis.teamwork.services.UserService;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,20 +35,32 @@ public class WebSocketController {
     @Autowired
     private ChatRepository chatRepository;
 
+    @Autowired
+    private TelegramService telegramService;
+
+
+
     @MessageMapping("/chat/{chatId}")
     @SendTo("/topic/messages/{chatId}")
-    public WebSocketOutputMessage send(@DestinationVariable String chatId, WebSocketMessage message) {
+    public WebSocketOutputMessage send(@DestinationVariable String chatId, WebSocketMessage message) throws IOException {
 
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        Date date = new Date();
+        String time = new SimpleDateFormat("HH:mm").format(date);
         WebSocketOutputMessage webSocketOutputMessage =  WebSocketOutputMessage.builder()
                 .dateTime(time)
                 .text(message.getText())
                 .username(message.getFromUserName())
                 .build();
-        System.out.println(webSocketOutputMessage);
+        User user = (User) userService.loadUserByUsername(message.getFromUserName());
+        Message chatMessage = Message.builder()
+                .chat(chatRepository.findById(Long.parseLong(chatId)).get())
+                .date(date)
+                .sender(user)
+                .text(message.getText())
+                .build();
+        messageRepository.save(chatMessage);
 
-        Message chatMessage = Message.builder().chat(chatRepository.findById(Long.parseLong(chatId)).get()).build();
-
+        telegramService.sendMessage(chatMessage);
         return webSocketOutputMessage;
     }
 
