@@ -3,10 +3,13 @@ package ru.itis.teamwork.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itis.teamwork.forms.CreateProjectForm;
+import ru.itis.teamwork.models.Message;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.dto.MembersDto;
+import ru.itis.teamwork.models.dto.MessageDto;
 import ru.itis.teamwork.models.dto.UserDto;
+import ru.itis.teamwork.repositories.MessageRepository;
 import ru.itis.teamwork.repositories.ProjectRepository;
 import ru.itis.teamwork.repositories.UserRepository;
 
@@ -17,12 +20,15 @@ import java.util.stream.Collectors;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          MessageRepository messageRepository) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     public List<Project> findProjectsByUser(User user) {
@@ -61,6 +67,25 @@ public class ProjectService {
         user.getProjects().add(project);
         userRepository.save(user);
         return true;
+    }
+
+    public Set<User> getTelegramJoinedUser(Project project) {
+        Set<User> users = project.getUsers();
+        users.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
+        return users;
+    }
+
+    public List<MessageDto> getProjectMessages(Project project) {
+        List<MessageDto> messageDtos = new ArrayList<>();
+        if (project.getChat() != null && project.getChat().getMessages() != null) {
+            Set<Message> messages = messageRepository.findAllByChatOrderByDate(project.getChat());
+            messageDtos = messages
+                    .stream()
+                    .map(MessageDto::new)
+                    .collect(Collectors.toList());
+
+        }
+        return messageDtos;
     }
 
     public MembersDto getUsersLike(String username) {

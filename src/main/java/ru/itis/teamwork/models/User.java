@@ -82,6 +82,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "teamLeader")
     private Set<Project> leaderProjects;
 
+    private Long telegramId;
+
     public User() {
 
     }

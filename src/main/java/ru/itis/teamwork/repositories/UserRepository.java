@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.itis.teamwork.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
@@ -30,4 +31,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Transactional
     @Query("SELECT u FROM User u WHERE u.username LIKE :part_username")
     List<User> findLikeUsername(@Param("part_username") String partUsername);
+
+    Optional<User> findUserByTelegramId(Long telegramId);
 }

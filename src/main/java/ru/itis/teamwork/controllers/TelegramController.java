@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,46 +66,66 @@ public class TelegramController {
         model.addAttribute("project", project);
         model.addAttribute("user", user);
 
-//        Set<User> members = project.getUsers();
-//        members.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
-//        List<MessageDto> messageDtos = new ArrayList<>();
-//        if (project.getChat() != null && project.getChat().getMessages() != null) {
-//            messageDtos = project.getChat().getMessages().stream().map(MessageDto::new).collect(Collectors.toList());
-//            model.addAttribute("chat", project.getChat());
-//        }
-//        model.addAttribute("messages", messageDtos);
-//        members.remove(user);
-//        model.addAttribute("members", members);
+        String phoneValue = user.getPhone() != null ? user.getPhone() : "Номер телефона";
+        model.addAttribute("connectionForm", true);
+        model.addAttribute("inputValue", phoneValue);
+        model.addAttribute("inputName", "phone");
+        return "projectMessages";
 
-        if (bf != null && bf.equals("buttonForm")) {
-            model.addAttribute("phoneForm", true);
-            return "projectMessages";
-        }
+    }
+
+    @PostMapping("/telegram/connect/phone")
+    @SneakyThrows
+    private String sendPhone(@RequestParam(value = "phone") String phoneNumber,
+                             @RequestParam("projectId") Project project,
+                             @AuthenticationPrincipal User user,
+                             ModelMap model) {
+        model.addAttribute("project", project);
+        model.addAttribute("user", user);
+
         if (phoneNumber != null && ControllerUtils.checkNumber(phoneNumber)) {
+            user.setPhone(phoneNumber);
             Optional<Boolean> isConnected = telegramService.isConnectedUser(phoneNumber);
 
             if (isConnected.isPresent() && isConnected.get()) {
+
                 user.setTelegramJoined(true);
-                user.setPhone(phoneNumber);
+                user.setTelegramId(telegramService.getTelegramId(user));
+
+                return "redirect:/project/messages/" + project.getId();
             } else if (isConnected.isPresent()) {
-                user.setPhone(phoneNumber);
+                model.addAttribute("connectionForm", true);
+                model.addAttribute("inputValue", "Введите код");
+                model.addAttribute("inputName", "code");
             }
             userRepository.save(user);
-            model.addAttribute("codeForm", true);
             return "projectMessages";
         } else {
-            Optional<Boolean> signed = telegramService.sendCode(user.getPhone(), phoneNumber);
-
-            model.addAttribute("phoneForm", false);
-            if (signed.isPresent() && signed.get()) {
-                user.setTelegramJoined(true);
-                userRepository.save(user);
-                return "redirect:/project/messages/" + project.getId();
-            } else {
-                model.addAttribute("codeForm", true);
-                return "projectMessages";
-            }
+            return "redirect:/telegram/connect";
         }
+    }
+
+    @PostMapping("/telegram/connect/code")
+    @SneakyThrows
+    private String sendCode(@RequestParam(value = "code") String code,
+                            @RequestParam("projectId") Project project,
+                            @AuthenticationPrincipal User user,
+                            ModelMap model) {
+        model.addAttribute("project", project);
+        model.addAttribute("user", user);
+
+        Optional<Boolean> authorized = telegramService.sendCode(user.getPhone(), code);
+        if (authorized.isPresent() && authorized.get()) {
+            user.setTelegramJoined(true);
+            user.setTelegramId(telegramService.getTelegramId(user));
+            userRepository.save(user);
+        } else if (authorized.isPresent()) {
+
+            model.addAttribute("connectionForm", true);
+            model.addAttribute("inputValue", "Введите код");
+            model.addAttribute("inputName", "code");
+        }
+        return "redirect:/project/messages/" + project.getId();
     }
 
     @PostMapping("/telegram/createChat")
@@ -113,12 +134,12 @@ public class TelegramController {
                              @AuthenticationPrincipal User user,
                              @RequestParam("project_id") Project project,
                              Model model) {
-        List<String> usersPhone = members.stream()
-                .map(User::getPhone)
+        List<Long> usersTelegramId = members.stream()
+                .map(User::getTelegramId)
                 .collect(Collectors.toList());
         try {
             Optional<Long> chatId = telegramService.createChat(
-                    usersPhone,
+                    usersTelegramId,
                     user.getPhone(),
                     title
             );
@@ -134,7 +155,7 @@ public class TelegramController {
             }
         } catch (URISyntaxException | IOException e) {
             model.addAttribute("chatError", "Can't create chat:( We're already working on it");
-            return "project/messages/" + project.getId();
+            return "redirect:/project/messages/" + project.getId();
         }
         return String.format("redirect:/project/messages/%s", project.getId());
     }

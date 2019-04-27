@@ -5,17 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.itis.teamwork.models.Message;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.WebSocketMessage;
 import ru.itis.teamwork.models.WebSocketOutputMessage;
-import ru.itis.teamwork.repositories.ChatRepository;
-import ru.itis.teamwork.repositories.MessageRepository;
+import ru.itis.teamwork.services.MessageService;
+import ru.itis.teamwork.services.RabbitService;
 import ru.itis.teamwork.services.TelegramService;
 import ru.itis.teamwork.services.UserService;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,18 +26,24 @@ import java.util.Date;
 public class WebSocketController {
 
     @Autowired
+    private MessageService messageService;
+
+    @Autowired
     private UserService userService;
-
-    @Autowired
-    private MessageRepository messageRepository;
-
-    @Autowired
-    private ChatRepository chatRepository;
 
     @Autowired
     private TelegramService telegramService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private RabbitService rabbitService;
+
+    @PostConstruct
+    private void setMessagingTemplateToRabbit(){
+        this.rabbitService.setMessagingTemplate(messagingTemplate);
+    }
 
     @MessageMapping("/chat/{chatId}")
     @SendTo("/topic/messages/{chatId}")
@@ -49,13 +57,7 @@ public class WebSocketController {
                 .username(message.getFromUserName())
                 .build();
         User user = (User) userService.loadUserByUsername(message.getFromUserName());
-        Message chatMessage = Message.builder()
-                .chat(chatRepository.findById(Long.parseLong(chatId)).get())
-                .date(date)
-                .sender(user)
-                .text(message.getText())
-                .build();
-        messageRepository.save(chatMessage);
+        Message chatMessage = messageService.createAndSaveMessage(Long.parseLong(chatId), user, message.getText(), date);
 
         telegramService.sendMessage(chatMessage);
         return webSocketOutputMessage;

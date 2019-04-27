@@ -462,3 +462,11 @@ body.sign {
     flex-direction: row;
     width: 100%;
 }
+
+
+.flex-container{
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -103,28 +103,30 @@
         <#if user.telegramJoined>
         <#--если подключен-->
             <#if members?size gt 0 >
-                <form id="create_chat" method="post" action="/telegram/createChat">
-                    <#--выводим всех у кого подключен телеграмм-->
-                    <label>Enter members
-                        <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
-                                name="members">
-                            <#list members as member>
-                                <option value="${member.id}">${member.username}</option>
-                            <#--<input type="checkbox" name="${member.id}">-->
-                            <#--<label for="${member.id}">${member.username}</label>-->
-                            <#--<br>-->
-                            </#list>
-                        </select>
-                    </label>
-                    <br/>
-                    <input type="hidden" value="${project.id}" name="project_id">
+                <div class="flex-container" style="width: 80%; height: 80%">
+                        <form id="create_chat" method="post" action="/telegram/createChat">
+                            <#--выводим всех у кого подключен телеграмм-->
+                            <label>Enter members
+                                <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
+                                        name="members">
+                                    <#list members as member>
+                                        <option value="${member.id}">${member.username}</option>
+                                    <#--<input type="checkbox" name="${member.id}">-->
+                                    <#--<label for="${member.id}">${member.username}</label>-->
+                                    <#--<br>-->
+                                    </#list>
+                                </select>
+                            </label>
+                            <br/>
+                            <input type="hidden" value="${project.id}" name="project_id">
 
-                    <label for="title">Enter chat title
-                        <input type="text" name="title">
-                    </label>
-                    <br/>
-                    <button type="submit" class="profile-edit-submit">Create chat</button>
-                </form>
+                            <label for="title">Enter chat title
+                                <input type="text" name="title">
+                            </label>
+                            <br/>
+                            <button type="submit" class="profile-edit-submit">Create chat</button>
+                        </form>
+                </div>
             <#else>
                 <h4>У вас еще нет пользователей с телегой</h4>
             </#if>
@@ -137,12 +139,13 @@
                         <p class="lead">Simple to use in your project</p>
                         <hr class="my-4">
                         <!--Если форма для кода или для телефона, то выводим ее-->
-                        <#if codeForm?? || phoneForm??>
-                            <form action="${context.getContextPath()}/telegram/connect" method="post"
+                        <#if connectionForm??>
+                            <form action="${context.getContextPath()}/telegram/connect/${inputName}" method="post"
                                   id="telegram_form">
                                 <label for="code"
                                        id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
-                                <input type="text" name="code" id="code" value="">
+                                <#--<input type="text" name="code" id="code" value="">-->
+                                <input type="text" name="${inputName}" id="code" value="${inputValue}">
                                 <input type="hidden" name="projectId" value="${project.id}">
                                 <button type="submit" id="send_code_btn">Send</button>
                             </form>
