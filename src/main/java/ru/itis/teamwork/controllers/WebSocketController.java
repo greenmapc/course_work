@@ -41,7 +41,7 @@ public class WebSocketController {
     private RabbitService rabbitService;
 
     @PostConstruct
-    private void setMessagingTemplateToRabbit(){
+    private void setMessagingTemplateToRabbit() {
         this.rabbitService.setMessagingTemplate(messagingTemplate);
     }
 
@@ -51,7 +51,7 @@ public class WebSocketController {
 
         Date date = new Date();
         String time = new SimpleDateFormat("k:mm dd-MM-yyyy").format(date);
-        WebSocketOutputMessage webSocketOutputMessage =  WebSocketOutputMessage.builder()
+        WebSocketOutputMessage webSocketOutputMessage = WebSocketOutputMessage.builder()
                 .dateTime(time)
                 .text(message.getText())
                 .username(message.getFromUserName())
