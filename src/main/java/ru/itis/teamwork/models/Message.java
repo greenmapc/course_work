@@ -21,9 +21,9 @@ public class Message {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+
     @Column(columnDefinition="TEXT")
     private String text;
-
 
     @ManyToOne
     @JoinColumn(name = "sender", nullable = false)

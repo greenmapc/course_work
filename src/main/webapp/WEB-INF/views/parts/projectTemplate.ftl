@@ -4,9 +4,9 @@
     <@c.page title>
         <div class="container">
             <@p.projectNavbar/>
-            <div class="row">
+<#--            <div class="row">-->
                 <#nested>
-            </div>
+            <#--</div>-->
         </div>
     </@c.page>
 </#macro>

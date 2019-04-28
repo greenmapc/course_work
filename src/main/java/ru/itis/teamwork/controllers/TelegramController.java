@@ -76,7 +76,7 @@ public class TelegramController {
 
     @PostMapping("/telegram/connect/phone")
     @SneakyThrows
-    private String sendPhone(@RequestParam(value = "phone") String phoneNumber,
+    public String sendPhone(@RequestParam(value = "phone") String phoneNumber,
                              @RequestParam("projectId") Project project,
                              @AuthenticationPrincipal User user,
                              ModelMap model) {
@@ -107,7 +107,7 @@ public class TelegramController {
 
     @PostMapping("/telegram/connect/code")
     @SneakyThrows
-    private String sendCode(@RequestParam(value = "code") String code,
+    public String sendCode(@RequestParam(value = "code") String code,
                             @RequestParam("projectId") Project project,
                             @AuthenticationPrincipal User user,
                             ModelMap model) {
