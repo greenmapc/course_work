@@ -6,6 +6,7 @@
         var stompClient = null;
 
         $(document).ready(function () {
+            scrollToBottom();
             disconnect();
             connect();
         });
@@ -26,6 +27,7 @@
         function connect() {
             console.log("connect");
             var chat_id = document.getElementById('chat_id').value.trim().replace(/\s/g, '');
+            var telegram_user_id = document.getElementById('telegram_id').value.trim().replace(/\s/g, '');
             console.log(chat_id);
             var socket = new SockJS('http://localhost:8080/chat');
             console.log(socket);
@@ -54,7 +56,8 @@
             var chat = document.getElementById('chat_id').value;
             stompClient.send("/app/chat/" + chat.trim().replace(/\s+/g, ''), {},
                 JSON.stringify({from: from, text: text, username: from, chat_id: chat}));
-            document.getElementById('text').value = ''
+            document.getElementById('text').value = '';
+            scrollToBottom();
         }
 
         function showMessageOutput(messageOutput) {
@@ -83,6 +86,7 @@
 
 
             response.appendChild(div);
+            scrollToBottom();
 
             // console.log(p);
             // p.style.wordWrap = 'break-word';
@@ -93,6 +97,10 @@
             // response.appendChild(sender);
             // response.appendChild(date);
             // response.appendChild(p);
+        }
+        function scrollToBottom() {
+            var objDiv = document.getElementById("chat_messages");
+            objDiv.scrollTop = objDiv.scrollHeight;
         }
     </script>
 <#--если у проекта есть чат выводим все сообщения + поле для ввода-->
@@ -116,6 +124,7 @@
                    class="col-xl-8 col-md-6 col-sm-5 col-xs-5">
             <input type="hidden" value="${chat.id}" id="chat_id" name="chat_id" readonly="">
             <input type="hidden" value="${user.username}" id="from" name="from">
+            <input type="hidden" value="${user.telegramId}" id="telegram_id" name="from">
             <button onclick="sendMessage()" class="logOutSubmit">Send</button>
         </div>
         <p id="response"></p>
@@ -124,28 +133,31 @@
         <#if user.telegramJoined>
         <#--если подключен-->
             <#if members?size gt 0 >
-                <form id="create_chat" method="post" action="${context.getContextPath()}/telegram/createChat">
-                    <#--выводим всех у кого подключен телеграмм-->
-                    <label>Enter members
-                        <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
-                                name="members">
-                            <#list members as member>
-                                <option value="${member.id}">${member.username}</option>
-                            <#--<input type="checkbox" name="${member.id}">-->
-                            <#--<label for="${member.id}">${member.username}</label>-->
-                            <#--<br>-->
-                            </#list>
-                        </select>
-                    </label>
-                    <br/>
-                    <input type="hidden" value="${project.id}" name="project_id">
+                <div class="flex-container" style="width: 80%; height: 80%">
+                        <form id="create_chat" method="post" action="/telegram/createChat">
+                            <#--выводим всех у кого подключен телеграмм-->
+                            <label>Enter members
+                                <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
+                                        name="members">
+                                    <#list members as member>
+                                        <option value="${member.id}">${member.username}</option>
+                                    <#--<input type="checkbox" name="${member.id}">-->
+                                    <#--<label for="${member.id}">${member.username}</label>-->
+                                    <#--<br>-->
+                                    </#list>
+                                </select>
+                            </label>
+                            <br/>
+                            <input type="hidden" value="${project.id}" name="project_id">
 
-                    <label for="title">Enter chat title
-                        <input type="text" name="title">
-                    </label>
-                    <br/>
-                    <button type="submit" class="profile-edit-submit">Create chat</button>
-                </form>
+
+                            <label for="title">Enter chat title
+                                <input type="text" name="title">
+                            </label>
+                            <br/>
+                            <button type="submit" class="profile-edit-submit">Create chat</button>
+                        </form>
+                </div>
             <#else>
                 <h4>У вас еще нет пользователей с телегой</h4>
             </#if>
@@ -158,12 +170,13 @@
                         <p class="lead">Simple to use in your project</p>
                         <hr class="my-4">
                         <!--Если форма для кода или для телефона, то выводим ее-->
-                        <#if codeForm?? || phoneForm??>
-                            <form action="${context.getContextPath()}/telegram/connect" method="post"
+                        <#if connectionForm??>
+                            <form action="${context.getContextPath()}/telegram/connect/${inputName}" method="post"
                                   id="telegram_form">
                                 <label for="code"
                                        id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
-                                <input type="text" name="code" id="code" value="">
+                                <#--<input type="text" name="code" id="code" value="">-->
+                                <input type="text" name="${inputName}" id="code" value="${inputValue}">
                                 <input type="hidden" name="projectId" value="${project.id}">
                                 <button type="submit" id="send_code_btn">Send</button>
                             </form>

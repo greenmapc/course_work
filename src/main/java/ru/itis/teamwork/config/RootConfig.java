@@ -26,7 +26,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan({"ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, RabbitConfig.class})
 @PropertySource({"classpath:/db.properties",
         "classpath:/git.properties",
         "classpath:/rabbitmq.properties"})
@@ -97,21 +97,10 @@ public class RootConfig {
     }
 
     @Bean
-    @SneakyThrows
-    public Connection rabbitmqConnection() {
-        ConnectionFactory factory = new ConnectionFactory();
-        String factoryUri = String.format("amqp://%s:%s@%s",
-                env.getRequiredProperty("rabbit.login"),
-                env.getRequiredProperty("rabbit.password"),
-                env.getRequiredProperty("rabbit.host"));
-        factory.setUri(factoryUri);
-        return factory.newConnection();
-    }
-
-    @Bean
     public TelegramService telegramService() {
         Integer port = env.getRequiredProperty("rabbit.host.port", Integer.class);
         String host = String.format("http://%s", env.getRequiredProperty("rabbit.host"));
-        return new TelegramService(host, port);
+        String queueName = env.getRequiredProperty("rabbit.queue.in");
+        return new TelegramService(host, port, queueName);
     }
 }

@@ -49,6 +49,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public Optional<User> getUserByTelegramId(Long telegramId){
+        return userRepository.findUserByTelegramId(telegramId);
+    }
+
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }

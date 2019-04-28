@@ -4,6 +4,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,9 +12,11 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itis.teamwork.models.Message;
+import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import java.io.IOException;
@@ -25,6 +28,7 @@ import java.util.UUID;
 @Service
 @Data
 public class TelegramService {
+
     private String host;
 
     private Integer port;
@@ -33,6 +37,8 @@ public class TelegramService {
 
     private final String SEND_CODE_REQUEST = "{\"phone\":\"%s\",\"code\":\"%s\"}";
 
+    private final String SEND_ID_REQUEST = "{\"phone\":\"%s\"}";
+
     private final String SEND_PHONE_REQUEST = "{\"phone\":\"%s\"}";
 
     private final String CREATE_CHAT_REQUEST = "{\"phone\":\"%s\",\"members\":%s,\"title\":\"%s\"}";
@@ -40,11 +46,15 @@ public class TelegramService {
     private final String SEND_MESSAGE_TO_CHAT = "{\"sender\":\"%s\",\"recipient\":\"%s\",\"text\":\"%s\"}";
 
     @Autowired
-    private Connection rabbitmqConnection;
+    private AmqpTemplate template;
 
-    public TelegramService(String host, Integer port) {
+    private String queueName;
+
+
+    public TelegramService(String host, Integer port, String queueName) {
         this.host = host;
         this.port = port;
+        this.queueName = queueName;
 
         try {
             this.uriBuilder = new URIBuilder(this.host);
@@ -91,7 +101,7 @@ public class TelegramService {
         }
     }
 
-    public Optional<Long> createChat(List<String> membersPhone, String creatorPhone, String chatTitle)
+    public Optional<Long> createChat(List<Long> membersPhone, String creatorPhone, String chatTitle)
             throws URISyntaxException, IOException {
         uriBuilder.setPath("/create_chat");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
@@ -123,8 +133,32 @@ public class TelegramService {
         }
     }
 
+    @SneakyThrows
+    public Long getTelegramId(User user){
+        uriBuilder.setPath("/get_id");
+        HttpPost httpPost = new HttpPost(uriBuilder.build());
+        httpPost.addHeader("Content-Type", "application/json");
+        StringEntity stringEntity = new StringEntity(String.format(SEND_ID_REQUEST, user.getPhone()));
+
+        httpPost.setEntity(stringEntity);
+        HttpClient httpClient = HttpClients.createDefault();
+        try {
+            HttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                JSONArray jsonArray = GitHubApi.getJsonResp(response);
+                Long telegramId = jsonArray.getJSONObject(0).getLong("telegram_id");
+                return telegramId;
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
+
+
+    }
+
     public void sendMessage(Message message) throws IOException {
-        Channel channel = rabbitmqConnection.createChannel();
 
         String messageRabbit = String.format(
                 SEND_MESSAGE_TO_CHAT,
@@ -133,14 +167,10 @@ public class TelegramService {
                 message.getText()
         );
 
-        channel.queueDeclare("telegram", false, false, false, null);
-        channel.basicPublish("", "telegram-in",
-                new AMQP.BasicProperties.Builder()
-                        .contentType("application/json")
-                        .deliveryMode(2)
-                        .priority(1)
-                        .build(),
-                messageRabbit.getBytes()
-        );
+        template.convertAndSend(queueName, messageRabbit, m -> {
+            m.getMessageProperties().setContentType("application/json");
+            return m;
+        });
+
     }
 }

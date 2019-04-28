@@ -90,37 +90,24 @@ public class ProjectController {
     public String messages(@AuthenticationPrincipal User user,
                            @PathVariable("id") Project project,
                            Model model) {
-        if (project == null) {
+        if (project == null || !isMemberOfProject(user, project)) {
             return "redirect:/profile";
         }
+
 
         model.addAttribute("project", project);
         model.addAttribute("user", user);
-        if (!user.getTelegramJoined()) {
-            model.addAttribute("buttonForm", true);
-        }
 
-        Set<User> members = project.getUsers();
-        members.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
+        if (user.getTelegramJoined()){
+            Set<User> members = projectService.getTelegramJoinedUser(project);
+            members.remove(user);
+            model.addAttribute("members", members);
 
-        List<MessageDto> messageDtos = new ArrayList<>();
-        if (project.getChat() != null && project.getChat().getMessages() != null) {
-            messageDtos = project
-                    .getChat()
-                    .getMessages()
-                    .stream()
-                    .map(MessageDto::new)
-                    .collect(Collectors.toList());
             model.addAttribute("chat", project.getChat());
+            model.addAttribute("messages", projectService.getProjectMessages(project));
+
         }
-        model.addAttribute("messages", messageDtos);
-        members.remove(user);
-        model.addAttribute("members", members);
-        if (isMemberOfProject(user, project)) {
-            return "projectMessages";
-        } else {
-            return "redirect:/profile";
-        }
+        return "projectMessages";
     }
 
     @GetMapping("/project/files/{id}")
