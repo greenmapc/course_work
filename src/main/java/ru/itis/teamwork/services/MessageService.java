@@ -37,4 +37,30 @@ public class MessageService {
         }
         return null;
     }
+
+    public Message createAndSaveMessage(Long chatId, User user, String text, Date date, Float timestamp){
+        Optional<Chat> chat = chatRepository.findById(chatId);
+        if (chat.isPresent()) {
+            Message chatMessage = ru.itis.teamwork.models.Message.builder()
+                    .chat(chat.get())
+                    .date(date)
+                    .sender(user)
+                    .text(text)
+                    .timestamp(timestamp)
+                    .build();
+            messageRepository.save(chatMessage);
+            return chatMessage;
+        }
+        return null;
+    }
+
+
+    public Optional<Message> getBySenderAndTextAndTimestamp(User user, String text, Float timestamp){
+        return messageRepository.findBySenderAndTextAndTimestamp(user, text, timestamp);
+    }
+
+    public void saveMessage (Message message){
+        messageRepository.save(message);
+    }
+
 }

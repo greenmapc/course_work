@@ -1,9 +1,6 @@
 package ru.itis.teamwork.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name="message")
+@Setter
 public class Message {
 
     @Id
@@ -35,6 +33,8 @@ public class Message {
     private Chat chat;
 
     private Date date;
+
+    private Float timestamp;
 
     public Message (WebSocketMessage webSocketMessage){
         this.text = webSocketMessage.getText();

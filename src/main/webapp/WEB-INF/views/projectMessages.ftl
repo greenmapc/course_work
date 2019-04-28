@@ -6,6 +6,7 @@
         var stompClient = null;
 
         $(document).ready(function () {
+            scrollToBottom();
             disconnect();
             connect();
         });
@@ -26,6 +27,7 @@
         function connect() {
             console.log("connect");
             var chat_id = document.getElementById('chat_id').value.trim().replace(/\s/g, '');
+            var telegram_user_id = document.getElementById('telegram_id').value.trim().replace(/\s/g, '');
             console.log(chat_id);
             var socket = new SockJS('http://localhost:8080/chat');
             console.log(socket);
@@ -54,50 +56,78 @@
             var chat = document.getElementById('chat_id').value;
             stompClient.send("/app/chat/" + chat.trim().replace(/\s+/g, ''), {},
                 JSON.stringify({from: from, text: text, username: from, chat_id: chat}));
-            document.getElementById('text').value = ''
+            document.getElementById('text').value = '';
+            scrollToBottom();
         }
 
         function showMessageOutput(messageOutput) {
-            console.log("ahsda");
-            var response = document.getElementById('chat_messages');
-            var p = document.createElement('p');
+            let response = document.getElementById('chat_messages');
 
-            var span = document.createElement('span');
-            span.innerText = messageOutput.text;
-            var sender = document.createElement('h6');
-            sender.innerText = messageOutput.username;
-            var date = document.createElement('h6');
-            date.innerText = messageOutput.dateTime;
+            // var span = document.createElement('span');
+            // span.innerText = messageOutput.text;
+            // var sender = document.createElement('h6');
+            // sender.innerText = messageOutput.username;
+            // var date = document.createElement('h6');
+            // date.innerText = messageOutput.dateTime;
+
+            let div = document.createElement('div');
+            div.className = 'row justify-content-between';
+            let p = document.createElement('p');
+            let b = document.createElement('b');
+            b.innerText = messageOutput.username;
+            let i = document.createElement('i');
+            i.innerText = messageOutput.text;
+            p.appendChild(b);
+            p.appendChild(i);
+            let span = document.createElement('span');
+            span.innerText = messageOutput.dateTime;
+            div.appendChild(p);
+            div.appendChild(span);
+
+
+            response.appendChild(div);
+            scrollToBottom();
 
             // console.log(p);
             // p.style.wordWrap = 'break-word';
             //
             // p.appendChild(document.createTextNode(messageOutput.username + ": "
             //     + messageOutput.text + " (" + messageOutput.dateTime + ")"));
-            response.appendChild(span);
-            response.appendChild(sender);
-            response.appendChild(date);
+            // response.appendChild();
+            // response.appendChild(sender);
+            // response.appendChild(date);
             // response.appendChild(p);
+        }
+        function scrollToBottom() {
+            var objDiv = document.getElementById("chat_messages");
+            objDiv.scrollTop = objDiv.scrollHeight;
         }
     </script>
 <#--если у проекта есть чат выводим все сообщения + поле для ввода-->
     <#if project.chat??>
-        <div class="container" id="chat_messages" style="height: 60%; overflow: scroll">
+        <div class="container col-8" id="chat_messages" style="height: 60%; overflow: scroll">
+            <hr>
             <#list messages as message>
-                <span>${message.text}</span>
-                <h6>${message.senderUserName}</h6>
-                <h6>${message.date}</h6>
-                <br>
+                <div class="row justify-content-between">
+                    <p>
+                        <b>${message.senderUserName}</b>
+                        <i>${message.text}</i>
+                    </p>
+                    <span>${message.date}</span>
+                </div>
             </#list>
         </div>
-        <div class="container">
-            <label for="textMessage">Enter message</label>
-            <input type="text" name="textMessage" id="text">
-            <input type="hidden" value="${chat.id}" id="chat_id" name="chat_id">
+        <div class="container col-8 justify-content-center">
+            <hr>
+            <label for="text">Enter message</label>
+            <input type="text" name="textMessage" id="text" style="border:1px solid;border-radius:12px"
+                   class="col-xl-8 col-md-6 col-sm-5 col-xs-5">
+            <input type="hidden" value="${chat.id}" id="chat_id" name="chat_id" readonly="">
             <input type="hidden" value="${user.username}" id="from" name="from">
-            <button onclick="sendMessage()">Send</button>
-            <p id="response"></p>
+            <input type="hidden" value="${user.telegramId}" id="telegram_id" name="from">
+            <button onclick="sendMessage()" class="logOutSubmit">Send</button>
         </div>
+        <p id="response"></p>
     <#else>
     <#--если нет смотрим подключен ли узер к телеграмму-->
         <#if user.telegramJoined>
@@ -119,6 +149,7 @@
                             </label>
                             <br/>
                             <input type="hidden" value="${project.id}" name="project_id">
+
 
                             <label for="title">Enter chat title
                                 <input type="text" name="title">

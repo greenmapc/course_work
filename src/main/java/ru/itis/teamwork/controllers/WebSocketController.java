@@ -50,7 +50,7 @@ public class WebSocketController {
     public WebSocketOutputMessage send(@DestinationVariable String chatId, WebSocketMessage message) throws IOException {
 
         Date date = new Date();
-        String time = new SimpleDateFormat("HH:mm").format(date);
+        String time = new SimpleDateFormat("k:mm dd-MM-yyyy").format(date);
         WebSocketOutputMessage webSocketOutputMessage =  WebSocketOutputMessage.builder()
                 .dateTime(time)
                 .text(message.getText())
