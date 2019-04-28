@@ -21,7 +21,8 @@ public class Message {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "text", length = 1024)
+
+    @Column(columnDefinition="TEXT")
     private String text;
 
     @ManyToOne

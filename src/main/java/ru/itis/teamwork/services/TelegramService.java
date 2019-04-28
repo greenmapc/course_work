@@ -21,6 +21,7 @@ import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -160,11 +161,12 @@ public class TelegramService {
 
     public void sendMessage(Message message) throws IOException {
 
+        String text = message.getText().replaceAll("\"", "\\\\\"");
         String messageRabbit = String.format(
                 SEND_MESSAGE_TO_CHAT,
                 message.getSender().getPhone(),
                 message.getChat().getId(),
-                message.getText()
+                text
         );
 
         template.convertAndSend(queueName, messageRabbit, m -> {
@@ -173,4 +175,5 @@ public class TelegramService {
         });
 
     }
+
 }
