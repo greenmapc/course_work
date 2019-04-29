@@ -12,26 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
-import ru.itis.teamwork.models.dto.MessageDto;
 import ru.itis.teamwork.models.dto.UserDto;
+import ru.itis.teamwork.services.GitHubService;
 import ru.itis.teamwork.services.ProjectService;
 import ru.itis.teamwork.services.UserService;
+import ru.itis.teamwork.util.githubApi.GitHubScope;
+import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProjectController {
     private ProjectService projectService;
     private UserService userService;
+    private GitHubService gitHubService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
-                             UserService userService) {
+                             UserService userService,
+                             GitHubService gitHubService) {
         this.projectService = projectService;
         this.userService = userService;
+        this.gitHubService = gitHubService;
     }
 
     @GetMapping("/newProject")
@@ -98,7 +101,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("user", user);
 
-        if (user.getTelegramJoined()){
+        if (user.getTelegramJoined()) {
             Set<User> members = projectService.getTelegramJoinedUser(project);
             members.remove(user);
             model.addAttribute("members", members);
@@ -138,8 +141,20 @@ public class ProjectController {
     public String settings(@AuthenticationPrincipal User user,
                            @PathVariable("id") Project project,
                            Model model) {
+        model.addAttribute("user", user);
+        if (user.getGithubToken() != null) {
+            List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
+            model.addAttribute("repos", repos);
+        }
         if (isMemberOfProject(user, project) && project != null) {
             model.addAttribute("project", project);
+            if (user.getGithubToken() == null) {
+                model.addAttribute("authLink", gitHubService.getGitHubApi()
+                        .getAuthLink(
+                                GitHubScope.getFullAccess()
+                        )
+                );
+            }
             return "projectSettings";
         } else {
             return "redirect:/profile";

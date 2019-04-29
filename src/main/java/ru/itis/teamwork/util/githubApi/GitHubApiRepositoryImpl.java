@@ -51,7 +51,9 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
             repositoryGithubModel.setCollaborators(this.getCollaborators(
                     user,
                     reposJson.getJSONObject(i)
-                            .getString("collaborators_url").replace("{/collaborator}","")));
+                            .getString("collaborators_url").replace("{/collaborator}", "")
+                    )
+            );
 
             repositoryGitHubModels.add(repositoryGithubModel);
         }
@@ -69,13 +71,13 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
     }
 
     @SneakyThrows
-    private List<Owner> getCollaborators(User user, String uri){
+    private List<Owner> getCollaborators(User user, String uri) {
         HttpGet get = GitHubApi.getGetRequest(uri, user.getGithubToken());
 
         JSONArray collaboratorsJson = GitHubApi.getJsonResp(this.httpClient.execute(get));
 
         List<Owner> collaborators = new ArrayList<>();
-        for(int i = 0 ; i < collaboratorsJson.length(); i++){
+        for (int i = 0; i < collaboratorsJson.length(); i++) {
             collaborators.add(this.getOwner(collaboratorsJson.getJSONObject(i)));
         }
 
@@ -83,7 +85,7 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
     }
 
     @SneakyThrows
-    private Owner getOwner(JSONObject ownerJson){
+    private Owner getOwner(JSONObject ownerJson) {
         Owner owner = jsonUnmarshaller.
                 unmarshal(Owner.class, ownerJson.toString());
 

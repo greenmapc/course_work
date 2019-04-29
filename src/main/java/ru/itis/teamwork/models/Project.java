@@ -26,6 +26,9 @@ public class Project {
     @Column(name = "git_link")
     private String gitLink;
 
+    @Column(name = "git_repo_name")
+    private String gitRepositoryName;
+
     @Column(name = "description", nullable = false, length = 65535)
     private String description;
 

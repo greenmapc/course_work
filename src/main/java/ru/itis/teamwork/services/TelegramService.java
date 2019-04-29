@@ -1,8 +1,5 @@
 package ru.itis.teamwork.services;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
@@ -21,7 +18,6 @@ import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -135,7 +131,7 @@ public class TelegramService {
     }
 
     @SneakyThrows
-    public Long getTelegramId(User user){
+    public Long getTelegramId(User user) {
         uriBuilder.setPath("/get_id");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Content-Type", "application/json");
@@ -147,20 +143,16 @@ public class TelegramService {
             HttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == 200) {
                 JSONArray jsonArray = GitHubApi.getJsonResp(response);
-                Long telegramId = jsonArray.getJSONObject(0).getLong("telegram_id");
-                return telegramId;
-            }else {
+                return jsonArray.getJSONObject(0).getLong("telegram_id");
+            } else {
                 return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
-
-
     }
 
     public void sendMessage(Message message) throws IOException {
-
         String text = message.getText().replaceAll("\"", "\\\\\"");
         String messageRabbit = String.format(
                 SEND_MESSAGE_TO_CHAT,
@@ -168,12 +160,9 @@ public class TelegramService {
                 message.getChat().getId(),
                 text
         );
-
         template.convertAndSend(queueName, messageRabbit, m -> {
             m.getMessageProperties().setContentType("application/json");
             return m;
         });
-
     }
-
 }

@@ -58,9 +58,7 @@ public class TelegramController {
 
     @SneakyThrows
     @PostMapping("/telegram/connect")
-    public String connect(@RequestParam(value = "code", required = false) String phoneNumber,
-                          @RequestParam("projectId") Project project,
-                          @RequestParam(value = "buttonForm", required = false) String bf,
+    public String connect(@RequestParam("projectId") Project project,
                           @AuthenticationPrincipal User user,
                           Model model) {
         model.addAttribute("project", project);
@@ -77,9 +75,9 @@ public class TelegramController {
     @PostMapping("/telegram/connect/phone")
     @SneakyThrows
     public String sendPhone(@RequestParam(value = "phone") String phoneNumber,
-                             @RequestParam("projectId") Project project,
-                             @AuthenticationPrincipal User user,
-                             ModelMap model) {
+                            @RequestParam("projectId") Project project,
+                            @AuthenticationPrincipal User user,
+                            ModelMap model) {
         model.addAttribute("project", project);
         model.addAttribute("user", user);
 
@@ -89,13 +87,17 @@ public class TelegramController {
 
             if (isConnected.isPresent() && isConnected.get()) {
 
-                user.setTelegramJoined(true);
-                user.setTelegramId(telegramService.getTelegramId(user));
+                Long telegramId = telegramService.getTelegramId(user);
+                if (telegramId != null) {
+                    user.setTelegramJoined(true);
+                    user.setTelegramId(telegramId);
+                } else {
+                    return "projectMessages";
+                }
 
                 return "redirect:/project/messages/" + project.getId();
             } else if (isConnected.isPresent()) {
                 model.addAttribute("connectionForm", true);
-                model.addAttribute("inputValue", "Введите код");
                 model.addAttribute("inputName", "code");
             }
             userRepository.save(user);
@@ -108,9 +110,9 @@ public class TelegramController {
     @PostMapping("/telegram/connect/code")
     @SneakyThrows
     public String sendCode(@RequestParam(value = "code") String code,
-                            @RequestParam("projectId") Project project,
-                            @AuthenticationPrincipal User user,
-                            ModelMap model) {
+                           @RequestParam("projectId") Project project,
+                           @AuthenticationPrincipal User user,
+                           ModelMap model) {
         model.addAttribute("project", project);
         model.addAttribute("user", user);
 
@@ -122,7 +124,6 @@ public class TelegramController {
         } else if (authorized.isPresent()) {
 
             model.addAttribute("connectionForm", true);
-            model.addAttribute("inputValue", "Введите код");
             model.addAttribute("inputName", "code");
         }
         return "redirect:/project/messages/" + project.getId();

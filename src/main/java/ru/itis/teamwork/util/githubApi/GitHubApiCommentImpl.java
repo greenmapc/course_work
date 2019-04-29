@@ -24,7 +24,7 @@ public class GitHubApiCommentImpl implements GitHubComment {
     private JsonUnmarshaller jsonUnmarshaller;
     private HttpClient httpClient;
 
-    public GitHubApiCommentImpl(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient){
+    public GitHubApiCommentImpl(JsonUnmarshaller jsonUnmarshaller, HttpClient httpClient) {
         this.jsonUnmarshaller = jsonUnmarshaller;
         this.httpClient = httpClient;
     }
@@ -78,7 +78,7 @@ public class GitHubApiCommentImpl implements GitHubComment {
         JSONArray jsonComments = GitHubApi.getJsonResp(this.httpClient.execute(get));
         List<Comment> comments = new ArrayList<>();
 
-        for( int i = 0; i< jsonComments.length(); i++){
+        for (int i = 0; i < jsonComments.length(); i++) {
             comments.add(this.getComment(jsonComments.getJSONObject(i)));
         }
 
@@ -86,14 +86,14 @@ public class GitHubApiCommentImpl implements GitHubComment {
     }
 
     @SneakyThrows
-    private Comment getComment(JSONObject jsonComment){
+    private Comment getComment(JSONObject jsonComment) {
         return this.jsonUnmarshaller.unmarshal(Comment.class, jsonComment.toString());
     }
 
     @SneakyThrows
     public int deleteComment(User user,
                              RepositoryGithubModel repositoryGithubModel,
-                             Comment comment){
+                             Comment comment) {
 
         URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
                 .concat(GitHubSource.REPOS.source)
