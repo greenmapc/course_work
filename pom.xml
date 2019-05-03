@@ -61,7 +61,7 @@
         <!-- Spring -->
         <spring-framework.version>5.1.5.RELEASE</spring-framework.version>
         <spring-data-jpa.version>2.1.2.RELEASE</spring-data-jpa.version>
-        <spring-security.version>5.1.4.RELEASE</spring-security.version>
+        <spring-security.version>5.1.5.RELEASE</spring-security.version>
 
 
         <!-- Java EE / Java SE dependencies -->
@@ -222,7 +222,7 @@
             <type>jar</type>
         </dependency>
 
-        <!-- DB Drivers -->
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -298,5 +298,51 @@
             <artifactId>json-unmarshaller</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${spring-framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${spring-framework.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit -->
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>2.1.5.RELEASE</version>
+        </dependency>
+
     </dependencies>
 </project>

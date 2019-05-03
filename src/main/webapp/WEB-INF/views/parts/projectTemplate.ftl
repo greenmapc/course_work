@@ -3,15 +3,10 @@
     <#import "projectNavbar.ftl" as p>
     <@c.page title>
         <div class="container">
-            <div class="row justify-content-center">
-                <span><i>${project.name}</i></span>
-            </div>
-            <div class="row justify-content-center">
-                <@p.projectNavbar/>
-            </div>
-            <div class="row">
+            <@p.projectNavbar/>
+<#--            <div class="row">-->
                 <#nested>
-            </div>
+            <#--</div>-->
         </div>
     </@c.page>
 </#macro>

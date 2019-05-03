@@ -1,18 +1,18 @@
 <#import "parts/common.ftl" as c>
 <@c.page "Projects">
     <div class="profile-main-block container">
-        <div class="float-left profile-main-inf col-3 min-width">
+        <div class="float-left profile-main-inf-l profile-main-inf col-3 min-width">
             <div class="profile-photo">
-                <img src="<#if user??>
-                            <#if user.getImg()??>
-                                ${user.getImg().getPath()}
-                            <#else>
-                                https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg
-                            </#if>
-                          <#else>https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg</#if>">
+                <#if user??>
+                    <#if user.getImg()??>
+                        <img src="${context.getContextPath()}/img/${user.getImg().getFullName()}">
+                    <#else>
+                        <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg">
+                    </#if>
+                </#if>
             </div>
             <div class="profile-name">
-                <span>Kuzmenko Anna</span>
+                <span>${user.firstName} ${user.lastName}</span>
             </div>
             <#if isCurrentUser>
                 <form action="${context.getContextPath()}/profileSettings">

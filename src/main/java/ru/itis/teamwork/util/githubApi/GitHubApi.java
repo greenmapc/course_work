@@ -17,11 +17,13 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-import ru.itis.teamwork.util.modelgit.*;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.util.modelgit.Comment;
+import ru.itis.teamwork.util.modelgit.Commit;
+import ru.itis.teamwork.util.modelgit.RepositoryContentModel;
+import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,13 +39,12 @@ public class GitHubApi {
     private GitHubRepository gitHubRepository;
     private GitHubComment gitHubComment;
 
-    public GitHubApi(){
+    public GitHubApi() {
         this.githubCommit = new GitHubApiCommitImpl(jsonUnmarshaller, httpClient);
         this.gitHubRepository = new GitHubApiRepositoryImpl(jsonUnmarshaller, httpClient);
         this.gitHubComment = new GitHubApiCommentImpl(jsonUnmarshaller, httpClient);
     }
 
-    //   не убирать пока полностью не готово!!!!
     private String CLIENT_ID = "b8e1772648afd427f8cc";
     private String CLIENT_SECRET = "df0f334bc2c424539e911af3b6be9f8a11f8ecc3";
     private String GITHUB_API_AUTH = "https://github.com/login/oauth";
@@ -83,11 +84,13 @@ public class GitHubApi {
     }
 
     @SneakyThrows
-    static JSONArray getJsonResp(HttpResponse response) {
+    public static JSONArray getJsonResp(HttpResponse response) {
         HttpEntity httpEntity = response.getEntity();
         String jsonRes = EntityUtils.toString(httpEntity);
-        if (jsonRes.charAt(0) != '[') {
-            jsonRes = ("[").concat(jsonRes).concat("]");
+        if (jsonRes != null) {
+            if (jsonRes.charAt(0) != '[') {
+                jsonRes = ("[").concat(jsonRes).concat("]");
+            }
         }
         return new JSONArray(jsonRes);
     }
@@ -165,65 +168,19 @@ public class GitHubApi {
                                   RepositoryGithubModel repositoryGithubModel,
                                   Commit commit,
                                   Comment comment) {
-
         return this.gitHubComment.addCommentToCommit(user, repositoryGithubModel, commit, comment);
     }
 
     @SneakyThrows
     public List<Comment> getCommentsByRepo(User user,
                                            RepositoryGithubModel repositoryGithubModel) {
-
-
         return this.gitHubComment.getCommentsByRepo(user, repositoryGithubModel);
     }
 
     @SneakyThrows
     public int deleteComment(User user,
                              RepositoryGithubModel repositoryGithubModel,
-                             Comment comment){
-
+                             Comment comment) {
         return this.gitHubComment.deleteComment(user, repositoryGithubModel, comment);
-    }
-
-
-    public static void main(String[] args) throws URISyntaxException {
-        GitHubApi gitHubApi = new GitHubApi();
-        User user = new User();
-
-//        System.out.println(gitHubApi.getAuthLink());
-
-
-//        System.out.println(gitHubApi.getAccessToken("6fece3d7c5bdd6f62529"));
-
-        user.setGithubToken(" ");
-        user.setGitName("daniszam");
-//        List<RepositoryGithubModel> repositoryGithub = gitHubApi.getRepos(user);
-
-
-//        System.out.println(repositoryGithub.get(0));
-//        List<Commit> commits = gitHubApi.getCommitsByRepoName(user, repositoryGithub.get(0).getName());
-//        System.out.println(commits.get(0));
-        Comment comment = Comment.builder()
-                .body("from1 github api")
-                .path("src/main/java/utils/Circle.java")
-                .position(10)
-                .build();
-
-//
-//        int statusCode = gitHubApi.addCommentToCommit(
-//                user,
-//                repositoryGithub.get(0),
-//                commits.get(0),
-//                comment);
-//        List<Comment> comments = gitHubApi.getCommentsByRepo(user, repositoryGithub.get(0));
-//        System.out.println(comments);
-//        System.out.println(gitHubApi.deleteComment(user, repositoryGithub.get(0), comments.get(0)));
-//          gitHubApi.createRepo(user, RepositoryGithubModel.builder().name("First1 api rep").build());
-          gitHubApi.deleteRepo(user, "First1-api-rep");
-//        System.out.println(gitHubApi.deleteRepo(user, "First-api-rep"));
-//        List<Commit> commitList = gitHubApi.getCommitsByRepoName(USER, "bankservice");
-//        List<RepositoryGithubModel> repositoryGithubs = gitHubApi.getRepos(USER);
-//        System.out.println(repositoryGithubs);
-
     }
 }

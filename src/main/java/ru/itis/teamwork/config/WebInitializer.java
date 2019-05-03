@@ -24,4 +24,5 @@ public class WebInitializer extends AbstractDispatcherServletInitializer{
         context.register(RootConfig.class);
         return context;
     }
+
 }

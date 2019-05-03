@@ -1,11 +1,15 @@
 package ru.itis.teamwork.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -15,16 +19,35 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import ru.itis.teamwork.converter.StringToProjectConverter;
+import ru.itis.teamwork.converter.StringToUserConverter;
+import ru.itis.teamwork.converter.StringsToUserConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@ComponentScan(basePackages = {"ru.itis.teamwork.controllers"})
+@ComponentScan(basePackages = {"ru.itis.teamwork.controllers", "ru.itis.teamwork.converter"})
 @EnableWebMvc
 @PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
-@Import(WebSecurityConfig.class)
+@Import({WebSecurityConfig.class, WebSocketConfig.class})
+@EnableAsync
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private StringsToUserConverter stringsToUserConverter;
+
+    @Autowired
+    private StringToUserConverter stringToUserConverter;
+
+    @Autowired
+    private StringToProjectConverter stringToProjectConverter;
+
+    public void addFormatters(FormatterRegistry formatterRegistry) {
+        formatterRegistry.addConverter(stringsToUserConverter);
+        formatterRegistry.addConverter(stringToUserConverter);
+        formatterRegistry.addConverter(stringToProjectConverter);
+    }
 
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
@@ -33,6 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
         resolver.setRequestContextAttribute("context");
+        resolver.setContentType("text/html; charset=UTF-8");
         return resolver;
     }
 
@@ -80,6 +104,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(byteArrayHttpMessageConverter());
+        converters.add(new MappingJackson2HttpMessageConverter());
     }
 
     @Bean
@@ -94,6 +119,7 @@ public class WebConfig implements WebMvcConfigurer {
         list.add(MediaType.IMAGE_JPEG);
         list.add(MediaType.IMAGE_PNG);
         list.add(MediaType.APPLICATION_OCTET_STREAM);
+        list.add(MediaType.APPLICATION_JSON);
         return list;
     }
 

@@ -1,5 +1,8 @@
 package ru.itis.teamwork.config;
 
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import lombok.SneakyThrows;
 import org.apache.http.impl.client.HttpClients;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.itis.teamwork.services.TelegramService;
 import ru.itis.teamwork.util.githubApi.GitHubApi;
 
 import javax.annotation.Resource;
@@ -22,8 +26,10 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan({"ru.itis.teamwork.services"})
 @EnableJpaRepositories("ru.itis.teamwork.repositories")
-@Import({WebSecurityConfig.class})
-@PropertySource({"classpath:/db.properties", "classpath:/git.properties"})
+@Import({WebSecurityConfig.class, RabbitConfig.class})
+@PropertySource({"classpath:/db.properties",
+        "classpath:/git.properties",
+        "classpath:/rabbitmq.properties"})
 public class RootConfig {
     @Resource
     private Environment env;
@@ -32,7 +38,6 @@ public class RootConfig {
     @Primary
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
         dataSource.setDriverClassName(env.getRequiredProperty("db.driverClassName"));
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.user"));
@@ -46,7 +51,7 @@ public class RootConfig {
 
         gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
         gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
-//      gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+        //gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
         gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
         gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
         gitHubApi.setHttpClient(HttpClients.createDefault());
@@ -89,5 +94,13 @@ public class RootConfig {
         properties.put("hibernate.enable_lazy_load_no_trans", env.getRequiredProperty("hibernate.enable_lazy_load_no_trans"));
 
         return properties;
+    }
+
+    @Bean
+    public TelegramService telegramService() {
+        Integer port = env.getRequiredProperty("rabbit.host.port", Integer.class);
+        String host = String.format("http://%s", env.getRequiredProperty("rabbit.host"));
+        String queueName = env.getRequiredProperty("rabbit.queue.in");
+        return new TelegramService(host, port, queueName);
     }
 }

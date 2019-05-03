@@ -1,19 +1,25 @@
 package ru.itis.teamwork.models;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "site_user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username")
         })
+
 @Data
 public class User implements UserDetails {
     @Id
@@ -42,14 +48,16 @@ public class User implements UserDetails {
     @Column(name = "github_token")
     private String githubToken;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "is_telegram_joined", nullable = false)
+    private Boolean telegramJoined;
+
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
-
-    public User() {
-
-    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "main_img", referencedColumnName = "id")
@@ -62,10 +70,23 @@ public class User implements UserDetails {
     private Set<Task> tasks;
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private Set<Project> projects;
+
+    @ManyToMany(mappedBy = "members")
+    private Set<Chat> chats;
+
+    @OneToMany(mappedBy = "sender")
+    private Set<Message> messages;
 
     @OneToMany(mappedBy = "teamLeader")
     private Set<Project> leaderProjects;
+
+    private Long telegramId;
+
+    public User() {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
