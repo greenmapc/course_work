@@ -3,11 +3,12 @@ package ru.itis.teamwork.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user_main_img")
 @Data
-public class UserMainImg {
+public class UserMainImg implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

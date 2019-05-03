@@ -1,15 +1,14 @@
 package ru.itis.teamwork.models;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "project_file")
 @Data
-public class ProjectFile {
+public class ProjectFile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
