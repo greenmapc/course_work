@@ -92,7 +92,7 @@ public class UserService implements UserDetailsService {
         try {
             Map args = new HashMap();
             args.put("link", "http://localhost:9000/confirm/" + confirmString);
-            Template emailTemplate = freemarkerConfig.getTemplate("registration_confirmation.ftl");
+            Template emailTemplate = freemarkerConfig.getTemplate("email/registration_confirmation.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(emailTemplate, args);
             emailService.sendMail("Подтвреждение регистрации", html, newUser.getEmail());
         } catch (IOException | TemplateException e) {
