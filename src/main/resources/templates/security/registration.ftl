@@ -20,6 +20,10 @@
                         <@spring.showErrors "form.lastName"/>
                     </div>
                     <div class="form__field">
+                        <@spring.formInput "form.email" "placeholder='Email'"/>
+                        <@spring.showErrors "form.email"/>
+                    </div>
+                    <div class="form__field">
                         <@spring.formInput "form.username" "placeholder='Username'"/>
                         <@spring.showErrors "form.username"/>
                     </div>
