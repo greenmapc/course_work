@@ -103,7 +103,7 @@ public class GitHubApi {
                         concat(GitHubOperation.EMAILS.operation),
                 token);
         JSONObject obj = getJsonResp(httpClient.execute(httpGet)).getJSONObject(0);
-        return obj.getString("email");
+        return obj.getString("templates/email");
     }
 
     @SneakyThrows

@@ -1,18 +1,24 @@
 package ru.itis.teamwork.services;
 
+import freemarker.core.ParseException;
+import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
 import ru.itis.teamwork.repositories.UserRepository;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +30,12 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private Configuration freemarkerConfig;
+
+    @Autowired
     public UserService(UserRepository userRepository,
-                       EmailService emailService, PasswordEncoder passwordEncoder) {
+                       EmailService emailService,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
@@ -76,11 +86,17 @@ public class UserService implements UserDetailsService {
 
         try {
             userRepository.save(newUser);
-            String text = "<a href='http://localhost:8080/confirm/" + newUser.getConfirmString() + "'>" +"Пройдите по ссылке" + "</a>";
-            System.out.println(text);
-            emailService.sendMail("Подтвреждение регистрации", text, newUser.getEmail());
         } catch (DataIntegrityViolationException e) {
             return false;
+        }
+        try {
+            Map args = new HashMap();
+            args.put("link", "http://localhost:9000/confirm/" + confirmString);
+            Template emailTemplate = freemarkerConfig.getTemplate("registration_confirmation.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(emailTemplate, args);
+            emailService.sendMail("Подтвреждение регистрации", html, newUser.getEmail());
+        } catch (IOException | TemplateException e) {
+            System.out.println("Can not send mail");
         }
         return true;
     }
