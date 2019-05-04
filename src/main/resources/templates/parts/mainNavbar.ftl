@@ -6,24 +6,24 @@
             <a class="navbar-brand" href="#">TeamWorker</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="${context.getContextPath()}/home">Home</a>
+                    <a class="nav-link" href="/home">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${context.getContextPath()}/profile">Profile</a>
+                    <a class="nav-link" href="/profile">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
                 <#if isAdmin>
                     <li class="nav-item">
-                        <a class="nav-link" href="${context.getContextPath()}/user">User list</a>
+                        <a class="nav-link" href="/user">User list</a>
                     </li>
                 </#if>
             </ul>
-            <form class="form-inline my-2 my-lg-0" method="post" action="${context.getContextPath()}/logout">
+            <form class="form-inline my-2 my-lg-0" method="post" action="/logout">
                 <input type="submit" class="logOutSubmit" value="<#if user??>Log out<#else>Log in</#if>">
             </form>
         </nav>

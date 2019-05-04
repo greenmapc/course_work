@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 @Data
 //@EqualsAndHashCode(exclude = "chat")
 @ToString(exclude = {"users", "teamLeader"})
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +35,10 @@ public class Project {
     private String description;
 
     @OneToMany(mappedBy = "project")
-    private Set<ProjectFile> files;
+    private Set<ProjectFile> files = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
-    private Set<Task> projectTasks;
+    private Set<Task> projectTasks = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -45,7 +47,7 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @JsonBackReference
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_chat")

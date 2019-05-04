@@ -4,8 +4,8 @@
 <html>
 <head>
     <title>Chat WebSocket</title>
-    <script src="../../assets/js/sockjs-0.3.4.js"></script>
-    <script src="../../assets/js/stomp.js"></script>
+    <script src="/assets/js/sockjs-0.3.4.js"></script>
+    <script src="/assets/js/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
 

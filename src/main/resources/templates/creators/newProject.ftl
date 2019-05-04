@@ -7,7 +7,7 @@
             <div class="profile-photo">
                 <#if user??>
                     <#if user.getImg()??>
-                        <img src="${context.getContextPath()}/img/${user.getImg().getFullName()}">
+                        <img src="/img/${user.getImg().getFullName()}">
                     <#else>
                         <img src="https://www.cierpgaud.fr/wp-content/uploads/2018/07/avatar.jpg">
                     </#if>
@@ -17,7 +17,7 @@
                 <span>${user.firstName} ${user.lastName}</span>
             </div>
             <#if isCurrentUser>
-                <form action="${context.getContextPath()}/profileSettings">
+                <form action="/profileSettings">
                     <input type="submit" value="Edit" class="profile-edit-submit"/>
                 </form>
             </#if>
@@ -28,17 +28,17 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="${context.getContextPath()}/profile">Overview</a>
+                                <a class="nav-link" href="/profile">Overview</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${context.getContextPath()}/projects">Projects</a>
+                                <a class="nav-link" href="/projects">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${context.getContextPath()}/profileSettings">Settings</a>
+                                <a class="nav-link" href="/profileSettings">Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link add-link"
-                                   href="${context.getContextPath()}/newProject">Add project</a>
+                                   href="/newProject">Add project</a>
                             </li>
                         </ul>
                     </div>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="row add-project-form">
-                    <form class="add-project-form" action="${context.getContextPath()}/newProject" method="post">
+                    <form class="add-project-form" action="/newProject" method="post">
                         <@spring.bind "form"/>
                         <label for="nameField">
                             <span>Project name</span>
