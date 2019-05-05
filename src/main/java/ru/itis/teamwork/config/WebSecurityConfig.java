@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/assets/**", "/gitAuth", "/gitCode")
+                .antMatchers("/", "/registration", "/assets/**", "/gitAuth", "/gitCode", "/confirm/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

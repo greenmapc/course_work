@@ -93,6 +93,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "confirm_string")
     private String confirmString;
 
+    @Column(columnDefinition = "BOOLEAN default false")
+    private boolean active;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -125,7 +128,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
     public boolean isAdmin() {

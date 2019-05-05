@@ -29,6 +29,7 @@ public class EmailService {
             messageHelper.setText(text, true);
         };
 
+//      ToDo: exception without net
         javaMailSender.send(messagePreparator);
     }
 }
