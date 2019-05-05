@@ -143,8 +143,15 @@ public class ProjectController {
                            Model model) {
         model.addAttribute("user", user);
         if (user.getGithubToken() != null) {
-            List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
-            model.addAttribute("repos", repos);
+            if (project.getGitRepositoryName() == null) {
+                List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
+                model.addAttribute("repos", repos);
+                System.out.println(repos.get(0).getDownloadUrl());
+                model.addAttribute("repository", repos.get(0));
+            }else {
+                RepositoryGithubModel repo = gitHubService.getRepositoryWithBranches(user, project.getGitRepositoryName());
+                model.addAttribute("repo", repo);
+            }
         }
         if (isMemberOfProject(user, project) && project != null) {
             model.addAttribute("project", project);

@@ -18,10 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import ru.itis.teamwork.models.User;
-import ru.itis.teamwork.util.modelgit.Comment;
-import ru.itis.teamwork.util.modelgit.Commit;
-import ru.itis.teamwork.util.modelgit.RepositoryContentModel;
-import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
+import ru.itis.teamwork.util.modelgit.*;
 
 import java.net.URI;
 import java.util.List;
@@ -49,7 +46,8 @@ public class GitHubApi {
     private String CLIENT_SECRET = "df0f334bc2c424539e911af3b6be9f8a11f8ecc3";
     private String GITHUB_API_AUTH = "https://github.com/login/oauth";
     private String REDIRECT;
-    protected static String GITHUB = "https://api.github.com";
+    protected final static String GITHUB_API = "https://api.github.com";
+    protected final static String GITHUB = "https://github.com";
     private HttpClient httpClient = HttpClients.createDefault();
     private JsonUnmarshaller jsonUnmarshaller = new DefaultJsonUnmarshaller();
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -79,7 +77,6 @@ public class GitHubApi {
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.setHeader(HttpHeaders.ACCEPT, "application/json");
         JSONObject obj = getJsonResp(httpClient.execute(httpPost)).getJSONObject(0);
-        System.out.println(obj);
         return obj.getString("access_token");
     }
 
@@ -98,7 +95,7 @@ public class GitHubApi {
     @SneakyThrows
     public String getUserEmail(String token) {
         HttpGet httpGet = getGetRequest(
-                GITHUB.
+                GITHUB_API.
                         concat(GitHubSource.USER.source).
                         concat(GitHubOperation.EMAILS.operation),
                 token);
@@ -116,7 +113,7 @@ public class GitHubApi {
 
     @SneakyThrows
     public String getUsername(String token) {
-        HttpGet httpGet = getGetRequest(GITHUB.concat(GitHubSource.USER.source), token);
+        HttpGet httpGet = getGetRequest(GITHUB_API.concat(GitHubSource.USER.source), token);
         JSONObject obj = getJsonResp(httpClient.execute(httpGet)).getJSONObject(0);
         System.out.println(obj.toString());
         return obj.getString("login");
@@ -127,13 +124,18 @@ public class GitHubApi {
         return this.githubCommit.getCommitsByRepoName(user, repoName);
     }
 
+    public RepositoryGithubModel getRepoByName(User user, String name){
+        return this.gitHubRepository.getRepoByName(user, name);
+    }
 
     @SneakyThrows
     public List<RepositoryGithubModel> getRepos(User user) {
         return this.gitHubRepository.getRepos(user);
     }
 
-
+    public List<Branch> getBranches(User user, RepositoryGithubModel repositoryGithubModel){
+        return this.gitHubRepository.getBranches(user, repositoryGithubModel);
+    }
     @SneakyThrows
     public int createRepo(User user, RepositoryGithubModel repository) {
         return this.gitHubRepository.createRepo(user, repository);
@@ -147,6 +149,12 @@ public class GitHubApi {
     @SneakyThrows
     public List<RepositoryContentModel> getRepositoryContent(User user, String repoName) {
         return this.gitHubRepository.getRepositoryContent(user, repoName);
+    }
+
+    public String getBranchRepositoryDownloadLink(User user,
+                                                  RepositoryGithubModel repositoryGithubModel,
+                                                  Branch branch){
+        return this.gitHubRepository.getDownloadLink(user,repositoryGithubModel, branch);
     }
 
     @SneakyThrows

@@ -31,10 +31,13 @@
     <div class="row">
         <div class="container" align="center">
             <#if user.githubToken??>
-                <#if repos??>
-                    <#if project.gitRepositoryName??>
+                    <#if repo??>
                         <h3>Github</h3>
                         <h4><a href="${project.gitLink}">${project.gitRepositoryName}</a></h4>
+                        <#--<h6><a href="${repository.downloadUrl}">Download</a></h6>-->
+                        <#list repo.branches as branch>
+                            <h6><a href="${branch.downloadLink}">${branch.name}</a></h6>
+                        </#list>
                     <#else>
                         <label for="repos">Select repo for your project from your repos:
                         </label>
@@ -48,7 +51,6 @@
                             <button type="submit" class="btn btn-primary btn-dark">Select</button>
                         </form>
                     </#if>
-                </#if>
             <#else>
                 <div class="jumbotron col-md-8" align="center">
                     <h1 class="display-4">Connecting to GitHub</h1>

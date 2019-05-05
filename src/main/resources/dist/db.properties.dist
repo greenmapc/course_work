@@ -2,7 +2,7 @@
 
 db.url=db_url
 db.user=postgres
-db.password=
+db.password=dREAM1cACAO
 db.driverClassName=org.postgresql.Driver
 
 #Hibernate config

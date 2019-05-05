@@ -12,10 +12,13 @@ import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.util.modelgit.Branch;
 import ru.itis.teamwork.util.modelgit.Owner;
 import ru.itis.teamwork.util.modelgit.RepositoryContentModel;
 import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
     @SneakyThrows
     public List<RepositoryGithubModel> getRepos(User user) {
         HttpGet httpGet = GitHubApi.getGetRequest(
-                GitHubApi.GITHUB
+                GitHubApi.GITHUB_API
                         .concat(GitHubSource.USER.source)
                         .concat(GitHubSource.REPOS.source),
                 user.getGithubToken()
@@ -61,20 +64,49 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
         return repositoryGitHubModels;
     }
 
-    @SneakyThrows
+    @Override
+    public RepositoryGithubModel getRepoByName(User user, String name) {
+        HttpGet httpGet = GitHubApi.getGetRequest(
+                GitHubApi.GITHUB_API
+                        .concat(GitHubSource.REPOS.source)
+                        .concat("/")
+                        .concat(user.getGitName())
+                        .concat("/").concat(name),
+                user.getGithubToken()
+        );
+        try {
+            JSONArray repoJson = GitHubApi.getJsonResp(this.httpClient.execute(httpGet));
+            if (repoJson.length() > 0){
+                return getRepo(repoJson.getJSONObject(0));
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return null;
+    }
+
     private RepositoryGithubModel getRepo(JSONObject repoJson) {
 
-        RepositoryGithubModel repositoryGithubModel = jsonUnmarshaller.
-                unmarshal(RepositoryGithubModel.class, repoJson.toString());
+        RepositoryGithubModel repositoryGithubModel = null;
+        try {
+            repositoryGithubModel = jsonUnmarshaller.
+                    unmarshal(RepositoryGithubModel.class, repoJson.toString());
+        } catch (IOException e) {
+            return null;
+        }
 
         return repositoryGithubModel;
     }
 
-    @SneakyThrows
     private List<Owner> getCollaborators(User user, String uri) {
         HttpGet get = GitHubApi.getGetRequest(uri, user.getGithubToken());
 
-        JSONArray collaboratorsJson = GitHubApi.getJsonResp(this.httpClient.execute(get));
+        JSONArray collaboratorsJson = null;
+        try {
+            collaboratorsJson = GitHubApi.getJsonResp(this.httpClient.execute(get));
+        } catch (IOException e) {
+            return null;
+        }
 
         List<Owner> collaborators = new ArrayList<>();
         for (int i = 0; i < collaboratorsJson.length(); i++) {
@@ -84,50 +116,99 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
         return collaborators;
     }
 
-    @SneakyThrows
     private Owner getOwner(JSONObject ownerJson) {
-        Owner owner = jsonUnmarshaller.
-                unmarshal(Owner.class, ownerJson.toString());
+        Owner owner = null;
+        try {
+            owner = jsonUnmarshaller.
+                    unmarshal(Owner.class, ownerJson.toString());
+        } catch (IOException e) {
+            return null;
+        }
 
         return owner;
 
     }
 
-    @SneakyThrows
+
+
     public int createRepo(User user, RepositoryGithubModel repository) {
-        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
-                .concat(GitHubSource.USER.source)
-                .concat(GitHubSource.REPOS.source));
+        URIBuilder uriBuilder = null;
+        try {
+            uriBuilder = new URIBuilder(GitHubApi.GITHUB_API
+                    .concat(GitHubSource.USER.source)
+                    .concat(GitHubSource.REPOS.source));
+            HttpPost post = GitHubApi.getJsonPostRequest(
+                    uriBuilder.build(),
+                    repository,
+                    user.getGithubToken());
+            HttpResponse response = httpClient.execute(post);
+            return response.getStatusLine().getStatusCode();
+        } catch (URISyntaxException | IOException e) {
+           return 500;
+        }
 
-
-        HttpPost post = GitHubApi.getJsonPostRequest(
-                uriBuilder.build(),
-                repository,
-                user.getGithubToken());
-
-        HttpResponse response = httpClient.execute(post);
-        return response.getStatusLine().getStatusCode();
     }
 
-    @SneakyThrows
     public int deleteRepo(User user, String repoName) {
-        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
-                .concat(GitHubSource.REPOS.source)
-                .concat("/")
-                .concat(user.getGitName())
-                .concat("/")
-                .concat(repoName));
+        URIBuilder uriBuilder = null;
+        try {
+            uriBuilder = new URIBuilder(GitHubApi.GITHUB_API
+                    .concat(GitHubSource.REPOS.source)
+                    .concat("/")
+                    .concat(user.getGitName())
+                    .concat("/")
+                    .concat(repoName));
+            HttpDelete delete = new HttpDelete(uriBuilder.build());
+            delete.setHeader(HttpHeaders.AUTHORIZATION, "token ".concat(user.getGithubToken()));
+            HttpResponse response = httpClient.execute(delete);
+            return response.getStatusLine().getStatusCode();
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
+        return 500;
+    }
 
-        HttpDelete delete = new HttpDelete(uriBuilder.build());
-        delete.setHeader(HttpHeaders.AUTHORIZATION, "token ".concat(user.getGithubToken()));
-        HttpResponse response = httpClient.execute(delete);
-        return response.getStatusLine().getStatusCode();
+    @Override
+    public List<Branch> getBranches(User user, RepositoryGithubModel repository) {
+        URIBuilder uriBuilder = null;
+        try {
+            uriBuilder = new URIBuilder(GitHubApi.GITHUB_API
+                    .concat(GitHubSource.REPOS.source)
+                    .concat("/")
+                    .concat(user.getGitName())
+                    .concat("/")
+                    .concat(repository.getName())
+                    .concat(GitHubSource.BRANCHES.source));
+            HttpGet get = new HttpGet(uriBuilder.build());
+            get.setHeader(HttpHeaders.AUTHORIZATION, "token ".concat(user.getGithubToken()));
+            HttpResponse response = httpClient.execute(get);
+            JSONArray contentArray = GitHubApi.getJsonResp(response);
+            List<Branch> branches = new ArrayList<>();
+            for (int i = 0; i < contentArray.length(); i++) {
+                branches.add(this.getBranch(
+                        contentArray.getJSONObject(i)
+                ));
+            }
+            return branches;
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getDownloadLink(User user, RepositoryGithubModel repositoryGithubModel, Branch branch) {
+        return GitHubApi.GITHUB
+                .concat("/").concat(user.getGitName())
+                .concat("/").concat(repositoryGithubModel.getName())
+                .concat("/archive")
+                .concat("/").concat(branch.getName()).concat(".zip");
     }
 
     @SneakyThrows
     public List<RepositoryContentModel> getRepositoryContent(User user, String repoName) {
         HttpGet httpGet = GitHubApi.getGetRequest(
-                GitHubApi.GITHUB
+                GitHubApi.GITHUB_API
                         .concat(GitHubSource.REPOS.source)
                         .concat("/")
                         .concat(user.getGitName())
@@ -153,5 +234,14 @@ public class GitHubApiRepositoryImpl implements GitHubRepository {
                 content.toString()
         );
         return repositoryContentModel;
+    }
+
+    private Branch getBranch(JSONObject jsonObject){
+        try {
+            Branch branch = jsonUnmarshaller.unmarshal(Branch.class, jsonObject.toString());
+            return branch;
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

@@ -36,7 +36,7 @@ public class GitHubApiCommentImpl implements GitHubComment {
                                   Commit commit,
                                   Comment comment) {
 
-        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
+        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB_API
                 .concat(GitHubSource.REPOS.source)
                 .concat("/")
                 .concat(user.getGitName())
@@ -64,7 +64,7 @@ public class GitHubApiCommentImpl implements GitHubComment {
                                            RepositoryGithubModel repositoryGithubModel) {
 
         HttpGet get = GitHubApi.getGetRequest(
-                GitHubApi.GITHUB
+                GitHubApi.GITHUB_API
                         .concat(GitHubSource.REPOS.source)
                         .concat("/")
                         .concat(user.getGitName())
@@ -95,7 +95,7 @@ public class GitHubApiCommentImpl implements GitHubComment {
                              RepositoryGithubModel repositoryGithubModel,
                              Comment comment) {
 
-        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB
+        URIBuilder uriBuilder = new URIBuilder(GitHubApi.GITHUB_API
                 .concat(GitHubSource.REPOS.source)
                 .concat("/")
                 .concat(user.getGitName())

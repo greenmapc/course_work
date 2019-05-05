@@ -89,8 +89,10 @@ public class RepositoryGithubModel {
     private String language;
     @JsonProperty("id")
     private Long id;
+    @JsonProperty("downloads_url")
+    private String downloadUrl;
 
     private List<RepositoryContentModel> repositoryContentModelList;
     private List<Owner> collaborators;
-
+    private List<Branch> branches;
 }

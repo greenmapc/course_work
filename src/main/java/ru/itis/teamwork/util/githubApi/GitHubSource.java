@@ -6,7 +6,8 @@ public enum GitHubSource {
     REPOS("/repos"),
     CONTENTS("/contents"),
     COMMITS("/commits"),
-    COMMENTS("/comments");
+    COMMENTS("/comments"),
+    BRANCHES("/branches");
 
     protected String source;
 

@@ -51,7 +51,7 @@ public class RootConfig {
 
         gitHubApi.setCLIENT_ID(env.getRequiredProperty("CLIENT_ID"));
         gitHubApi.setCLIENT_SECRET(env.getRequiredProperty("CLIENT_SECRET"));
-        //gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB"));
+        //gitHubApi.setGITHUB(env.getRequiredProperty("GITHUB_API"));
         gitHubApi.setGITHUB_API_AUTH(env.getRequiredProperty("GITHUB_API_AUTH"));
         gitHubApi.setREDIRECT(env.getRequiredProperty("REDIRECT"));
         gitHubApi.setHttpClient(HttpClients.createDefault());

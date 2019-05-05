@@ -25,7 +25,7 @@ class GitHubApiCommitImpl implements GitHubCommit {
     @SneakyThrows
     public List<Commit> getCommitsByRepoName(User user, String repoName) {
         HttpGet httpGet = GitHubApi.getGetRequest(
-                GitHubApi.GITHUB
+                GitHubApi.GITHUB_API
                         .concat(GitHubSource.REPOS.source)
                         .concat("/")
                         .concat(user.getGitName())
