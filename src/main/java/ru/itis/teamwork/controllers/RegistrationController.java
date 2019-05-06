@@ -10,16 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.User;
+import ru.itis.teamwork.services.ConfirmAccountService;
 import ru.itis.teamwork.services.UserService;
 
 
 @Controller
 public class RegistrationController {
     private UserService userService;
+    private ConfirmAccountService confirmAccountService;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService,
+                                  ConfirmAccountService confirmAccountService) {
         this.userService = userService;
+        this.confirmAccountService = confirmAccountService;
     }
 
     @GetMapping("/registration")
@@ -54,5 +58,12 @@ public class RegistrationController {
             return "security/registration";
         }
         return "redirect:" + MvcUriComponentsBuilder.fromMappingName("RC#loginPage").build();
+    }
+
+    @GetMapping("/confirm/{secret}")
+    public String confirmAccount(@PathVariable String secret) {
+        confirmAccountService.confirmAccount(secret);
+//        ToDo: information about activation account
+        return "redirect:/login";
     }
 }

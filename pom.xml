@@ -159,6 +159,8 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>

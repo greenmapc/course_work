@@ -3,6 +3,7 @@ package ru.itis.teamwork.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +22,7 @@ import java.util.Set;
         })
 
 @Data
+@NoArgsConstructor
 public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,9 +87,14 @@ public class User implements UserDetails, Serializable {
     @Column(name = "telegramid")
     private Long telegramId;
 
-    public User() {
+    @Column
+    private String email;
 
-    }
+    @Column(name = "confirm_string")
+    private String confirmString;
+
+    @Column(columnDefinition = "BOOLEAN default false")
+    private boolean active;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -121,7 +128,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
     public boolean isAdmin() {

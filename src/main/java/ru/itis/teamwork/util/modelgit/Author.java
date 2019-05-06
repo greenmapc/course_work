@@ -13,6 +13,6 @@ public class Author {
 
     @JsonProperty("name")
     private String name;
-    @JsonProperty("email")
+    @JsonProperty("templates/email")
     private String email;
 }
