@@ -184,6 +184,7 @@ public class ProjectController {
         if (!projectService.addMember(project, username)) {
             modelMap.addAttribute("error", "User " + username + " not found");
             modelMap.addAttribute("project", project);
+            modelMap.addAttribute("members", project.getUsers());
             return "projectMembers";
         }
         return "redirect:/project/members/" + projectId;
