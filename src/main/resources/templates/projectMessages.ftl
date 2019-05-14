@@ -1,7 +1,7 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Messages">
-    <script src="../../assets/js/sockjs-0.3.4.js"></script>
-    <script src="../../assets/js/stomp.js"></script>
+    <script src="/assets/js/sockjs-0.3.4.js"></script>
+    <script src="/assets/js/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
 
@@ -119,7 +119,7 @@
             <#--если подключен-->
                 <#if members?size gt 0 >
                     <div class="flex-container" style="width: 80%; height: 80%">
-                        <form id="create_chat" method="post" action="${context.getContextPath()}/telegram/createChat">
+                        <form id="create_chat" method="post" action="/telegram/createChat">
                             <#--выводим всех у кого подключен телеграмм-->
                             <label>Enter members
                                 <select style="margin-left: 4px;width:150px;height:25px;border:2px solid" multiple
@@ -156,7 +156,7 @@
                             <hr class="my-4">
                             <!--Если форма для кода или для телефона, то выводим ее-->
                             <#if connectionForm??>
-                                <form action="${context.getContextPath()}/telegram/connect/${inputName}" method="post"
+                                <form action="/telegram/connect/${inputName}" method="post"
                                       id="telegram_form">
                                     <label for="code"
                                            id="code_label">Enter <#if phoneForm??>phone<#else>code</#if></label>
@@ -166,7 +166,7 @@
                                     <button type="submit" id="send_code_btn">Send</button>
                                 </form>
                             <#else >
-                                <form action="${context.getContextPath()}/telegram/connect" method="post">
+                                <form action="/telegram/connect" method="post">
                                     <button type="submit" class="btn btn-primary btn-lg">Connect to Telegram</button>
                                     <input type="hidden" name="buttonForm" value="buttonForm">
                                     <input type="hidden" name="projectId" value="${project.id}">

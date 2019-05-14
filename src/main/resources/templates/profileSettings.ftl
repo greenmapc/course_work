@@ -2,7 +2,7 @@
 <@c.page "Profile Settings">
     <div class="container profileSettings">
         <h1>Update profile</h1>
-        <form method="post" action="${context.getContextPath()}/profileSettings" enctype="multipart/form-data">
+        <form method="post" action="/profileSettings" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
                     <label for="username">Username</label>

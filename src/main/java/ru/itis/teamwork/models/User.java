@@ -1,15 +1,16 @@
 package ru.itis.teamwork.models;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,7 +22,8 @@ import java.util.Set;
         })
 
 @Data
-public class User implements UserDetails {
+@NoArgsConstructor
+public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -57,36 +59,42 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Roles> roles;
+    private Set<Roles> roles = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "main_img", referencedColumnName = "id")
     private UserMainImg img;
 
     @OneToMany(mappedBy = "creator")
-    private Set<Task> createdTasks;
+    private Set<Task> createdTasks = new HashSet<>();
 
     @ManyToMany(mappedBy = "performers")
-    private Set<Task> tasks;
+    private Set<Task> tasks = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Project> projects;
+    private Set<Project> projects = new HashSet<>();
 
     @ManyToMany(mappedBy = "members")
-    private Set<Chat> chats;
+    private Set<Chat> chats = new HashSet<>();
 
     @OneToMany(mappedBy = "sender")
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
 
     @OneToMany(mappedBy = "teamLeader")
-    private Set<Project> leaderProjects;
+    private Set<Project> leaderProjects = new HashSet<>();
 
+    @Column(name = "telegramid")
     private Long telegramId;
 
-    public User() {
+    @Column
+    private String email;
 
-    }
+    @Column(name = "confirm_string")
+    private String confirmString;
+
+    @Column(columnDefinition = "BOOLEAN default false")
+    private boolean active;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -120,7 +128,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
     public boolean isAdmin() {

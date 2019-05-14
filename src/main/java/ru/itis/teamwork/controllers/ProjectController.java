@@ -144,7 +144,7 @@ public class ProjectController {
         model.addAttribute("user", user);
         if (user.getGithubToken() != null) {
             if (project.getGitRepositoryName() == null) {
-                List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
+                List<RepositoryGithubModel> repos = gitHubService.getReposByUser(user);
                 model.addAttribute("repos", repos);
                 System.out.println(repos.get(0).getDownloadUrl());
                 model.addAttribute("repository", repos.get(0));
@@ -191,6 +191,7 @@ public class ProjectController {
         if (!projectService.addMember(project, username)) {
             modelMap.addAttribute("error", "User " + username + " not found");
             modelMap.addAttribute("project", project);
+            modelMap.addAttribute("members", project.getUsers());
             return "projectMembers";
         }
         return "redirect:/project/members/" + projectId;

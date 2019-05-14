@@ -33,6 +33,9 @@ public class RegistrationForm extends Form {
     @Pattern(regexp = "[A-Za-z0-9_]{6,16}", message = "{password.incorrect}")
     private String password;
 
+//    ToDo: added pattern for correct email
+    private String email;
+
     private String repeatPassword;
 
     private Set<Roles> roles;

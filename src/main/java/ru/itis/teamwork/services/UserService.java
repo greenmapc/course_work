@@ -18,14 +18,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
 
+    private UserRepository userRepository;
+    private ConfirmAccountService confirmAccountService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       ConfirmAccountService confirmAccountService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.confirmAccountService = confirmAccountService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -57,6 +59,9 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(RegistrationForm userForm) {
+
+        String confirmString = UUID.randomUUID().toString();
+
         userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
         userForm.setRoles(Collections.singleton(Roles.USER));
 
@@ -67,11 +72,15 @@ public class UserService implements UserDetailsService {
         newUser.setPassword(userForm.getPassword());
         newUser.setRoles(userForm.getRoles());
         newUser.setTelegramJoined(false);
+        newUser.setEmail(userForm.getEmail());
+        newUser.setConfirmString(confirmString);
+
         try {
             userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
             return false;
         }
+        confirmAccountService.sendMessage(confirmString, newUser.getEmail());
         return true;
     }
 

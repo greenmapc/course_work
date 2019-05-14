@@ -5,7 +5,7 @@
     <div class="row">
         <h4 class="ml-5">Update project:</h4>
         <div class="container ml-3">
-            <form action="${context.getContextPath()}/project/settings/${project.id}" method="post">
+            <form action="/project/settings/${project.id}" method="post">
                 <div class="form-group">
                     <div class="col-md-6">
                         <label for="name">Name of project</label>
@@ -41,7 +41,7 @@
                     <#else>
                         <label for="repos">Select repo for your project from your repos:
                         </label>
-                        <form action="${context.getContextPath()}/project/weavingRepo" method="post">
+                        <form action="/project/weavingRepo" method="post">
                             <select name="repos" id="repos" required>
                                 <#list repos as repo>
                                     <option value="${repo.name}">${repo.name}</option>
@@ -68,7 +68,7 @@
     <div class="row">
         <div class="container">
             <p style="color: darkred;"><b>Delete this project? Please, NOOOOO</b></p>
-            <form action="${context.getContextPath()}/project/delete/${project.id}" method="post">
+            <form action="/project/delete/${project.id}" method="post">
                 <button class="btn btn-outline-danger" type="submit">Delete</button>
             </form>
         </div>

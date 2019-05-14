@@ -6,6 +6,8 @@ import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.util.githubApi.GitHubApi;
 import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
+import java.util.List;
+
 @Service
 public class GitHubService {
     private final GitHubApi gitHubApi;
@@ -31,4 +33,10 @@ public class GitHubService {
         }
         return repositoryGithubModel;
     }
+
+
+    public List<RepositoryGithubModel> getReposByUser(User user){
+        return gitHubApi.getRepos(user);
+    }
+
 }

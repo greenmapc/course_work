@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -23,7 +24,7 @@ public class Chat implements Serializable {
     private Long id;
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
 
     @OneToOne(mappedBy = "chat")
     private Project project;
@@ -34,5 +35,5 @@ public class Chat implements Serializable {
             joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> members;
+    private Set<User> members = new HashSet<>();
 }

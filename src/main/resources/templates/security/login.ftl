@@ -2,7 +2,7 @@
 <@c.page "Log in">
     <div class="align">
         <div class="grid">
-            <form method="post" class="form login" action="${context.getContextPath()}/login">
+            <form method="post" class="form login" action="/login">
                 <header class="login__header">
                     <span>Sign In</span>
                     <a href="https://github.com/MerenovaAnastasiya">
@@ -21,7 +21,7 @@
                 <footer class="login__footer">
                     <input type="submit" value="Sign In">
                     <div class="ref_oth_pg">
-                        <a href="${context.getContextPath()}/registration">Sign Up</a>
+                        <a href="/registration">Sign Up</a>
                     </div>
                 </footer>
             </form>

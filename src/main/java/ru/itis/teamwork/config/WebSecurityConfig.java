@@ -1,10 +1,7 @@
 package ru.itis.teamwork.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,8 +12,7 @@ import ru.itis.teamwork.services.UserService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
-@PropertySource("classpath:application.properties")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -29,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/assets/**", "/gitAuth", "/gitCode")
+                .antMatchers("/", "/registration", "/assets/**", "/gitAuth", "/gitCode", "/confirm/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -38,14 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/profile", true)
                 .permitAll()
                 .and()
+                .rememberMe()
+                .and()
                 .logout()
                 .permitAll();
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
     @Override

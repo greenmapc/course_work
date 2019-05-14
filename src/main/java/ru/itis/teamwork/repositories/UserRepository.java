@@ -33,4 +33,12 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findLikeUsername(@Param("part_username") String partUsername);
 
     Optional<User> findUserByTelegramId(Long telegramId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User SET " +
+            "active = true " +
+            "WHERE confirmString = :secret")
+    void activeAccount(@Param("secret") String secret);
+
 }
