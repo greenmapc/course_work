@@ -1,7 +1,7 @@
 <#import "parts/projectTemplate.ftl" as p>
 <@p.projectTemplate "Messages">
-    <script src="/assets/js/sockjs-0.3.4.js"></script>
-    <script src="/assets/js/stomp.js"></script>
+    <script src="/static/js/sockjs-0.3.4.js"></script>
+    <script src="/static/js/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
 

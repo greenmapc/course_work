@@ -22,3 +22,4 @@ src/main/resources/application.properties
 
 # USER STATIC DATA #
 src/main/webapp/static
+uploads/
