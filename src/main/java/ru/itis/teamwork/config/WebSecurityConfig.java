@@ -14,18 +14,25 @@ import ru.itis.teamwork.services.UserService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
+    public WebSecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/assets/**", "/gitAuth", "/gitCode", "/confirm/*")
+                .antMatchers("/", "/registration",
+                        "/style/**", "/script/**", "/js/**",
+                        "/gitAuth", "/gitCode", "/confirm/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

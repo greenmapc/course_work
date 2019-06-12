@@ -13,11 +13,11 @@ import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.dto.UserDto;
-import ru.itis.teamwork.services.GitHubService;
+//import ru.itis.teamwork.services.GitHubService;
 import ru.itis.teamwork.services.ProjectService;
 import ru.itis.teamwork.services.UserService;
-import ru.itis.teamwork.util.githubApi.GitHubScope;
-import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
+//import ru.itis.teamwork.util.githubApi.GitHubScope;
+//import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
 import java.util.List;
 import java.util.Set;
@@ -26,15 +26,17 @@ import java.util.Set;
 public class ProjectController {
     private ProjectService projectService;
     private UserService userService;
-    private GitHubService gitHubService;
+//    private GitHubService gitHubService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
-                             UserService userService,
-                             GitHubService gitHubService) {
+                             UserService userService
+//            ,
+//                             GitHubService gitHubService
+    ) {
         this.projectService = projectService;
         this.userService = userService;
-        this.gitHubService = gitHubService;
+//        this.gitHubService = gitHubService;
     }
 
     @GetMapping("/newProject")
@@ -142,19 +144,19 @@ public class ProjectController {
                            @PathVariable("id") Project project,
                            Model model) {
         model.addAttribute("user", user);
-        if (user.getGithubToken() != null) {
-            List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
-            model.addAttribute("repos", repos);
-        }
+//        if (user.getGithubToken() != null) {
+//            List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
+//            model.addAttribute("repos", repos);
+//        }
         if (isMemberOfProject(user, project) && project != null) {
             model.addAttribute("project", project);
-            if (user.getGithubToken() == null) {
-                model.addAttribute("authLink", gitHubService.getGitHubApi()
-                        .getAuthLink(
-                                GitHubScope.getFullAccess()
-                        )
-                );
-            }
+//            if (user.getGithubToken() == null) {
+//                model.addAttribute("authLink", gitHubService.getGitHubApi()
+//                        .getAuthLink(
+//                                GitHubScope.getFullAccess()
+//                        )
+//                );
+//            }
             return "projectSettings";
         } else {
             return "redirect:/profile";
