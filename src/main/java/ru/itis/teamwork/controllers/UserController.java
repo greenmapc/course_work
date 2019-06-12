@@ -18,7 +18,6 @@ import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
 import ru.itis.teamwork.services.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -56,8 +55,7 @@ public class UserController {
                                 @RequestParam(required = false) String password,
                                 @RequestParam(required = false) String password2,
                                 @RequestParam(value = "file", required = false) MultipartFile file,
-                                Model model,
-                                HttpServletRequest request) {
+                                Model model) {
         Optional<UserMainImg> userMainImg = Optional.empty();
         try {
             userMainImg = saveFile(user, file);

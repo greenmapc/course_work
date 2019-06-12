@@ -30,7 +30,7 @@ public class ConfirmAccountService {
 
     public void sendMessage(String secret, String emailTo) {
         Map args = new HashMap();
-        args.put("link", "http://localhost:9000/confirm/" + secret);
+        args.put("link", "http://localhost:8080/confirm/" + secret);
 
 //        ToDo: exception
         try {
