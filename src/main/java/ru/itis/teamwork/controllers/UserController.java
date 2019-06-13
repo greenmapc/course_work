@@ -1,8 +1,6 @@
 package ru.itis.teamwork.controllers;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,25 +14,25 @@ import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
+import ru.itis.teamwork.services.ImageUploadService;
 import ru.itis.teamwork.services.UserService;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 @Controller
 public class UserController {
-    private final UserService userService;
 
-    @Value("${upload.path}")
-    private String uploadPath;
+    private final UserService userService;
+    private final ImageUploadService imageUploadService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          ImageUploadService imageUploadService) {
         this.userService = userService;
+        this.imageUploadService = imageUploadService;
     }
 
 
@@ -58,7 +56,7 @@ public class UserController {
                                 Model model) {
         Optional<UserMainImg> userMainImg = Optional.empty();
         try {
-            userMainImg = saveFile(user, file);
+            userMainImg = imageUploadService.saveFile(user, file);
         } catch (IOException e) {
             //ToDo: catch norm exception
             e.printStackTrace();
@@ -148,29 +146,5 @@ public class UserController {
             userService.saveUser(user, form);
         }
         return "redirect:/user";
-    }
-
-    private Optional<UserMainImg> saveFile(User user, MultipartFile file) throws IOException {
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-
-            file.transferTo(new File(uploadPath + resultFilename));
-
-            UserMainImg userMainImg = new UserMainImg();
-            userMainImg.setHashName(resultFilename.substring(0, resultFilename.lastIndexOf('.')));
-            userMainImg.setOriginalName(file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf('.')));
-            userMainImg.setType(FilenameUtils.getExtension(file.getOriginalFilename()));
-
-            return Optional.of(userMainImg);
-        }
-
-        return Optional.empty();
     }
 }
