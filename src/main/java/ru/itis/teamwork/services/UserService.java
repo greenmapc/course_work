@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.itis.teamwork.forms.ProfileUpdForm;
 import ru.itis.teamwork.forms.RegistrationForm;
 import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
@@ -117,5 +118,12 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+
+    public void transferredFormToUser(ProfileUpdForm form, User user) {
+        user.setLastName(form.getLastName());
+        user.setFirstName(form.getFirstName());
+        user.setPassword(form.getPassword());
     }
 }

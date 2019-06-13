@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.itis.teamwork.forms.ProfileUpdForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
@@ -44,13 +44,17 @@ public class UserController {
     }
 
     @PostMapping("/profileSettings")
-    public String updateProfile(@AuthenticationPrincipal User user,
-                                @RequestParam String firstName,
-                                @RequestParam String lastName,
-                                @RequestParam(required = false) String password,
-                                @RequestParam(required = false) String password2,
+    public String updateProfile(@Validated @ModelAttribute("form") ProfileUpdForm form,
+                                BindingResult bindingResult,
+                                @AuthenticationPrincipal User user,
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 Model model) {
+
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            return "profileSettings";
+        }
+
         Optional<UserMainImg> userMainImg = Optional.empty();
         try {
             userMainImg = imageUploadService.saveFile(user, file);
@@ -59,17 +63,8 @@ public class UserController {
             e.printStackTrace();
         }
 
-        if (password == null || password2 == null || password.equals("") || password2.equals("")) {
-
-        } else if (!password.equals(password2)) {
-            model.addAttribute("passwordError", "Password is not similar");
-            return "profileSettings";
-        } else {
-            user.setPassword(password);
-        }
-
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+//        ToDo: Password???
+        userService.transferredFormToUser(form, user);
 
         if (userMainImg.isPresent()) {
             userService.updateInfo(user, userMainImg.get());
@@ -84,6 +79,8 @@ public class UserController {
     public String profileSettings(@AuthenticationPrincipal User user,
                                   Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("form", ProfileUpdForm.buildFormByUser(user));
+
         return "profileSettings";
     }
 
