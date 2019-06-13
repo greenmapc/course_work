@@ -1,7 +1,6 @@
 package ru.itis.teamwork.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.itis.teamwork.models.Project;
-import ru.itis.teamwork.models.Roles;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
 import ru.itis.teamwork.services.ImageUploadService;
 import ru.itis.teamwork.services.UserService;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -107,44 +104,5 @@ public class UserController {
         } else {
             return "redirect:/profile";
         }
-    }
-
-    @GetMapping("/user/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String userEditForm(@PathVariable String userId,
-                               Model model) {
-        Optional<User> userCandidate = userService.getUserById(Long.valueOf(userId));
-        if (userCandidate.isPresent()) {
-            model.addAttribute("user", userCandidate.get());
-            model.addAttribute("roles", Roles.values());
-            return "userEdit";
-        } else {
-            return "userList";
-        }
-    }
-
-    @GetMapping("/user")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String getUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "userList";
-    }
-
-    @PostMapping("/user")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String saveUser(@RequestParam String username,
-                           @RequestParam String firstName,
-                           @RequestParam String lastName,
-                           @RequestParam Map<String, String> form,
-                           @RequestParam("userId") String userId) {
-        Optional<User> userCandidate = userService.getUserById(Long.valueOf(userId));
-        if (userCandidate.isPresent()) {
-            User user = userCandidate.get();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setUsername(username);
-            userService.saveUser(user, form);
-        }
-        return "redirect:/user";
     }
 }
