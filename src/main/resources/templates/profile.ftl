@@ -39,7 +39,7 @@
                                 <a class="nav-link" href="#">Overview</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/projects">Projects</a>
+                                <a class="nav-link" href="/profile/${user.username}/projects">Projects</a>
                             </li>
                             <#if isCurrentUser>
                                 <li class="nav-item">

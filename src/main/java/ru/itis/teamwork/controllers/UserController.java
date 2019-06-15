@@ -75,14 +75,7 @@ public class UserController {
                                          @PathVariable String username,
                                          Model model) {
         model.addAttribute("isCurrentUser", user.getUsername().equals(username));
-        if (!user.getUsername().equals(username)) {
-            Optional<User> anotherUserCandidate = userService.findOneByUsername(username);
-            if (anotherUserCandidate.isPresent()) {
-                model.addAttribute("user", anotherUserCandidate.get());
-            }
-        } else {
-            model.addAttribute("user", user);
-        }
+        model.addAttribute("user", userService.compareUser(user, username));
 
         return "profile";
     }

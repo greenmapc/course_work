@@ -23,6 +23,7 @@ import ru.itis.teamwork.services.UserService;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -77,14 +78,13 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/profile/${username}/projects")
+    @GetMapping("/profile/{username}/projects")
     public String projects(@AuthenticationPrincipal User user,
                            @PathVariable String username,
                            Model model) {
-        Set<Project> projects = user.getProjects();
-        model.addAttribute("user", user);
-        model.addAttribute("isCurrentUser", true);
-        model.addAttribute("projects", projects);
+        model.addAttribute("user", userService.compareUser(user, username));
+        model.addAttribute("isCurrentUser", username.equals(user.getUsername()));
+
         return "projects";
     }
 

@@ -42,8 +42,8 @@
                     </div>
                 </nav>
             </div>
-            <#if projects??>
-                <#list projects as project>
+            <#if user.projects?size != 0>
+                <#list user.projects as project>
                     <div class="row projects">
                         <div class="col-1"></div>
                         <div class="col-8 project-card-in">

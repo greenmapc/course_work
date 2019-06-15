@@ -123,4 +123,16 @@ public class UserService implements UserDetailsService {
     public Optional<User> findOneByUsername(String username) {
         return Optional.ofNullable(userRepository.findByUsername(username));
     }
+
+
+    public User compareUser(User user, String username) {
+        if(!user.getUsername().equals(username)) {
+            Optional<User> userCandidate = this.findOneByUsername(username);
+            if(userCandidate.isPresent()) {
+                return userCandidate.get();
+            }
+        }
+
+        return user;
+    }
 }
