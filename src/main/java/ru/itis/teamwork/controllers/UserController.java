@@ -63,7 +63,6 @@ public class UserController {
             e.printStackTrace();
         }
 
-//        ToDo: Password???
         userService.transferredFormToUser(form, user);
 
         if (userMainImg.isPresent()) {
@@ -84,19 +83,18 @@ public class UserController {
         return "profileSettings";
     }
 
-    @GetMapping("/profile/{userId}")
+    @GetMapping("/profile/{username}")
     public String profilePageAnotherUser(@AuthenticationPrincipal User user,
-                                         @PathVariable String userId,
+                                         @PathVariable String username,
                                          Model model) {
-        Long uId = Long.valueOf(userId);
-        model.addAttribute("isCurrentUser", user.getId().equals(uId));
-        if (user.getId().equals(uId)) {
+        model.addAttribute("isCurrentUser", user.getUsername().equals(username));
+        if (user.getUsername().equals(username)) {
             return "redirect:/profile";
         }
-        Optional<User> anotherUserCandidate = userService.getUserById(uId);
+
+        Optional<User> anotherUserCandidate = userService.findOneByUsername(username);
         if (anotherUserCandidate.isPresent()) {
             model.addAttribute("user", anotherUserCandidate.get());
-            model.addAttribute("projects", anotherUserCandidate.get().getProjects());
             return "profile";
         } else {
             return "redirect:/profile";

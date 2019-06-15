@@ -25,7 +25,7 @@
                     <input type="submit" value="Edit" class="profile-edit-submit"/>
                 </form>
             <#else>
-                <form action="/subscribe/${userId}">
+                <form action="/subscribe/${user.id}">
                     <input type="submit" value="Subscribe" class="profile-edit-submit"/>
                 </form>
             </#if>
@@ -41,45 +41,39 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Projects</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/profileSettings">Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link add-link"
-                                   href="/newProject">Add project</a>
-                            </li>
+                            <#if isCurrentUser>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/profileSettings">Settings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link add-link"
+                                       href="/newProject">Add project</a>
+                                </li>
+                            </#if>
                         </ul>
                     </div>
                 </nav>
             </div>
-            <#if projects??>
-                <#if projects?size==0>
-                    <h3 style="color: #0770c3">Oops, user doesn't have any projects..</h3>
-                <#else>
-                    <#list projects as project>
-                        <#if project_index % 2 == 0>
-                            <div class="row">
-                        </#if>
-                        <div class="profile-project-card col-5">
-                            <a href="/project/${project.id}">
-                                <h3 class="profile-project-name">
-                                    ${project.name}
-                                </h3>
-                            </a>
-                            <span class="profile-project-about">
-                                About this project
-                            </span>
-                        </div>
-                        <div class="col-1"></div>
-                        <#if project_index % 2 == 1>
-                            </div>
-                        </#if>
-                    </#list>
-                </#if>
+            <#if user.projects?size == 0>
+                <h3 style="color: #0770c3"> No one projects! </h3>
             <#else>
-                <button>
-                    <a class="nav-link add-link" href="/newProject">Add project</a>
-                </button>
+                <#list user.projects as project>
+                    <#if project_index % 2 == 0>
+                        <div class="row">
+                    </#if>
+                    <div class="profile-project-card col-5">
+                        <a href="/project/${project.id}">
+                            <h3 class="profile-project-name"> ${project.name} </h3>
+                        </a>
+                        <span class="profile-project-about">
+                            About this project
+                        </span>
+                    </div>
+                    <div class="col-1"></div>
+                    <#if project_index % 2 == 1>
+                        </div>
+                    </#if>
+                </#list>
             </#if>
         </div>
     </div>

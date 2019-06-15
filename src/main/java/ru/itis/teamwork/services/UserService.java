@@ -126,4 +126,8 @@ public class UserService implements UserDetailsService {
         user.setFirstName(form.getFirstName());
         user.setPassword(form.getPassword());
     }
+
+    public Optional<User> findOneByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUsername(username));
+    }
 }
