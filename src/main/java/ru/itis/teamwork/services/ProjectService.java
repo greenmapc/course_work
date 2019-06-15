@@ -18,9 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
+
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository,
@@ -31,9 +33,11 @@ public class ProjectService {
         this.messageRepository = messageRepository;
     }
 
+
     public List<Project> findProjectsByUser(User user) {
         return new ArrayList<>();
     }
+
 
     public Project create(CreateProjectForm form) {
         User user = userRepository.findByUsername(form.getTeamLeaderLogin());
@@ -52,10 +56,12 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+
     public Project getProjectById(Long id) {
         Optional<Project> candidate = projectRepository.findById(id);
         return candidate.orElse(null);
     }
+
 
     public boolean addMember(Project project, String username) {
         User user = userRepository.findByUsername(username);
@@ -69,11 +75,13 @@ public class ProjectService {
         return true;
     }
 
+
     public Set<User> getTelegramJoinedUser(Project project) {
         Set<User> users = project.getUsers();
         users.removeIf(a -> (a.getTelegramJoined() == null || !a.getTelegramJoined()));
         return users;
     }
+
 
     public List<MessageDto> getProjectMessages(Project project) {
         List<MessageDto> messageDtos = new ArrayList<>();
@@ -88,13 +96,16 @@ public class ProjectService {
         return messageDtos;
     }
 
+
     public MembersDto getUsersLike(String username) {
         List<User> users = userRepository.findLikeUsername(username + "%");
         List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
         return MembersDto.builder().userDtoList(userDtos).build();
     }
 
+
     public void update(Project project) {
         this.projectRepository.save(project);
     }
+
 }

@@ -16,11 +16,9 @@
             <div class="profile-name">
                 <span>${user.firstName} ${user.lastName}</span>
             </div>
-            <#if isCurrentUser>
-                <form action="/profileSettings">
-                    <input type="submit" value="Edit" class="profile-edit-submit"/>
-                </form>
-            </#if>
+            <form action="/profileSettings">
+                <input type="submit" value="Edit" class="profile-edit-submit"/>
+            </form>
         </div>
         <div class="float-left profile-main-inf-r profile-main-inf col-8">
             <div class="row">

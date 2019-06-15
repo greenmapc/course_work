@@ -1,5 +1,6 @@
 package ru.itis.teamwork.controllers;
 
+import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,8 @@ import ru.itis.teamwork.services.UserService;
 //import ru.itis.teamwork.util.githubApi.GitHubScope;
 //import ru.itis.teamwork.util.modelgit.RepositoryGithubModel;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -44,28 +47,32 @@ public class ProjectController {
                                  @AuthenticationPrincipal User user) {
         model.addAttribute("form", new CreateProjectForm());
         model.addAttribute("user", user);
-        model.addAttribute("isCurrentUser", true);
+
         return "creators/newProject";
     }
 
     @PostMapping("/newProject")
+    @Transactional
     public String addProject(@Validated @ModelAttribute("form") CreateProjectForm form,
                              BindingResult bindingResult,
                              @AuthenticationPrincipal User user,
                              Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", user);
-            model.addAttribute("isCurrentUser", true);
             return "creators/newProject";
         }
+
         form.setTeamLeaderLogin(user.getUsername());
-        Project project = projectService.create(form);
-        if (project != null) {
+
+        try {
+            Project project = projectService.create(form);
             user.getProjects().add(project);
             userService.saveUser(user);
+
             model.addAttribute("project", project);
             return "redirect:/project/" + project.getId();
-        } else {
+
+        } catch (JDBCException e) {
             return "creators/newProject";
         }
     }
