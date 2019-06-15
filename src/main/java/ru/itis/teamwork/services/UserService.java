@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
     public void updateInfo(User user) {
         userRepository.settingsUpdate(user.getFirstName(),
                 user.getLastName(),
-                user.getPassword(),
+                passwordEncoder.encode(user.getPassword()),
                 user.getId(),
                 user.getTelegramJoined(),
                 user.getPhone());
