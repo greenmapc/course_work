@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.itis.teamwork.forms.ProfileUpdForm;
-import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
 import ru.itis.teamwork.models.UserMainImg;
 import ru.itis.teamwork.services.ImageUploadService;
@@ -17,7 +16,6 @@ import ru.itis.teamwork.services.UserService;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class UserController {
@@ -32,18 +30,7 @@ public class UserController {
         this.imageUploadService = imageUploadService;
     }
 
-
-    @GetMapping("/profile")
-    public String profilePage(@AuthenticationPrincipal User user,
-                              Model model) {
-        Set<Project> projects = user.getProjects();
-        model.addAttribute("isCurrentUser", true);
-        model.addAttribute("projects", projects);
-        model.addAttribute("user", user);
-        return "profile";
-    }
-
-    @PostMapping("/profileSettings")
+    @PostMapping("/settings")
     public String updateProfile(@Validated @ModelAttribute("form") ProfileUpdForm form,
                                 BindingResult bindingResult,
                                 @AuthenticationPrincipal User user,
@@ -52,7 +39,7 @@ public class UserController {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("user", user);
-            return "profileSettings";
+            return "settings";
         }
 
         Optional<UserMainImg> userMainImg = Optional.empty();
@@ -71,10 +58,10 @@ public class UserController {
             userService.updateInfo(user);
         }
 
-        return "redirect:/profile";
+        return "redirect:/profile/" + user.getUsername();
     }
 
-    @GetMapping("/profileSettings")
+    @GetMapping("/settings")
     public String profileSettings(@AuthenticationPrincipal User user,
                                   Model model) {
         model.addAttribute("user", user);
@@ -84,20 +71,19 @@ public class UserController {
     }
 
     @GetMapping("/profile/{username}")
-    public String profilePageAnotherUser(@AuthenticationPrincipal User user,
+    public String profilePage(@AuthenticationPrincipal User user,
                                          @PathVariable String username,
                                          Model model) {
         model.addAttribute("isCurrentUser", user.getUsername().equals(username));
-        if (user.getUsername().equals(username)) {
-            return "redirect:/profile";
+        if (!user.getUsername().equals(username)) {
+            Optional<User> anotherUserCandidate = userService.findOneByUsername(username);
+            if (anotherUserCandidate.isPresent()) {
+                model.addAttribute("user", anotherUserCandidate.get());
+            }
+        } else {
+            model.addAttribute("user", user);
         }
 
-        Optional<User> anotherUserCandidate = userService.findOneByUsername(username);
-        if (anotherUserCandidate.isPresent()) {
-            model.addAttribute("user", anotherUserCandidate.get());
-            return "profile";
-        } else {
-            return "redirect:/profile";
-        }
+        return "profile";
     }
 }

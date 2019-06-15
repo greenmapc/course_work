@@ -15,7 +15,7 @@
                 <span>${user.firstName} ${user.lastName}</span>
             </div>
             <#if isCurrentUser>
-                <form action="/profileSettings">
+                <form action="/settings">
                     <input type="submit" value="Edit" class="profile-edit-submit"/>
                 </form>
             </#if>

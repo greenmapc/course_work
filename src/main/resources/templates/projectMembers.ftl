@@ -14,7 +14,7 @@
             <#list members as user>
                 <tr>
                     <th scope="row">${user_index + 1}</th>
-                    <td><a href="/profile/${user.id}">${user.username}</a></td>
+                    <td><a href="/profile/${user.username}">${user.username}</a></td>
                     <td><#list user.roles as role>${role}<#sep>, </#list></td>
                     <td><a href="#" style="color: #bd2130">Delete</a></td>
                 </tr>

@@ -16,7 +16,7 @@
             <div class="profile-name">
                 <span>${user.firstName} ${user.lastName}</span>
             </div>
-            <form action="/profileSettings">
+            <form action="/settings">
                 <input type="submit" value="Edit" class="profile-edit-submit"/>
             </form>
         </div>
@@ -26,13 +26,13 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/profile">Overview</a>
+                                <a class="nav-link" href="/profile/${user.username}">Overview</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/projects">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/profileSettings">Settings</a>
+                                <a class="nav-link" href="/settings">Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link add-link"

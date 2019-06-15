@@ -30,7 +30,7 @@ public class RegistrationController {
     public String registrationPage(@AuthenticationPrincipal User authUser,
                                    Model model) {
         if (authUser != null) {
-            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#profilePage").build();
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#profile").arg(1, authUser.getUsername()).build();
         }
 
         model.addAttribute("form", new RegistrationForm());
@@ -40,7 +40,7 @@ public class RegistrationController {
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal User authUser) {
         if (authUser != null) {
-            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#profilePage").build();
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#profilePage").arg(1, authUser.getUsername()).build();
         }
         return "security/login";
     }

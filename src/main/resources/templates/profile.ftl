@@ -39,11 +39,11 @@
                                 <a class="nav-link" href="#">Overview</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Projects</a>
+                                <a class="nav-link" href="/projects">Projects</a>
                             </li>
                             <#if isCurrentUser>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/profileSettings">Settings</a>
+                                    <a class="nav-link" href="/settings">Settings</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link add-link"

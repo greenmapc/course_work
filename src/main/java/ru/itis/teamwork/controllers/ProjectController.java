@@ -77,8 +77,9 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/projects")
+    @GetMapping("/profile/${username}/projects")
     public String projects(@AuthenticationPrincipal User user,
+                           @PathVariable String username,
                            Model model) {
         Set<Project> projects = user.getProjects();
         model.addAttribute("user", user);
@@ -103,7 +104,7 @@ public class ProjectController {
                            @PathVariable("id") Project project,
                            Model model) {
         if (project == null || !isMemberOfProject(user, project)) {
-            return "redirect:/profile";
+            return "redirect:/profile/" + user.getUsername();
         }
 
 
@@ -130,7 +131,7 @@ public class ProjectController {
             model.addAttribute("project", project);
             return "projectFiles";
         } else {
-            return "redirect:/profile";
+            return "redirect:/profile/" + user.getUsername();
         }
     }
 
@@ -142,7 +143,7 @@ public class ProjectController {
             model.addAttribute("project", project);
             return "projectTasks";
         } else {
-            return "redirect:/profile";
+            return "redirect:/profile/" + user.getUsername();
         }
     }
 
@@ -166,7 +167,7 @@ public class ProjectController {
 //            }
             return "projectSettings";
         } else {
-            return "redirect:/profile";
+            return "redirect:/profile/" + user.getUsername();
         }
     }
 
@@ -181,7 +182,7 @@ public class ProjectController {
             }
             return "projectMembers";
         } else {
-            return "redirect:/profile";
+            return "redirect:/profile/" + user.getUsername();
         }
     }
 

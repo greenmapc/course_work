@@ -4,7 +4,7 @@
 <@c.page "Profile Settings">
     <div class="container profileSettings">
         <h1>Update profile</h1>
-        <form method="post" action="/profileSettings" enctype="multipart/form-data">
+        <form method="post" action="/settings" enctype="multipart/form-data">
 
             <@spring.bind "form"/>
 
