@@ -57,12 +57,6 @@ public class ProjectService {
     }
 
 
-    public Project getProjectById(Long id) {
-        Optional<Project> candidate = projectRepository.findById(id);
-        return candidate.orElse(null);
-    }
-
-
     public boolean addMember(Project project, String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
@@ -108,4 +102,8 @@ public class ProjectService {
         this.projectRepository.save(project);
     }
 
+
+    public Optional<Project> findById(Long id) {
+        return projectRepository.findById(id);
+    }
 }

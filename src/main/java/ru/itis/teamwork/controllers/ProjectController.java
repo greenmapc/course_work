@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import ru.itis.teamwork.forms.CreateProjectForm;
 import ru.itis.teamwork.models.Project;
 import ru.itis.teamwork.models.User;
@@ -90,24 +91,28 @@ public class ProjectController {
 
     @GetMapping("/project/{id}")
     public String projectOverview(Model model,
-                                  @PathVariable("id") Project project) {
-        if (project != null) {
-            model.addAttribute("project", project);
+                                  @PathVariable Long id,
+                                  @AuthenticationPrincipal User user) {
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent()) {
+            model.addAttribute("project", projectCandidate.get());
             return "project";
         } else {
-            return "redirect:/project";
+            return "redirect:" + MvcUriComponentsBuilder.fromMappingName("UC#projects").arg(1, user.getUsername()).build();
         }
     }
 
     @GetMapping("/project/messages/{id}")
     public String messages(@AuthenticationPrincipal User user,
-                           @PathVariable("id") Project project,
+                           @PathVariable Long id,
                            Model model) {
-        if (project == null || !isMemberOfProject(user, project)) {
+
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (!projectCandidate.isPresent() || !isMemberOfProject(user, projectCandidate.get())) {
             return "redirect:/profile/" + user.getUsername();
         }
 
-
+        Project project = projectCandidate.get();
         model.addAttribute("project", project);
         model.addAttribute("user", user);
 
@@ -125,10 +130,11 @@ public class ProjectController {
 
     @GetMapping("/project/files/{id}")
     public String files(@AuthenticationPrincipal User user,
-                        @PathVariable("id") Project project,
+                        @PathVariable Long id,
                         Model model) {
-        if (isMemberOfProject(user, project) && project != null) {
-            model.addAttribute("project", project);
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent() && isMemberOfProject(user, projectCandidate.get())) {
+            model.addAttribute("project", projectCandidate.get());
             return "projectFiles";
         } else {
             return "redirect:/profile/" + user.getUsername();
@@ -137,10 +143,11 @@ public class ProjectController {
 
     @GetMapping("/project/tasks/{id}")
     public String tasks(@AuthenticationPrincipal User user,
-                        @PathVariable("id") Project project,
+                        @PathVariable Long id,
                         Model model) {
-        if (isMemberOfProject(user, project) && project != null) {
-            model.addAttribute("project", project);
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent() && isMemberOfProject(user, projectCandidate.get())) {
+            model.addAttribute("project", projectCandidate.get());
             return "projectTasks";
         } else {
             return "redirect:/profile/" + user.getUsername();
@@ -149,15 +156,17 @@ public class ProjectController {
 
     @GetMapping("/project/settings/{id}")
     public String settings(@AuthenticationPrincipal User user,
-                           @PathVariable("id") Project project,
+                           @PathVariable Long id,
                            Model model) {
         model.addAttribute("user", user);
 //        if (user.getGithubToken() != null) {
 //            List<RepositoryGithubModel> repos = gitHubService.getGitHubApi().getRepos(user);
 //            model.addAttribute("repos", repos);
 //        }
-        if (isMemberOfProject(user, project) && project != null) {
-            model.addAttribute("project", project);
+
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent() && isMemberOfProject(user, projectCandidate.get())) {
+            model.addAttribute("project", projectCandidate.get());
 //            if (user.getGithubToken() == null) {
 //                model.addAttribute("authLink", gitHubService.getGitHubApi()
 //                        .getAuthLink(
@@ -173,9 +182,11 @@ public class ProjectController {
 
     @GetMapping("/project/members/{id}")
     public String members(@AuthenticationPrincipal User user,
-                          @PathVariable("id") Project project,
+                          @PathVariable Long id,
                           Model model) {
-        if (isMemberOfProject(user, project) && project != null) {
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent() && isMemberOfProject(user, projectCandidate.get())) {
+            Project project = projectCandidate.get();
             model.addAttribute("project", project);
             if (project.getUsers() != null) {
                 model.addAttribute("members", project.getUsers());
@@ -186,23 +197,24 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/project/{projectId}/settings/addMember")
-    public String addMember(@PathVariable("projectId") Long projectId,
+    @PostMapping("/project/{id}/settings/addMember")
+    public String addMember(@PathVariable Long id,
                             @RequestParam("username") String username,
                             ModelMap modelMap) {
-        Project project = projectService.getProjectById(projectId);
-        if (!projectService.addMember(project, username)) {
+        Optional<Project> projectCandidate = projectService.findById(id);
+        if (projectCandidate.isPresent() && !projectService.addMember(projectCandidate.get(), username)) {
+            Project project = projectCandidate.get();
+
             modelMap.addAttribute("error", "User " + username + " not found");
             modelMap.addAttribute("project", project);
             modelMap.addAttribute("members", project.getUsers());
             return "projectMembers";
         }
-        return "redirect:/project/members/" + projectId;
+        return "redirect:/project/members/" + id;
     }
 
     @GetMapping(value = "/show_like_users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    List<UserDto> showLikeUsers(@RequestParam String username) {
+    public @ResponseBody List<UserDto> showLikeUsers(@RequestParam String username) {
         return projectService.getUsersLike(username).getUserDtoList();
     }
 
