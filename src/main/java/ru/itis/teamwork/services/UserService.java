@@ -24,6 +24,7 @@ public class UserService implements UserDetailsService {
     private ConfirmAccountService confirmAccountService;
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
     public UserService(UserRepository userRepository,
                        ConfirmAccountService confirmAccountService, PasswordEncoder passwordEncoder) {
@@ -31,6 +32,7 @@ public class UserService implements UserDetailsService {
         this.confirmAccountService = confirmAccountService;
         this.passwordEncoder = passwordEncoder;
     }
+
 
     public Set<User> getUsers(List<Long> ids){
             Set<User> users = new HashSet<>();
@@ -40,6 +42,7 @@ public class UserService implements UserDetailsService {
             }
             return users;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username)
@@ -51,13 +54,16 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+
     public Optional<User> getUserByTelegramId(Long telegramId){
         return userRepository.findUserByTelegramId(telegramId);
     }
 
+
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
+
 
     public boolean addUser(RegistrationForm userForm) {
 
@@ -85,14 +91,12 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public List<User> getAllUsers() {
-        return (List<User>) userRepository.findAll();
-    }
 
     public void updateInfo(User user, UserMainImg userMainImg) {
         user.setImg(userMainImg);
         userRepository.save(user);
     }
+
 
     public void updateInfo(User user) {
         userRepository.settingsUpdate(user.getFirstName(),
@@ -103,18 +107,6 @@ public class UserService implements UserDetailsService {
                 user.getPhone());
     }
 
-    public void saveUser(User user, Map<String, String> form) {
-        Set<String> roles = Arrays.stream(Roles.values())
-                .map(Roles::name)
-                .collect(Collectors.toSet());
-        user.getRoles().clear();
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Roles.valueOf(key));
-            }
-        }
-        userRepository.save(user);
-    }
 
     public void saveUser(User user) {
         userRepository.save(user);
@@ -126,6 +118,7 @@ public class UserService implements UserDetailsService {
         user.setFirstName(form.getFirstName());
         user.setPassword(form.getPassword());
     }
+
 
     public Optional<User> findOneByUsername(String username) {
         return Optional.ofNullable(userRepository.findByUsername(username));
